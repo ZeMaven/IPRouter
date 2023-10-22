@@ -1,0 +1,15 @@
+﻿namespace MomoSwitch.Models
+{
+    public class RouterRequest
+    { 
+        /// <summary>
+        /// Current datetime
+        /// </summary>
+        public DateTime Date { get; set; }
+        /// <summary>
+        /// Destination bank code
+        /// </summary>
+         public string BankCode { get; set; }
+        public decimal Amount { get; set;}
+    }
+}
