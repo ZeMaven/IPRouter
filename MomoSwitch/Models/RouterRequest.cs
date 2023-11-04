@@ -11,5 +11,7 @@
         /// </summary>
          public string BankCode { get; set; }
         public decimal Amount { get; set;}
+
+        public string Processor { get; set; }  //If it has a value, then use. useful for requery,
     }
 }

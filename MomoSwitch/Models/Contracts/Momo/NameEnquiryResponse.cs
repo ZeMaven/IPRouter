@@ -7,7 +7,7 @@
         public string bankVerificationNumber { get; set; }
         public int channelCode { get; set; }
         public string destinationInstitutionCode { get; set; }
-        public int kycLevel { get; set; }
+        public string kycLevel { get; set; }
         public string responseCode { get; set; }
         public string sessionID { get; set; }
         public string transactionId { get; set; }

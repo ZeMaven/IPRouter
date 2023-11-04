@@ -1,9 +1,8 @@
-﻿namespace MomoSwitch.Models.Contracts.Proxy
+﻿namespace Momo.Common.Models
 {
-    public class FundTransferPxResponse
+    public class FundTransferPxRequest
     {
         public string TransactionId { get; set; }
-        public string SessionId { get; set; }
         public decimal Amount { get; set; }
         public string BenefAccountName { get; set; }
         public string BenefAccountNumber { get; set; }
@@ -15,8 +14,5 @@
         public string SourceAccountName { get; set; }
         public string SourceAccountNumber { get; set; }
         public string NameEnquiryRef { get; set; }
-        public string ResponseCode { get; set; }
-        public string ResponseMessage { get; set; }
-        public int ChannelCode { get; internal set; }
     }
 }

@@ -3,12 +3,12 @@ using System.Text.Json;
 
 namespace MomoSwitch.Actions
 {
-    public interface IRouter
+    public interface ISwitchRouter
     {
         RuleMatchResponse Route(RouterRequest Request);
     }
 
-    public class Router : IRouter
+    public class SwitchRouter : ISwitchRouter
     {
         //Logic to get the appropraite switch base on rules
 
@@ -16,7 +16,7 @@ namespace MomoSwitch.Actions
         private readonly ILog Log;
 
 
-        public Router(IUtilities utilities, ILog log)
+        public SwitchRouter(IUtilities utilities, ILog log)
         {
             Utilities = utilities;
             Log = log;
@@ -28,6 +28,11 @@ namespace MomoSwitch.Actions
             {
                 var Settings = Utilities.GetSettings();
                 //if settings is null, get the default switch
+
+                if (!string.IsNullOrEmpty(Request.Processor))
+                    return GetDefaultSwitch(Request.Processor);
+
+
 
                 RuleMatchResponse Resp = new();
                 foreach (var Item in Settings.PriorityRuleSettingList)// Expected to be  order in asc
@@ -73,7 +78,86 @@ namespace MomoSwitch.Actions
 
 
 
+        private RuleMatchResponse GetDefaultSwitch(string Switch)
+        {
+            try
+            {
+                var Settings = Utilities.GetSettings();
 
+                if (string.IsNullOrEmpty(Switch))
+                {
+                    var SwitchDetail = Settings.SwitchSettingList.Where(x => x.IsActive && x.IsDefault).FirstOrDefault();
+                    if (SwitchDetail == null)
+                    {
+                        Log.Write("SwitchRouter.GetDefaultSwitch", $"Default Switch not found");
+                        return new RuleMatchResponse
+                        {
+                            ResponseHeader = new ResponseHeader
+                            {
+                                ResponseCode = "01",
+                                ResponseMessage = $"Switch: {Switch} not found"
+                            }
+
+                        };
+                    }
+
+                    return new RuleMatchResponse
+                    {
+                        ResponseHeader = new ResponseHeader
+                        {
+                            ResponseCode = "00",
+                            ResponseMessage = "Success"
+                        },
+                        Switch = SwitchDetail.Switch,
+                        Url = SwitchDetail.Url
+                    };
+                }
+                else
+                {
+                    var SwitchDetail = Settings.SwitchSettingList.Where(x => x.IsActive && x.Switch == Switch).FirstOrDefault();
+                    if (SwitchDetail == null)
+                    {
+                        Log.Write("SwitchRouter.GetDefaultSwitch", $"Switch: {Switch} not found");
+                        return new RuleMatchResponse
+                        {
+                            ResponseHeader = new ResponseHeader
+                            {
+                                ResponseCode = "01",
+                                ResponseMessage = $"Switch: {Switch} not found"
+                            }
+
+                        };
+                    }
+
+                    return new RuleMatchResponse
+                    {
+                        ResponseHeader = new ResponseHeader
+                        {
+                            ResponseCode = "00",
+                            ResponseMessage = "Success"
+                        },
+                        Switch = SwitchDetail.Switch,
+                        Url = SwitchDetail.Url
+                    };
+                }
+
+
+
+
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("SwitchRouter.GetDefaultSwitch", $"Err: {Ex.Message}");
+                return new RuleMatchResponse
+                {
+                    ResponseHeader = new ResponseHeader
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = $"System challenge"
+                    }
+                };
+            }
+        }
 
 
 

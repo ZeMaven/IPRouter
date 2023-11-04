@@ -1,4 +1,4 @@
-﻿namespace MomoSwitch.Models.Contracts.Proxy
+﻿namespace Momo.Common.Models
 {
     public class TranQueryPxRequest
     {

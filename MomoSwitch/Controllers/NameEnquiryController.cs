@@ -1,25 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Momo.Common.Models;
+using MomoSwitch.Actions;
 using MomoSwitch.Models.Contracts.Momo;
+using System.Runtime.CompilerServices;
 
 namespace MomoSwitch.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/outward/[controller]")]
     [ApiController]
     public class NameEnquiryController : ControllerBase
     {
-        [HttpPost(Name = "NameEnquiry")]
-        public async Task<NameEnquiryPxResponse> NameEnquiry(NameEnquiryPxRequest Req)
+        private readonly IOutward Outward;
+        public NameEnquiryController(IOutward  outward)
         {
-            try
-            {
+             Outward = outward;
+        }
 
 
-            }
-            catch (Exception Ex)
-            {
 
-            }
+        [HttpPost(Name = "NameEnquiry")]
+        public async Task<NameEnquiryResponse> NameEnquiry(NameEnquiryResponse Req)
+        {
+            return await Outward.NameEnquiry(Req);
         }
     }
 }

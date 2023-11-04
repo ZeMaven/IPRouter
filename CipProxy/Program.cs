@@ -1,7 +1,8 @@
 
-using MomoSwitch.Actions;
+using CipProxy.Actions;
+using Momo.Common.Actions;
 
-namespace MomoSwitch
+namespace CipProxy
 {
     public class Program
     {
@@ -15,9 +16,12 @@ namespace MomoSwitch
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-
+            builder.Services.AddTransient<ILog, Log>();
             builder.Services.AddTransient<IUtilities, Utilities>();
+            builder.Services.AddTransient<ICipOutward, CipOutward>();
+            builder.Services.AddTransient<ICipInward, CipInward>();            
+            builder.Services.AddTransient<IHttpService, HttpService>();
+            builder.Services.AddTransient<IPgp, Pgp>();
 
             var app = builder.Build();
 

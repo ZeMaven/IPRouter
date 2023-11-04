@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Contracts\Proxies\**" />
+    <Content Remove="Models\Contracts\Proxies\**" />
+    <EmbeddedResource Remove="Models\Contracts\Proxies\**" />
+    <None Remove="Models\Contracts\Proxies\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
@@ -22,6 +29,10 @@
 
   <ItemGroup>
     <Folder Include="Models\DataBase\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Momo.Common\Momo.Common.csproj" />
   </ItemGroup>
 
 </Project>
