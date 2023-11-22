@@ -122,7 +122,7 @@ namespace CipProxy.Actions
                         Url = $"{Config.GetSection("RouterUrl").Value}/NameEnquiry";
                         break;
                     case Operation.Transfer:
-                        Url = $"{Config.GetSection("RouterUrl").Value}/PostCredit";
+                        Url = $"{Config.GetSection("RouterUrl").Value}/FundTransfer";
                         break;
                     case Operation.TranQuery:
                         Url = $"{Config.GetSection("RouterUrl").Value}/TransactionQuery";

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Momo.Common.Models;
 using MomoSwitch.Actions;
 using MomoSwitch.Models.Contracts.Momo;
- 
 
-namespace MomoSwitch.Controllers
+
+namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
@@ -19,7 +19,7 @@ namespace MomoSwitch.Controllers
 
 
 
-        [HttpPost(Name = "FundTransfer")]
+        [HttpPost(Name = "OutFundTransfer")]
         public async Task<FundTransferResponse> FundTransfer(FundTransferRequest Req)
         {
             return await Processor.Transfer(Req);

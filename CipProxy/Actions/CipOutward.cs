@@ -149,6 +149,7 @@ namespace CipProxy.Actions
                         TransactionId = Request.TransactionId,
                         SourceBankCode = SourceBank,
                         ResponseCode = "09",
+                       
                     };
                 }
 
@@ -170,7 +171,8 @@ namespace CipProxy.Actions
                     BenefAccountNumber = CipRespObj.creditAccountName,
                     BenfBankCode = CipRespObj.destinationInstitutionId,
                     SourceAccountName = CipRespObj.sourceAccountName,
-                    SourceAccountNumber = CipRespObj.sourceAccountId
+                    SourceAccountNumber = CipRespObj.sourceAccountId,
+                   
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -264,7 +266,8 @@ namespace CipProxy.Actions
                     NameEnquiryRef = Request.NameEnquiryRef,
                     Narration = CipRespObj.narration,
                     SourceAccountName = CipRespObj.sourceAccountName,
-                    SourceAccountNumber = Request.SourceAccountNumber
+                    SourceAccountNumber = Request.SourceAccountNumber,
+                 
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

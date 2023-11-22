@@ -73,7 +73,9 @@ namespace MomoSwitch.Actions
                             Switch = t.Processor,
                             IsActive = t.IsActive,
                             IsDefault = t.IsDefault,
-                            Url = t.Url,
+                            TranQueryUrl = t.TranQueryUrl,
+                            TransferUrl = t.TransferUrl,
+                            NameEnquiryUrl = t.NameEnquiryUrl,
                         }).ToList(),
                         PriorityRuleSettingList = Priority.Select(t => new PriorityRuleSetting
                         {

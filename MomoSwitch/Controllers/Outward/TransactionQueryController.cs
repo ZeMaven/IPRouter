@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Momo.Common.Models;
 using MomoSwitch.Actions;
 using MomoSwitch.Models.Contracts.Momo;
- 
 
-namespace MomoSwitch.Controllers
+
+namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
@@ -18,9 +18,8 @@ namespace MomoSwitch.Controllers
         }
 
 
-
-        [HttpPost(Name = "NameEnquiry")]
-        public async Task<TranQueryResponse> NameEnquiry(TranQueryRequest Req)
+        [HttpPost(Name = "OutTransactionQuery")]
+        public async Task<TranQueryResponse> TransactionQuery(TranQueryRequest Req)
         {
             return await Processor.TranQuery(Req);
         }

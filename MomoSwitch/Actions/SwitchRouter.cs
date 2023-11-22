@@ -50,8 +50,8 @@ namespace MomoSwitch.Actions
 
 
                 var JsonStr = JsonSerializer.Serialize(Request);
-                Log.Write("Router.Route", $"Request: {JsonStr}");
-                Log.Write("Router.Route", $"Failed to get Settles");
+                Log.Write("SwitchRouter.Route", $"Request: {JsonStr}");
+                Log.Write("SwitchRouter.Route", $"Failed to get Settles");
 
                 return new RuleMatchResponse
                 {
@@ -64,7 +64,7 @@ namespace MomoSwitch.Actions
             }
             catch (Exception Ex)
             {
-                Log.Write("Router.Route", $"Err {Ex.Message}");
+                Log.Write("SwitchRouter.Route", $"Err {Ex.Message}");
                 return new RuleMatchResponse
                 {
                     ResponseHeader = new ResponseHeader
@@ -83,7 +83,8 @@ namespace MomoSwitch.Actions
             try
             {
                 var Settings = Utilities.GetSettings();
-
+                var Resp = new RuleMatchResponse();
+                string RespJson;
                 if (string.IsNullOrEmpty(Switch))
                 {
                     var SwitchDetail = Settings.SwitchSettingList.Where(x => x.IsActive && x.IsDefault).FirstOrDefault();
@@ -101,7 +102,7 @@ namespace MomoSwitch.Actions
                         };
                     }
 
-                    return new RuleMatchResponse
+                    Resp = new RuleMatchResponse
                     {
                         ResponseHeader = new ResponseHeader
                         {
@@ -109,8 +110,14 @@ namespace MomoSwitch.Actions
                             ResponseMessage = "Success"
                         },
                         Switch = SwitchDetail.Switch,
-                        Url = SwitchDetail.Url
+                        NameEnquiryUrl = SwitchDetail.NameEnquiryUrl,
+                        TransferUrl = SwitchDetail.TransferUrl,
+                        TranQueryUrl = SwitchDetail.TranQueryUrl,
                     };
+                    RespJson = JsonSerializer.Serialize(Resp);
+                    Log.Write("Router.GetDefaultSwitch", $"Response: {RespJson}");
+
+                    return Resp;
                 }
                 else
                 {
@@ -129,7 +136,7 @@ namespace MomoSwitch.Actions
                         };
                     }
 
-                    return new RuleMatchResponse
+                    Resp = new RuleMatchResponse
                     {
                         ResponseHeader = new ResponseHeader
                         {
@@ -137,13 +144,14 @@ namespace MomoSwitch.Actions
                             ResponseMessage = "Success"
                         },
                         Switch = SwitchDetail.Switch,
-                        Url = SwitchDetail.Url
+                        NameEnquiryUrl = SwitchDetail.NameEnquiryUrl,
+                        TransferUrl = SwitchDetail.TransferUrl,
+                        TranQueryUrl = SwitchDetail.TranQueryUrl,
                     };
+                    RespJson = JsonSerializer.Serialize(Resp);
+                    Log.Write("Router.GetDefaultSwitch", $"Response: {RespJson}");
+                    return Resp;
                 }
-
-
-
-
             }
             catch (Exception Ex)
             {
@@ -166,7 +174,8 @@ namespace MomoSwitch.Actions
             try
             {
                 var Settings = Utilities.GetSettings();
-
+                var Resp = new RuleMatchResponse();
+                string RespJson;
                 foreach (var Time in Settings.TimeRuleList)
                 {
 
@@ -180,7 +189,7 @@ namespace MomoSwitch.Actions
 
                         if (TargetSwitch.IsActive)
                         {
-                            return new RuleMatchResponse
+                            Resp = new RuleMatchResponse
                             {
                                 ResponseHeader = new ResponseHeader
                                 {
@@ -188,8 +197,14 @@ namespace MomoSwitch.Actions
                                     ResponseMessage = "Success"
                                 },
                                 Switch = Time.Switch,
-                                Url = TargetSwitch.Url
+                                NameEnquiryUrl = TargetSwitch.NameEnquiryUrl,
+                                TransferUrl = TargetSwitch.TransferUrl,
+                                TranQueryUrl = TargetSwitch.TranQueryUrl,
                             };
+
+                            RespJson = JsonSerializer.Serialize(Resp);
+                            Log.Write("Router.MatchTimeRule", $"Response: {RespJson}");
+                            return Resp;
                         }
                         else
                         {
@@ -201,7 +216,7 @@ namespace MomoSwitch.Actions
 
                 var DefaultSwitch = Settings.SwitchSettingList.Where(x => x.IsDefault == true).FirstOrDefault();
 
-                return new RuleMatchResponse
+                Resp = new RuleMatchResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -209,8 +224,14 @@ namespace MomoSwitch.Actions
                         ResponseMessage = "Success"
                     },
                     Switch = DefaultSwitch.Switch,
-                    Url = DefaultSwitch.Url
+                    NameEnquiryUrl = DefaultSwitch.NameEnquiryUrl,
+                    TransferUrl = DefaultSwitch.TransferUrl,
+                    TranQueryUrl = DefaultSwitch.TranQueryUrl,
                 };
+                RespJson = JsonSerializer.Serialize(Resp);
+                Log.Write("Router.MatchTimeRule", $"Response: {RespJson}");
+                return Resp;
+
             }
             catch (Exception Ex)
             {
@@ -232,7 +253,8 @@ namespace MomoSwitch.Actions
             try
             {
                 var Settings = Utilities.GetSettings();
-
+                var Resp = new RuleMatchResponse();
+                string RespJson;
                 foreach (var AmtRule in Settings.AmountRuleList)
                 {
 
@@ -243,7 +265,7 @@ namespace MomoSwitch.Actions
 
                         if (TargetSwitch.IsActive)
                         {
-                            return new RuleMatchResponse
+                            Resp = new RuleMatchResponse
                             {
                                 ResponseHeader = new ResponseHeader
                                 {
@@ -251,8 +273,14 @@ namespace MomoSwitch.Actions
                                     ResponseMessage = "Success"
                                 },
                                 Switch = TargetSwitch.Switch,
-                                Url = TargetSwitch.Url
+                                NameEnquiryUrl = TargetSwitch.NameEnquiryUrl,
+                                TransferUrl = TargetSwitch.TransferUrl,
+                                TranQueryUrl = TargetSwitch.TranQueryUrl
                             };
+
+                            RespJson = JsonSerializer.Serialize(Resp);
+                            Log.Write("Router.MatchAmountRule", $"Response: {RespJson}");
+                            return Resp;
                         }
                         else
                         {
@@ -264,7 +292,7 @@ namespace MomoSwitch.Actions
 
                 var DefaultSwitch = Settings.SwitchSettingList.Where(x => x.IsDefault == true).FirstOrDefault();
 
-                return new RuleMatchResponse
+                Resp = new RuleMatchResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -272,8 +300,13 @@ namespace MomoSwitch.Actions
                         ResponseMessage = "Success"
                     },
                     Switch = DefaultSwitch.Switch,
-                    Url = DefaultSwitch.Url
+                    NameEnquiryUrl = DefaultSwitch.NameEnquiryUrl,
+                    TransferUrl = DefaultSwitch.TransferUrl,
+                    TranQueryUrl = DefaultSwitch.TranQueryUrl
                 };
+                RespJson = JsonSerializer.Serialize(Resp);
+                Log.Write("Router.MatchAmountRule", $"Response: {RespJson}");
+                return Resp;
             }
             catch (Exception Ex)
             {
@@ -295,7 +328,8 @@ namespace MomoSwitch.Actions
             try
             {
                 var Settings = Utilities.GetSettings();
-
+                var Resp = new RuleMatchResponse();
+                string RespJson;
                 var One2One = Settings.BankSwitchRuleList.Where(x => x.BankCode == BankCode).FirstOrDefault();
 
                 if (One2One != null)
@@ -304,7 +338,7 @@ namespace MomoSwitch.Actions
 
                     if (TargetSwitch.IsActive)
                     {
-                        return new RuleMatchResponse
+                        Resp = new RuleMatchResponse
                         {
                             ResponseHeader = new ResponseHeader
                             {
@@ -312,8 +346,14 @@ namespace MomoSwitch.Actions
                                 ResponseMessage = "Success"
                             },
                             Switch = TargetSwitch.Switch,
-                            Url = TargetSwitch.Url
+                            NameEnquiryUrl = TargetSwitch.NameEnquiryUrl,
+                            TransferUrl = TargetSwitch.TransferUrl,
+                            TranQueryUrl = TargetSwitch.TranQueryUrl
                         };
+
+                        RespJson = JsonSerializer.Serialize(Resp);
+                        Log.Write("Router.MatchBankSwitchRule", $"Response: {RespJson}");
+                        return Resp;
                     }
                     else
                     {
@@ -324,7 +364,7 @@ namespace MomoSwitch.Actions
 
                 var DefaultSwitch = Settings.SwitchSettingList.Where(x => x.IsDefault == true).FirstOrDefault();
 
-                return new RuleMatchResponse
+                Resp = new RuleMatchResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -332,8 +372,13 @@ namespace MomoSwitch.Actions
                         ResponseMessage = "Success"
                     },
                     Switch = DefaultSwitch.Switch,
-                    Url = DefaultSwitch.Url
+                    NameEnquiryUrl = DefaultSwitch.NameEnquiryUrl,
+                    TransferUrl = DefaultSwitch.TransferUrl,
+                    TranQueryUrl = DefaultSwitch.TranQueryUrl
                 };
+                RespJson = JsonSerializer.Serialize(Resp);
+                Log.Write("Router.BankSwitchRule", $"Response: {RespJson}");
+                return Resp;
             }
             catch (Exception Ex)
             {

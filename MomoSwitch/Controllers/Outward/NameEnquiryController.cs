@@ -5,22 +5,22 @@ using MomoSwitch.Actions;
 using MomoSwitch.Models.Contracts.Momo;
 using System.Runtime.CompilerServices;
 
-namespace MomoSwitch.Controllers
+namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
     public class NameEnquiryController : ControllerBase
     {
         private readonly IOutward Outward;
-        public NameEnquiryController(IOutward  outward)
+        public NameEnquiryController(IOutward outward)
         {
-             Outward = outward;
+            Outward = outward;
         }
 
 
 
-        [HttpPost(Name = "NameEnquiry")]
-        public async Task<NameEnquiryResponse> NameEnquiry(NameEnquiryResponse Req)
+        [HttpPost(Name = "OutNameEnquiry")]
+        public async Task<NameEnquiryResponse> NameEnquiry(NameEnquiryRequest Req)
         {
             return await Outward.NameEnquiry(Req);
         }

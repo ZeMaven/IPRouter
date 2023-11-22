@@ -51,7 +51,7 @@ namespace CipProxy.Actions
                     SourceBankCode = ReqObj.sessionId.Substring(0, 6),
                 };
 
-                var RouterResp = await HttpService.Call(Request, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
 
                 NameEnqResponse Resp = new();
 

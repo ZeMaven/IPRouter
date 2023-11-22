@@ -9,6 +9,7 @@
         public string destinationInstitutionCode { get; set; }
         public string kycLevel { get; set; }
         public string responseCode { get; set; }
+        public string responseMessage { get; set; }// not in Nibss
         public string sessionID { get; set; }
         public string transactionId { get; set; }
 
