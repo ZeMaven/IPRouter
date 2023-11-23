@@ -5,8 +5,9 @@ using System.Web;
 
 namespace NipInwardProxy.Models.Nibss
 {
-    public class AmountBlockResponse: AmountBlockRequest
+    public class AmountBlockResponse: AccountBlockResponse
     {
         public string ResponseCode { get; set; }
+public decimal Amount { get; set; }
     }
 }

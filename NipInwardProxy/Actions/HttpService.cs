@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace NipInwardProxy.Actions
 {
-    public enum Operation { NameEnqury, Transfer, TranQuery }
+    public enum Operation { NameEnqury, Transfer, TranQuery, AccountBlock, AccountUnBlock, AmountBlock,AmountUnblock, BalanceEnquiry, Callback,
+    DirectCredit,DirectCreditAdvice,FinancialInstitutionList, ManadateAdvice
+     
+    }
     public class HttpService
     {
 
@@ -32,6 +35,45 @@ namespace NipInwardProxy.Actions
                         break;
                     case Operation.TranQuery:
                         Url = $"{Properties.Settings.Default.RouterUrl}/TransactionQuery";
+                        break;
+
+                    case Operation.AccountBlock:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/AccountBlock";
+                        break;
+
+                    case Operation.AccountUnBlock:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/AccountUnBlock";
+                        break;
+
+                    case Operation.AmountBlock:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/AmountBlock";
+                        break;
+
+                    case Operation.AmountUnblock:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/AmountUnblock";
+                        break;
+
+                    case Operation.BalanceEnquiry:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/BalanceEnquiry";
+                        break;
+
+                    case Operation.Callback:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/Callback";
+                        break;
+                    case Operation.DirectCredit:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/DirectCredit";
+                        break;
+
+                    case Operation.DirectCreditAdvice:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/DirectCreditAdvice";
+                        break;
+
+                    case Operation.FinancialInstitutionList:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/FinancialInstitutionList";
+                        break;
+
+                    case Operation.ManadateAdvice:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/ManadateAdvice";
                         break;
                 }
 

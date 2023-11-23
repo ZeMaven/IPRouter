@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NipInwardProxy.Models.Router
 {
-    public class AmountBlockPxRequest: AmountBlockRequest
+    public class FinancialInstitutionListPxResponse: FinancialInstitutionListResponse
     {
     }
 }

@@ -79,58 +79,34 @@ namespace NipInwardProxy
             return await new AmountBlock().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> amountUnblock(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new AmountUnblock().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> accountblock(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new AccountBlock().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> accountUnblock(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new AccountUnblock().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> financialinstitutionlist(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new FinancialInstitutionList().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> mandateadvice(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new MandateAdvice().InvokeAsync(request);
         }
 
-        public async Task<string> nameenquirysingleitem(string request)
+        public async Task<string> ftackcreditrequest(string request)
         {
-            return await new NameEnquiry().InvokeAsync(request);
+            return await new Callback().InvokeAsync(request);
         }
-
-        public async Task<string> nameenquirysingleitem(string request)
-        {
-            return await new NameEnquiry().InvokeAsync(request);
-        }
-
-        public async Task<string> nameenquirysingleitem(string request)
-        {
-            return await new NameEnquiry().InvokeAsync(request);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
