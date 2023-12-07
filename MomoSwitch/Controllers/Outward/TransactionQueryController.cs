@@ -4,7 +4,7 @@ using Momo.Common.Models;
 using MomoSwitch.Actions;
 using MomoSwitch.Models.Contracts.Momo;
 
-
+//From momo to processor
 namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
@@ -21,7 +21,7 @@ namespace MomoSwitch.Controllers.Outward
         [HttpPost(Name = "OutTransactionQuery")]
         public async Task<TranQueryResponse> TransactionQuery(TranQueryRequest Req)
         {
-            return await Processor.TranQuery(Req);
+            return await Processor.GetTransaction(Req.transactionId);
         }
     }
 }

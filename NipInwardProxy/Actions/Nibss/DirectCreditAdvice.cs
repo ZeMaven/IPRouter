@@ -50,7 +50,7 @@ namespace NipInwardProxy.Actions.Nibss
                      TransactionFee = ReqObj.TransactionFee,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.DirectCreditAdvice);
 
                 FTAdviceCreditResponse Resp = new FTAdviceCreditResponse();
 

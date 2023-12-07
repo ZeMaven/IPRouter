@@ -45,7 +45,7 @@ namespace NipInwardProxy.Actions.Nibss
                     SessionID = ReqObj.SessionID,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.ManadateAdvice);
 
                 MandateAdviceResponse Resp = new MandateAdviceResponse();
 

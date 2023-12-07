@@ -40,7 +40,7 @@ namespace NipInwardProxy.Actions.Nibss
                     Narration = ReqObj.Narration,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.AccountBlock);
 
                 AccountBlockResponse Resp = new AccountBlockResponse();
 

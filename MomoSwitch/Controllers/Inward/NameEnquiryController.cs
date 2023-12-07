@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Momo.Common.Models;
 using MomoSwitch.Actions;
+using MomoSwitch.Models.Contracts.Specials.Router;
 using System.Diagnostics;
 
 namespace MomoSwitch.Controllers.Inward

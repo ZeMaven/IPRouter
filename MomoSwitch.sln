@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Momo.Common", "Momo.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipInwardProxy", "NipInwardProxy\NipInwardProxy.csproj", "{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipOutwardProxy", "NipOutwardProxy\NipOutwardProxy.csproj", "{8920EFF0-F093-411F-94B1-2306FD719C22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -42,7 +42,7 @@ namespace NipInwardProxy.Actions
             }
             catch (Exception Ex)
             {
-                Log.WriteLog("Pgp.Encrypt", $"Err:{Ex}");
+                Log.Write("Pgp.Encrypt", $"Err:{Ex}");
                 return new PgpResponse() { ResponseCode = "01", ResponseMessage = Ex.Message, Value = null };
             }
         }
@@ -80,7 +80,7 @@ namespace NipInwardProxy.Actions
             }
             catch (Exception Ex)
             {
-                Log.WriteLog("Pgp.Decrypt", $"Err:{Ex}");
+                Log.Write("Pgp.Decrypt", $"Err:{Ex}");
                 return new PgpResponse() { ResponseCode = "01", ResponseMessage = Ex.Message, Value = null };
             }
         }

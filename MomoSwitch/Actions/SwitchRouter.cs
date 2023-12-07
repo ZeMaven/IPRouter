@@ -259,7 +259,7 @@ namespace MomoSwitch.Actions
                 {
 
 
-                    if ((Amount > AmtRule.AmountA) && (Amount < AmtRule.AmountZ))
+                    if ((Amount >= AmtRule.AmountA) && (Amount <= AmtRule.AmountZ))
                     {
                         var TargetSwitch = Settings.SwitchSettingList.Where(x => x.Switch == AmtRule.Switch).FirstOrDefault();
 

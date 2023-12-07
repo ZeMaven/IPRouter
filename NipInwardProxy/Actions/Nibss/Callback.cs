@@ -49,7 +49,7 @@ namespace NipInwardProxy.Actions.Nibss
                     TransactionLocation = ReqObj.TransactionLocation
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.Callback);
 
                 string Resp;
 

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NipInwardProxy.Models.Router
 {
-    public class AccountBlockPxResponse: AccountBlockResponse
+    public class AccountUnBlockPxResponse: AccountBlockResponse
     {
     }
 }

@@ -34,7 +34,7 @@ namespace NipInwardProxy.Actions.Nibss
                     Record = ReqObj.Record,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.FinancialInstitutionList);
 
                 FinancialInstitutionListResponse Resp = new FinancialInstitutionListResponse();
 

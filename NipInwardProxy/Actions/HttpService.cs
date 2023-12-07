@@ -11,14 +11,11 @@ using System.Threading.Tasks;
 namespace NipInwardProxy.Actions
 {
     public enum Operation { NameEnqury, Transfer, TranQuery, AccountBlock, AccountUnBlock, AmountBlock,AmountUnblock, BalanceEnquiry, Callback,
-    DirectCredit,DirectCreditAdvice,FinancialInstitutionList, ManadateAdvice
+    DirectCredit, DirectDebit, DirectDebitAdvice, DirectCreditAdvice,FinancialInstitutionList, ManadateAdvice
      
     }
     public class HttpService
     {
-
-
-
         public async Task<HttpServiceResponse> Call(object Request, Operation Op)
         {
             string Url = string.Empty;
@@ -62,6 +59,12 @@ namespace NipInwardProxy.Actions
                         break;
                     case Operation.DirectCredit:
                         Url = $"{Properties.Settings.Default.RouterUrl}/DirectCredit";
+                        break;
+                    case Operation.DirectDebit:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/DirectDebit";
+                        break;
+                    case Operation.DirectDebitAdvice:
+                        Url = $"{Properties.Settings.Default.RouterUrl}/DirectDebitAdvice";
                         break;
 
                     case Operation.DirectCreditAdvice:

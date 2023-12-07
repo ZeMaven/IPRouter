@@ -40,7 +40,7 @@ namespace NipInwardProxy.Actions.Nibss
                     Narration = ReqObj.Narration,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.AccountUnBlock);
 
                 AccountUnblockResponse Resp = new AccountUnblockResponse();
 
@@ -63,7 +63,7 @@ namespace NipInwardProxy.Actions.Nibss
                 }
                 else
                 {
-                    var RouterRespObj = JsonConvert.DeserializeObject<AccountBlockPxResponse>(RouterResp.ResponseContent);
+                    var RouterRespObj = JsonConvert.DeserializeObject<AccountUnBlockPxResponse>(RouterResp.ResponseContent);
                     Resp = new AccountUnblockResponse
                     {
                         ResponseCode = RouterRespObj.ResponseCode,

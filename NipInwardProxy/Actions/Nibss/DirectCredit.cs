@@ -44,13 +44,13 @@ namespace NipInwardProxy.Actions.Nibss
                     SourceBankCode = Properties.Settings.Default.SourceBankCode
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
-
-                FTAdviceCreditResponse Resp = new FTAdviceCreditResponse();
+                var RouterResp = await HttpService.Call(MomoReq, Operation.DirectCredit);
+                 
+                FTSingleCreditResponse Resp = new FTSingleCreditResponse();
 
                 if (RouterResp.ResponseHeader.ResponseCode != "00")
                 {
-                    Resp = new FTAdviceCreditResponse
+                    Resp = new FTSingleCreditResponse
                     {
                         ResponseCode = "01",
                         OriginatorAccountName = ReqObj.OriginatorAccountName,

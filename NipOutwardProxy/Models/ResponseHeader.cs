@@ -1,0 +1,8 @@
+﻿namespace NipOutwardProxy.Models
+{
+    public class ResponseHeader
+    {
+        public string ResponseMessage { get; set; }
+        public string ResponseCode { get; set; }
+    }
+}

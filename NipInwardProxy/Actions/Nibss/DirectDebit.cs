@@ -49,7 +49,7 @@ namespace NipInwardProxy.Actions.Nibss
                     Narration = ReqObj.Narration,
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.DirectDebit);
 
                 FTSingleDebitResponse Resp = new FTSingleDebitResponse();
 

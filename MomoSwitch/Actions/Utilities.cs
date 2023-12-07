@@ -37,15 +37,15 @@ namespace MomoSwitch.Actions
                 {
                     var Db = new MomoSwitchDbContext();
                     var TimeRule = Db.TimeRuleTb.ToList();
-                    if (TimeRule.Count > 0) Log.Write("Utilities.GettSettings", "TimeRule setting does not exist");
+                    if (TimeRule.Count == 0) Log.Write("Utilities.GettSettings", "TimeRule setting does not exist");
                     var AmountRule = Db.AmountRuleTb.ToList();
-                    if (AmountRule.Count > 0) Log.Write("Utilities.GettSettings", "AmountRule setting does not exist");
+                    if (AmountRule.Count == 0) Log.Write("Utilities.GettSettings", "AmountRule setting does not exist");
                     var BankSwitch = Db.BankSwitchTb.ToList();
-                    if (BankSwitch.Count > 0) Log.Write("Utilities.GettSettings", "BankSwitch setting does not exist");
+                    if (BankSwitch.Count == 0) Log.Write("Utilities.GettSettings", "BankSwitch setting does not exist");
                     var Switch = Db.SwitchTb.ToList();
-                    if (Switch.Count > 0) Log.Write("Utilities.GettSettings", "Switch setting does not exist");
-                    var Priority = Db.PriorityTb.ToList();
-                    if (Priority.Count > 0) Log.Write("Utilities.GettSettings", "Priority setting does not exist");
+                    if (Switch.Count == 0) Log.Write("Utilities.GettSettings", "Switch setting does not exist");
+                    var Priority = Db.PriorityTb.OrderBy(x=>x.Priority).ToList();
+                    if (Priority.Count == 0) Log.Write("Utilities.GettSettings", "Priority setting does not exist");
 
 
                     var Setting = new Settings

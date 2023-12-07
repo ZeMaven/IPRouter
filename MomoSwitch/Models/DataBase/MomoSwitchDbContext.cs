@@ -26,5 +26,6 @@ namespace MomoSwitch.Models.DataBase
         public DbSet<PriorityTb> PriorityTb { get; set; }
         public DbSet<SwitchTb> SwitchTb { get; set; }
         public DbSet<TimeRuleTb> TimeRuleTb { get; set; }
+        public DbSet<TransactionTb> TransactionTb { get; set; }
     }
 }

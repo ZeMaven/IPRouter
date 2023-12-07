@@ -1,11 +1,13 @@
 
+using Microsoft.EntityFrameworkCore;
 using MomoSwitch.Actions;
+using MomoSwitch.Models.DataBase;
 
 namespace MomoSwitch
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +18,20 @@ namespace MomoSwitch
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
+            builder.Services.AddMemoryCache();
             builder.Services.AddTransient<IUtilities, Utilities>();
-
+            builder.Services.AddTransient<ISwitchRouter, SwitchRouter>();
+            builder.Services.AddTransient<ITransposer, Transposer>();
+            builder.Services.AddTransient<IOutward, Outward>();
+            builder.Services.AddTransient<IHttpService, HttpService>();
+            builder.Services.AddTransient<ILog, Log>();
+            
             var app = builder.Build();
+            using (var client = new MomoSwitchDbContext())
+            {
+                // client.Database.EnsureCreated(); //No migration | No update
+                await client.Database.MigrateAsync(); //Uses Migration, therefore it updates
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

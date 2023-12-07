@@ -33,7 +33,7 @@ namespace NipInwardProxy.Actions.Nibss
                     TransactionId = ReqObj.SessionID
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.TranQuery);
 
                 TSQuerySingleResponse Resp = new TSQuerySingleResponse();
 

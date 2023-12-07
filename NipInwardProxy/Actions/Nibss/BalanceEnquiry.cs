@@ -40,7 +40,7 @@ namespace NipInwardProxy.Actions.Nibss
                     TargetBankVerificationNumber = ReqObj.TargetBankVerificationNumber
                 };
 
-                var RouterResp = await HttpService.Call(MomoReq, Operation.NameEnqury);
+                var RouterResp = await HttpService.Call(MomoReq, Operation.BalanceEnquiry);
 
                 BalanceEnquiryResponse Resp = new BalanceEnquiryResponse();
 
