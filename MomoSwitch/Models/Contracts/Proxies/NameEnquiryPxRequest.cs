@@ -4,6 +4,6 @@
     {
         public string TransactionId { get; set; }
         public string DestinationBankCode { get; set; }
-        public string accountId { get; set; }
+        public string AccountId { get; set; }
     }
 }

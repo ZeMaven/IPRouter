@@ -41,7 +41,7 @@ namespace MomoSwitch.Actions
             {
                 HttpResponseMessage response = null;
                 string ReqJson = JsonSerializer.Serialize(Request.RequestObject);
-
+                Log.Write("HttpService.Call", $"Request: {ReqJson}");
 
                 if (Request.Method == Method.Post)
                     response = await WireClient.PostAsync(Request.EndPoint, new StringContent(ReqJson, Encoding.UTF8, "application/json"));
@@ -51,7 +51,8 @@ namespace MomoSwitch.Actions
 
 
                 string Result = response.Content.ReadAsStringAsync().Result;
-
+                Log.Write("HttpService.Call", $"Http Msg: {response.ReasonPhrase}");
+                Log.Write("HttpService.Call", $"HttpStatus: {response.StatusCode}");
                 Log.Write("HttpService.Call", $"Response:{Result}");
 
                 return new HttpServiceResponse

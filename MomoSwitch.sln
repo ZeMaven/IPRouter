@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34112.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MomoSwitch", "MomoSwitch\MomoSwitch.csproj", "{4E67CA17-0C35-4CC6-BB31-6A853289E58C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MomoSwitch", "MomoSwitch\MomoSwitch.csproj", "{4E67CA17-0C35-4CC6-BB31-6A853289E58C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CipProxy", "CipProxy\CipProxy.csproj", "{77FE7504-5E13-405B-AA52-B4EED797E232}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Momo.Common", "Momo.Common\Momo.Common.csproj", "{78B2C9F6-B5B1-4AE6-A092-161D4B97C228}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipInwardProxy", "NipInwardProxy\NipInwardProxy.csproj", "{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipOutwardProxy", "NipOutwardProxy\NipOutwardProxy.csproj", "{8920EFF0-F093-411F-94B1-2306FD719C22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{4E67CA17-0C35-4CC6-BB31-6A853289E58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E67CA17-0C35-4CC6-BB31-6A853289E58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E67CA17-0C35-4CC6-BB31-6A853289E58C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77FE7504-5E13-405B-AA52-B4EED797E232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77FE7504-5E13-405B-AA52-B4EED797E232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77FE7504-5E13-405B-AA52-B4EED797E232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77FE7504-5E13-405B-AA52-B4EED797E232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B2C9F6-B5B1-4AE6-A092-161D4B97C228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B2C9F6-B5B1-4AE6-A092-161D4B97C228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B2C9F6-B5B1-4AE6-A092-161D4B97C228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B2C9F6-B5B1-4AE6-A092-161D4B97C228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Contracts\Proxies\**" />
+    <Compile Remove="Models\Contracts\Specials\Router\Nibss\**" />
+    <Content Remove="Models\Contracts\Proxies\**" />
+    <Content Remove="Models\Contracts\Specials\Router\Nibss\**" />
+    <EmbeddedResource Remove="Models\Contracts\Proxies\**" />
+    <EmbeddedResource Remove="Models\Contracts\Specials\Router\Nibss\**" />
+    <None Remove="Models\Contracts\Proxies\**" />
+    <None Remove="Models\Contracts\Specials\Router\Nibss\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Actions\DataExpress.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\FundTransferPxRequest.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\FundTransferPxResponse.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\NameEnquiryPxRequest.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\NameEnquiryPxResponse.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\TranQueryPxRequest.cs" />
+    <Compile Remove="Models\Contracts\Specials\Router\TranQueryPxResponse.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
@@ -22,6 +43,10 @@
 
   <ItemGroup>
     <Folder Include="Models\DataBase\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Momo.Common\Momo.Common.csproj" />
   </ItemGroup>
 
 </Project>

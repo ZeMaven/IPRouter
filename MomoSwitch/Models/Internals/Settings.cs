@@ -34,7 +34,9 @@
 
     public class SwitchSetting: _Switch
     {
-        public string Url { get; set; }
+        public string TransferUrl { get; set; }
+        public string NameEnquiryUrl { get; set; }
+        public string TranQueryUrl { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
 

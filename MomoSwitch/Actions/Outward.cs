@@ -1,0 +1,458 @@
+﻿using Momo.Common.Models;
+using MomoSwitch.Models;
+using MomoSwitch.Models.Contracts.Momo;
+using MomoSwitch.Models.Contracts.Specials.Router;
+using MomoSwitch.Models.DataBase;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace MomoSwitch.Actions
+{
+    public interface IOutward
+    {
+        Task<NameEnquiryResponse> NameEnquiry(NameEnquiryRequest Req);
+
+        Task<TranQueryResponse> GetTransaction(string SessionId);
+        Task<FundTransferResponse> Transfer(FundTransferRequest Req);
+
+    }
+
+    public class Outward : IOutward
+    {
+        private readonly ISwitchRouter SwitchRouter;
+        private readonly ITransposer Transposer;
+        private readonly IHttpService HttpService;
+        private readonly ILog Log;
+        public Outward(ISwitchRouter router, ILog log, ITransposer transposer, IHttpService httpService)
+        {
+            SwitchRouter = router;
+            Transposer = transposer;
+            Log = log;
+            HttpService = httpService;
+        }
+        JsonSerializerOptions Options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        public async Task<NameEnquiryResponse> NameEnquiry(NameEnquiryRequest Req)
+        {
+            NameEnquiryResponse Resp;
+            try
+            {  //Review
+
+                string JsonStr = JsonSerializer.Serialize(Req);
+                Log.Write("Outward.NameEnqury", $"Request: {JsonStr}");
+                var RouterDetail = SwitchRouter.Route(new Models.RouterRequest
+                {
+                    Amount = 100000,
+                    BankCode = Req.destinationInstitutionCode,
+                    Date = DateTime.Now,
+                });
+
+                var ProcessorRequest = Transposer.ToProxyNameEnquiryRequest(Req);
+
+                var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
+                {
+                    EndPoint = RouterDetail.NameEnquiryUrl,
+                    Method = Models.Internals.HttpService.Method.Post,
+                    RequestObject = ProcessorRequest
+                });
+
+                if (ProcessorResp.ResponseHeader.ResponseCode == Models.Internals.HttpService.HttpServiceStatus.Success)
+                {
+                    NameEnquiryPxResponse ProcessorRespObj = JsonSerializer.Deserialize<NameEnquiryPxResponse>(ProcessorResp.Object.ToString(), Options);
+
+                    Resp = Transposer.ToMomoNameEnquiryResponse(ProcessorRespObj);
+
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.NameEnqury", $"Response: {JsonStr}");
+                }
+                else
+                {
+                    Resp = new NameEnquiryResponse
+                    {
+                        responseCode = "01",
+                        responseMessage = "System challenge",
+                        accountNumber = Req.accountNumber,
+                        transactionId = Req.transactionId,
+                    };
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.NameEnqury", $"Response: {JsonStr}");
+
+                }
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Outward.NameEnqury", $"Err: {Ex.Message}");
+                return new NameEnquiryResponse
+                {
+                    responseCode = "01",
+                    responseMessage = "System challenge",
+                    accountNumber = Req.accountNumber,
+                    transactionId = Req.transactionId,
+                };
+            }
+        }
+
+        public async Task<FundTransferResponse> Transfer(FundTransferRequest Req)
+        {
+            FundTransferResponse Resp;
+            try
+            {
+                string JsonStr = JsonSerializer.Serialize(Req);
+                Log.Write("Outward.Transfer", $"Request: {JsonStr}");
+                var RouterDetail = SwitchRouter.Route(new Models.RouterRequest
+                {
+                    Amount = Req.amount,
+                    BankCode = Req.destinationInstitutionCode,
+                    Date = DateTime.Now,
+                });
+                var ProcessorRequest = Transposer.ToProxyFundTransferRequest(Req);
+                var Submit = SubmitTransaction(Req, RouterDetail.Switch);
+                if (Submit.ResponseCode != "00")
+                    return new FundTransferResponse
+                    {
+                        responseCode = Submit.ResponseCode,
+                        amount = Req.amount,
+                        beneficiaryAccountName = Req.beneficiaryAccountName,
+                        beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
+                        beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
+                        beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                        channelCode = Req.channelCode,
+                        debitAccountName = Req.originatorAccountName,
+                        debitAccountNumber = Req.originatorAccountNumber,
+                        debitBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        debitKYCLevel = Req.originatorKYCLevel,
+                        destinationInstitutionCode = Req.destinationInstitutionCode,
+                        mandateReferenceNumber = Req.mandateReferenceNumber,
+                        nameEnquiryRef = Req.nameEnquiryRef,
+                        narration = Req.originatorNarration,
+                        paymentReference = Req.paymentReference,
+                        transactionId = Req.transactionId,
+                    };
+                var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
+                {
+                    EndPoint = RouterDetail.TransferUrl,
+                    Method = Models.Internals.HttpService.Method.Post,
+                    RequestObject = ProcessorRequest
+                });
+
+
+                FundTransferPxResponse ProcessorRespObj = JsonSerializer.Deserialize<FundTransferPxResponse>(ProcessorResp.Object.ToString(), Options);
+                if (ProcessorResp.ResponseHeader.ResponseCode == Models.Internals.HttpService.HttpServiceStatus.Success)
+                {
+
+                    Resp = Transposer.ToMomoFundTransferResponse(ProcessorRespObj);
+
+                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.Transfer", $"Response: {JsonStr}");
+                }
+                else
+                {
+                    Resp = new FundTransferResponse
+                    {
+                        responseCode = "06",// Change appropratly
+                        amount = Req.amount,
+                        beneficiaryAccountName = Req.beneficiaryAccountName,
+                        beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
+                        beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
+                        beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                        channelCode = Req.channelCode,
+                        debitAccountName = Req.originatorAccountName,
+                        debitAccountNumber = Req.originatorAccountNumber,
+                        debitBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        debitKYCLevel = Req.originatorKYCLevel,
+                        destinationInstitutionCode = Req.destinationInstitutionCode,
+                        mandateReferenceNumber = Req.mandateReferenceNumber,
+                        nameEnquiryRef = Req.nameEnquiryRef,
+                        narration = Req.originatorNarration,
+                        paymentReference = Req.paymentReference,
+                        transactionId = Req.transactionId,
+                        //sessionID = Req.transactionId,
+                    };
+                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.Transfer", $"Response: {JsonStr}");
+
+                }
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Outward.Transfer", $"Err: {Ex.Message}");
+                return new FundTransferResponse
+                {
+                    responseCode = "06",// Change appropratly
+                    amount = Req.amount,
+                    beneficiaryAccountName = Req.beneficiaryAccountName,
+                    beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
+                    beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
+                    beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                    channelCode = Req.channelCode,
+                    debitAccountName = Req.originatorAccountName,
+                    debitAccountNumber = Req.originatorAccountNumber,
+                    debitBankVerificationNumber = Req.originatorBankVerificationNumber,
+                    debitKYCLevel = Req.originatorKYCLevel,
+                    destinationInstitutionCode = Req.destinationInstitutionCode,
+                    mandateReferenceNumber = Req.mandateReferenceNumber,
+                    nameEnquiryRef = Req.nameEnquiryRef,
+                    narration = Req.originatorNarration,
+                    paymentReference = Req.paymentReference,
+                    transactionId = Req.transactionId,
+                    // sessionID = Req.transactionId,
+                };
+            }
+
+
+
+        }
+        public async Task<TranQueryResponse> GetTransaction(string TranId)
+        {
+            try
+            {
+
+                var Db = new MomoSwitchDbContext();
+                var Tran = Db.TransactionTb.SingleOrDefault(x => x.TransactionId == TranId);
+                if (Tran != null)
+                {
+                    if (Tran.ResponseCode != "00")
+                    {
+                        //Get from processor
+                        var QueryTran = await TranQuery(new TranQueryRequest { transactionId = Tran.SessionId }, Tran.Processor);
+
+                        //UpdateDb
+                        Tran.ResponseCode = QueryTran.responseCode;
+                        Tran.ResponseMessage = QueryTran.responseMessage;
+                        Tran.ValidateDate = DateTime.Now;
+                        Db.SaveChanges();
+
+
+                        return new TranQueryResponse
+                        {
+                            code = QueryTran.responseCode,
+                            sourceInstitutionCode = Tran.SourceBankCode,
+                            message = Tran.ResponseMessage,
+                            responseMessage = Tran.ResponseMessage,
+                            sessionID = Tran.SessionId,
+                            transactionId = Tran.SessionId,
+                            responseCode = QueryTran.responseCode,
+                        };
+
+                    }
+                    else
+                    {
+                        return new TranQueryResponse
+                        {
+                            code = Tran.ResponseCode,
+                            sourceInstitutionCode = Tran.SourceBankCode,
+                            message = Tran.ResponseMessage,
+                            responseMessage = Tran.ResponseMessage,
+                            sessionID = Tran.SessionId,
+                            transactionId = Tran.TransactionId,
+                            responseCode = Tran.ResponseCode,
+
+                        };
+
+                    }
+                }
+                else
+                {
+                    Log.Write("DataExpress.UpdateTransaction", $"Critical Issue. Transaction not found TranId:{TranId}");
+                    return new TranQueryResponse
+                    {
+
+                        sessionID = null,
+                        transactionId = TranId,
+                        responseCode = "25"
+                    };
+                }
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("DataExpress.GetTransaction", $"Err {Ex.Message} TranId:{TranId}");
+                return new TranQueryResponse
+                {
+                    sessionID = null,
+                    transactionId = TranId,
+                    responseCode = "06"
+                };
+            }
+        }
+
+
+
+
+        #region Pri 
+        private ResponseHeader SubmitTransaction(FundTransferRequest Request, string Proccesor)
+        {
+            try
+            {
+                var Db = new MomoSwitchDbContext();
+
+                Db.TransactionTb.Add(new Models.DataBase.Tables.TransactionTb
+                {
+                    Date = DateTime.Now,
+                    Processor = Proccesor,
+                    Amount = Request.amount,
+                    BenefAccountName = Request.beneficiaryAccountName,
+                    BenefAccountNumber = Request.beneficiaryAccountNumber,
+                    BenefBankCode = Request.destinationInstitutionCode,
+                    BenefBvn = Request.beneficiaryBankVerificationNumber,
+                    BenefKycLevel = Request.beneficiaryKYCLevel.ToString(),
+                    ChannelCode = Request.channelCode.ToString(),
+                    Fee = 0,
+                    ManadateRef = Request.mandateReferenceNumber,
+                    Narration = Request.originatorNarration,
+                    PaymentReference = Request.paymentReference,
+                    ResponseCode = "09",
+                    ResponseMessage = "Pending",
+                    //SessionId = Request.transactionId,
+                    SourceAccountName = Request.originatorAccountName,
+                    SourceAccountNumber = Request.originatorAccountNumber,
+                    SourceBankCode = Request.sourceInstitutionCode,
+                    SourceBvn = Request.originatorBankVerificationNumber,
+                    SourceKycLevel = Request.originatorKYCLevel.ToString(),
+                    TransactionId = Request.transactionId,
+                    NameEnquiryRef = Request.nameEnquiryRef,
+                });
+
+                Db.SaveChanges();
+
+                Log.Write("DataExpress.SubmitTransaction", $"Transaction saved Ok: Session:{Request.transactionId}");
+                return new ResponseHeader
+                {
+                    ResponseCode = "00",
+                    ResponseMessage = "Saved well"
+                };
+
+            }
+            catch (Exception Ex)
+            {
+                if (Ex.InnerException.Message.Contains("IX_TransactionTb_TransactionId"))
+                {
+                    Log.Write("DataExpress.SubmitTransaction", $"TranId mismatch: TranId:{Request.transactionId}");
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "94",
+                    };
+                }
+                else if (Ex.InnerException.Message.Contains("IX_TransactionTb_SessionId"))
+                {
+                    Log.Write("DataExpress.SubmitTransaction", $"TranId mismatch");
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "94",
+                    };
+                }
+                Log.Write("DataExpress.SubmitTransaction", $"Err {Ex.InnerException?.Message} Session:{Request.transactionId}");
+                Log.Write("DataExpress.SubmitTransaction", $"Failed to save Transaction: Session:{Request.transactionId}");
+                Log.Write("DataExpress.SubmitTransaction", $"Err {Ex.Message} Session:{Request.transactionId}");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Failed saving transation"
+                };
+            }
+        }
+        private ResponseHeader UpdateTransaction(string TranId, string SessionId, string ResponseCode)
+        {
+            try
+            {
+                var Db = new MomoSwitchDbContext();
+                var Tran = Db.TransactionTb.SingleOrDefault(x => x.TransactionId == TranId);
+                if (Tran != null)
+                {
+                    Tran.SessionId = SessionId;
+                    Tran.PaymentDate = DateTime.Now;
+                    Tran.ResponseCode = ResponseCode == "00" ? "16" : ResponseCode;
+                    Tran.ResponseMessage = "";
+                    Db.SaveChanges();
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "00",
+                        ResponseMessage = "Saved well"
+                    };
+                }
+                else
+                {
+                    Log.Write("DataExpress.UpdateTransaction", $"Critical Issue. Transaction not found Session:{SessionId}");
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Transaction not found"
+                    };
+                }
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("DataExpress.UpdateTransaction", $"Failed to update Transaction: Session:{SessionId}");
+                Log.Write("DataExpress.UpdateTransaction", $"Err {Ex.Message} Session:{SessionId}");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Failed saving transation"
+                };
+            }
+        }
+        private async Task<TranQueryResponse> TranQuery(TranQueryRequest Req, string Processor)
+        {
+            TranQueryResponse Resp;
+            try
+            {
+                string JsonStr = JsonSerializer.Serialize(Req);
+                Log.Write("Outward.TranQuery", $"Request: {JsonStr}");
+
+
+                var RouterDetail = SwitchRouter.Route(new Models.RouterRequest
+                {
+                    Processor = Processor// Pass processor
+                });
+                var ProcessorRequest = Transposer.ToProxyTranQueryyRequest(Req);
+
+
+                var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
+                {
+                    EndPoint = RouterDetail.TranQueryUrl,
+                    Method = Models.Internals.HttpService.Method.Post,
+                    RequestObject = ProcessorRequest
+                });
+
+                if (ProcessorResp.ResponseHeader.ResponseCode == Models.Internals.HttpService.HttpServiceStatus.Success)
+                {
+                    TranQueryPxResponse ProcessorRespObj = JsonSerializer.Deserialize<TranQueryPxResponse>(ProcessorResp.Object.ToString(), Options);
+
+                    Resp = Transposer.ToMomoTranQueryResponse(ProcessorRespObj);
+
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.TranQuery", $"Response: {JsonStr}");
+                }
+                else
+                {
+                    Resp = new TranQueryResponse
+                    {
+                        responseCode = "01",
+                        responseMessage = "System challenge",
+                        message = "System challenge",
+                        transactionId = Req.transactionId,
+                    };
+                    JsonStr = JsonSerializer.Serialize(Resp);
+                    Log.Write("Outward.TranQuery", $"Response: {JsonStr}");
+
+                }
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Outward.TranQuery", $"Err: {Ex.Message}");
+                return new TranQueryResponse
+                {
+                    responseCode = "09",
+                    responseMessage = "System challenge",
+                    message = "System challenge",
+                    transactionId = Req.transactionId,
+                };
+            }
+        }
+        #endregion
+    }
+}
