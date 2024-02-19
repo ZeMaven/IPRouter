@@ -18,11 +18,11 @@ spec:
         image: dockub.coralpay.com/cipproxy:#{image-tag}#
         resources:
           limits:
-            memory: "228Mi"
-            cpu: "200m"
+            memory: "1Gi"
+            cpu: "1"
           requests:
             memory: "200M"
-            cpu: "100m"  
+            cpu: "100m"    
         ports:
         - containerPort: 80
           protocol: TCP
