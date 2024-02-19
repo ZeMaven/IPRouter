@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cipproxy-api-deployment
+  namespace: app-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cipproxy-api
+  template:
+    metadata:
+      labels:
+        app: cipproxy-api
+    spec:
+      containers:
+      - name: cipproxy-api
+        image: dockub.coralpay.com/cipproxy:#{image-tag}#
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: cipproxy
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cipproxy-api-service
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: cipproxy-api
+  ports:
+  - port: 9091
+    targetPort: 80

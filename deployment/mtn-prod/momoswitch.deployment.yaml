@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: momoswitch-api-deployment
+  namespace: app-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: momoswitch-api
+  template:
+    metadata:
+      labels:
+        app: momoswitch-api
+    spec:
+      containers:
+      - name: momoswitch-api
+        image: dockub.coralpay.com/momoswitch:#{image-tag}#
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: momoswitch
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: momoswitch-api-service
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: momoswitch-api
+  ports:
+  - port: 9092
+    targetPort: 80

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nipoutward-api-deployment
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nipoutward-api
+  template:
+    metadata:
+      labels:
+        app: nipoutward-api
+    spec:
+      containers:
+      - name: nipoutward-api
+        image: dockub.coralpay.com/nipoutward:#{image-tag}#
+        resources:
+          limits:
+            memory: "228Mi"
+            cpu: "200m"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: nipoutward
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nipoutward-api-service
+  namespace: dev
+spec:
+  type: ClusterIP
+  selector:
+    app: nipoutward-api
+  ports:
+  - port: 9093
+    targetPort: 80
