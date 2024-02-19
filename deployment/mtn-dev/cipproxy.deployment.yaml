@@ -26,11 +26,19 @@ spec:
         ports:
         - containerPort: 80
           protocol: TCP
+        volumeMounts:
+            - name: keys
+              mountPath: /app/keys
         envFrom:
-        - secretRef:
+        - configMapRef:
             name: cipproxy
       imagePullSecrets:
         - name: docker-cred
+      volumes:
+        - name: keys
+          secret:
+            secretName: cipproxy
+
 ---
 
 apiVersion: v1

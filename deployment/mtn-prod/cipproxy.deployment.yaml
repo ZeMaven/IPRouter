@@ -18,19 +18,27 @@ spec:
         image: dockub.coralpay.com/cipproxy:#{image-tag}#
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "1"
+            memory: "228Mi"
+            cpu: "200m"
           requests:
             memory: "200M"
             cpu: "100m"  
         ports:
         - containerPort: 80
           protocol: TCP
+        volumeMounts:
+            - name: keys
+              mountPath: /app/keys
         envFrom:
-        - secretRef:
+        - configMapRef:
             name: cipproxy
       imagePullSecrets:
         - name: docker-cred
+      volumes:
+        - name: keys
+          secret:
+            secretName: cipproxy
+
 ---
 
 apiVersion: v1
