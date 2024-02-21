@@ -1,24 +1,23 @@
-# Stage 1: Build the application
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS build
-WORKDIR /src
+# Use an official Microsoft Windows Server Core image.
+# https://hub.docker.com/_/microsoft-windowsservercore
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-# Copy solution and project files and restore NuGet packages
-COPY *.sln .
-COPY NipInwardProxy/*.csproj NipInwardProxy/
-COPY NipInwardProxy/packages.config NipInwardProxy/
-RUN nuget restore NipInwardProxy/packages.config -SolutionDirectory ../
+# Set the working directory in the container to /app.
+WORKDIR /app
 
-# Copy the rest of the source code and build the project
-COPY NipInwardProxy/ NipInwardProxy/
-WORKDIR /src/NipInwardProxy
-RUN msbuild /p:Configuration=Release /p:OutputPath=/app/out
+# Copy the current directory contents into the container at /app.
+COPY . .
 
-# Stage 2: Runtime image
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8 AS runtime
-WORKDIR /inetpub/wwwroot
+# Install the .NET Framework 4.8 runtime.
+RUN Invoke-WebRequest -Uri 'https://download.visualstudio.microsoft.com/download/pr/3a6f62ee-987b-40b6-a5f4-869e56d5a697/9d98e0d2f0b0e306f678b2d08f8echki/dotnetfx_48_full_x86_x64.exe' -OutFile 'dotnetfx_48_full_x86_x64.exe' && \
+    Start-Process -FilePath 'dotnetfx_48_full_x86_x64.exe' -Wait -NoNewWindow
 
-# Clean default web app
-RUN powershell -Command "Remove-Item -Recurse C:\inetpub\wwwroot\*"
+# Install NuGet packages.
+RUN Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+RUN nuget restore
 
-# Copy the build output
-COPY --from=build /app/out .
+# Compile the project.
+RUN msbuild /t:Build /p:Configuration=Release
+
+# Set the entry point for the container.
+ENTRYPOINT ["cmd.exe", "/k", "cscript.exe //T:30 //NoLogo NipInward.svc /r:bin/Release"]
