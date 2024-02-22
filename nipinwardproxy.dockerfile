@@ -22,6 +22,7 @@ COPY --from=builder /inetpub/wwwroot .
 
 # Inform Docker that the container listens on the specified port at runtime.
 EXPOSE 80
+EXPOSE 443
 
 # The ENTRYPOINT or CMD to run your application can be customized as needed.
 # For IIS-based applications, there is no need to define an ENTRYPOINT or CMD
