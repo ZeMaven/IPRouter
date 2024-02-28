@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NipInwardProxy
 {
@@ -19,7 +20,51 @@ namespace NipInwardProxy
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
+        [OperationContract]
+        Task<string> nameenquirysingleitem(string request);
+        [OperationContract]
+        Task<string> fundtransfersingleitem_dd(string request);
+        [OperationContract]
+
+        Task<string> fundtransfersingleitem_dc(string request);
+        [OperationContract]
+        Task<string> txnstatusquerysingleitem(string request);
+        [OperationContract]
+        Task<string> balanceenquiry(string request);
+        [OperationContract]
+        Task<string> fundtransferAdvice_dc(string request);
+        [OperationContract]
+
+        Task<string> fundtransferAdvice_dd(string request);
+        [OperationContract]
+
+        Task<string> amountblock(string request);
+        [OperationContract]
+        Task<string> amountUnblock(string request);
+        [OperationContract]
+
+
+        Task<string> accountblock(string request);
+        [OperationContract]
+
+
+        Task<string> accountUnblock(string request);
+        [OperationContract]
+
+
+
+        Task<string> financialinstitutionlist(string request);
+        [OperationContract]
+        Task<string> mandateadvice(string request);
+        [OperationContract]
+
+        Task<string> ftackcreditrequest(string request);
+
         // TODO: Add your service operations here
+
+
+
+
     }
 
 
