@@ -37,9 +37,9 @@ namespace NipInwardProxy
 
 
         public async Task<string> nameenquirysingleitem(string request)
-        {           
-            return await new NameEnquiry().InvokeAsync(request);         
-        }      
+        {
+            return await new NameEnquiry().InvokeAsync(request);
+        }
         public async Task<string> fundtransfersingleitem_dd(string request)
         {
             return await new DirectDebit().InvokeAsync(request);
