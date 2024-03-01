@@ -15,7 +15,7 @@ namespace NipOutwardProxy.Actions
         private readonly ILog Log;
         private readonly IConfiguration Config;
 
-        public HttpService(IConfiguration config, ILog log, IUtilities utilities)
+        public HttpService(IConfiguration config, ILog log, ICommonUtilities utilities)
         {
             Log = log;
             Config = config;

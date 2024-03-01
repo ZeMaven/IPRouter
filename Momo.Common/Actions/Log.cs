@@ -35,6 +35,7 @@ namespace Momo.Common.Actions
                     var Writer = new StreamWriter($"{LogPath}/{DateTime.Today.ToString("dd-MMM-yyyy")}.Txt ", true);
                     Writer.Write($"~ {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss fff")} | Method: {Method} | Message: {Message}  {Environment.NewLine}");
                     Writer.Close();
+                    logger.LogInformation($"~ {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss fff")} | Method: {Method} | Message: {Message}");
                 }
             }
             catch

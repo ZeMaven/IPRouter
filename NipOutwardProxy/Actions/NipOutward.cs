@@ -15,11 +15,11 @@ namespace NipOutwardProxy.Actions
 
         private readonly IConfiguration Config;
         private readonly ILog Log;
-        private readonly IUtilities Utilities;
+        private readonly ICommonUtilities Utilities;
         private readonly IHttpService HttpService;
         private readonly IPgp Pgp;
 
-        public NipOutward(IConfiguration config, ILog log, IUtilities utilities, IHttpService httpService, IPgp pgp)
+        public NipOutward(IConfiguration config, ILog log, ICommonUtilities utilities, IHttpService httpService, IPgp pgp)
         {
             Log = log;
             Config = config;
