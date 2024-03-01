@@ -17,7 +17,7 @@ namespace CipProxy
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<ILog, Log>();
-            builder.Services.AddTransient<IUtilities, Utilities>();
+            builder.Services.AddTransient<ICommonUtilities, CommonUtilities>();
             builder.Services.AddTransient<ICipOutward, CipOutward>();
             builder.Services.AddTransient<ICipInward, CipInward>();            
             builder.Services.AddTransient<IHttpService, HttpService>();

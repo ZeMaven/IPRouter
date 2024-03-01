@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Momo.Common.Actions
 {
-    public interface IUtilities
+    public interface ICommonUtilities
     {
         string CreateTransactionId();
     }
 
-    public class Utilities : IUtilities
+    public class CommonUtilities : ICommonUtilities
     {
         /// <summary>
         /// Returns 20 characters
