@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Momo.Common.Models;
 using MomoSwitch.Actions;
@@ -9,6 +10,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionQueryController : ControllerBase
     {
         private readonly IOutward Processor;

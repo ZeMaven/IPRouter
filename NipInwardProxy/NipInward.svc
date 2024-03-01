@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="NipInwardProxy.Service1" CodeBehind="NipInward.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="NipInwardProxy.NipInward" CodeBehind="NipInward.svc.cs" %>
