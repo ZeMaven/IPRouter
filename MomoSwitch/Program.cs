@@ -1,7 +1,10 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MomoSwitch.Actions;
 using MomoSwitch.Models.DataBase;
+using System.Text;
 
 namespace MomoSwitch
 {
@@ -25,7 +28,29 @@ namespace MomoSwitch
             builder.Services.AddTransient<IOutward, Outward>();
             builder.Services.AddTransient<IHttpService, HttpService>();
             builder.Services.AddTransient<ILog, Log>();
-            
+
+
+
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
+                    };
+
+                });
+
+
             var app = builder.Build();
             using (var client = new MomoSwitchDbContext())
             {

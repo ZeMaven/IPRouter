@@ -1,8 +1,13 @@
-﻿using Momo.Common.Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Momo.Common.Models;
 using MomoSwitch.Models;
+using MomoSwitch.Models.Contracts;
 using MomoSwitch.Models.Contracts.Momo;
 using MomoSwitch.Models.Contracts.Specials.Router;
 using MomoSwitch.Models.DataBase;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -14,7 +19,7 @@ namespace MomoSwitch.Actions
 
         Task<TranQueryResponse> GetTransaction(string SessionId);
         Task<FundTransferResponse> Transfer(FundTransferRequest Req);
-
+        AuthResponse Reset(AuthRequest Req);
     }
 
     public class Outward : IOutward
@@ -23,12 +28,14 @@ namespace MomoSwitch.Actions
         private readonly ITransposer Transposer;
         private readonly IHttpService HttpService;
         private readonly ILog Log;
-        public Outward(ISwitchRouter router, ILog log, ITransposer transposer, IHttpService httpService)
+        private readonly IConfiguration Config;
+        public Outward(ISwitchRouter router, ILog log, ITransposer transposer, IHttpService httpService, IConfiguration config)
         {
             SwitchRouter = router;
             Transposer = transposer;
             Log = log;
             HttpService = httpService;
+            Config = config;
         }
         JsonSerializerOptions Options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
@@ -279,6 +286,84 @@ namespace MomoSwitch.Actions
             }
         }
 
+
+
+
+
+        public AuthResponse Reset(AuthRequest Req)
+        {
+            try
+            {
+                Log.Write($"AuthController", $"Request: {JsonSerializer.Serialize(Req)}");
+
+
+                var client_id = Config["client_id"];
+                var scope = Config["scope"];
+                var client_secret = Config["client_secret"];
+                var grant_type = Config["grant_type"];
+
+
+
+                if (client_id != Req.client_id)
+                {
+                    Log.Write($"AuthController", $"Error: INVALID CLIENTID");
+                    return new AuthResponse { access_token = "", status = "INVALID CLIENTID" };
+                }
+                else if (scope != Req.scope)
+                {
+                    Log.Write($"AuthController", $"Error: INVALID SCOPE");
+                    return new AuthResponse { access_token = "", status = "INVALID SCOPE" };
+                }
+                else if (grant_type != Req.grant_type)
+                {
+                    Log.Write($"AuthController", $"Error: INVALID GRANT TYPE");
+                    return new AuthResponse { access_token = "", status = "INVALID GRANT TYPE" };
+
+                }
+                else if (client_secret != Req.client_secret)
+                {
+                    Log.Write($"AuthController", $"Error: INVALID CLIENT SECRET");
+                    return new AuthResponse { access_token = "", status = "INVALID CLIENT SECRET" };
+                }
+
+
+
+                //   string key = "1824a0f8-0b89-4a02-a397-db0123000d26";
+                string key = Config["Jwt:Key"];
+                var issuer = Config["Jwt:Issuer"];
+                var audience = Config["Jwt:Audience"];
+
+                var ClientKey = Guid.NewGuid().ToString();
+
+
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
+
+
+                var Claims = new List<Claim>();
+                Claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+                Claims.Add(new Claim("ClientId", client_id));
+                //  Claims.Add(new Claim("Username", ClientDetails.Username));
+                //Claims.Add(new Claim("Password", "9@ssm02dS"));
+
+                //Create Security Token object by giving required parameters    
+                var token = new JwtSecurityToken(
+                                audience: audience,
+                                issuer: issuer,
+                                claims: Claims,
+                                expires: DateTime.Now.AddDays(365),
+                                signingCredentials: credentials);
+                var jwt_token = new JwtSecurityTokenHandler().WriteToken(token);
+                Log.Write($"AuthController", $"Auth: OK");
+                return new AuthResponse { access_token = jwt_token, token_type = "Bearer", status = "SUCCESS", expires_in=10292929, ext_expires_in=993939339 };
+
+            }
+            catch (Exception Ex)
+            {
+                Log.Write($"AuthController", $"Error: {Ex.Message}");
+                return new AuthResponse { access_token = "", status = "FAILED" };
+            }
+        }
 
 
 
