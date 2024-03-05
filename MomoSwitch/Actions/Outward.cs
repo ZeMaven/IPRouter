@@ -127,10 +127,10 @@ namespace MomoSwitch.Actions
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                         beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
-                        debitAccountName = Req.originatorAccountName,
-                        debitAccountNumber = Req.originatorAccountNumber,
-                        debitBankVerificationNumber = Req.originatorBankVerificationNumber,
-                        debitKYCLevel = Req.originatorKYCLevel,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        originatorKYCLevel = Req.originatorKYCLevel,
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
                         nameEnquiryRef = Req.nameEnquiryRef,
@@ -151,6 +151,10 @@ namespace MomoSwitch.Actions
                 {
 
                     Resp = Transposer.ToMomoFundTransferResponse(ProcessorRespObj);
+                    Resp.paymentReference = Resp.transactionId;
+                    Resp.channelCode= Req.channelCode;
+                    Resp.transactionLocation= Req.transactionLocation;
+                    Resp.beneficiaryKYCLevel= Req.beneficiaryKYCLevel;
 
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
                     JsonStr = JsonSerializer.Serialize(Resp);
@@ -167,10 +171,10 @@ namespace MomoSwitch.Actions
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                         beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
-                        debitAccountName = Req.originatorAccountName,
-                        debitAccountNumber = Req.originatorAccountNumber,
-                        debitBankVerificationNumber = Req.originatorBankVerificationNumber,
-                        debitKYCLevel = Req.originatorKYCLevel,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        originatorKYCLevel = Req.originatorKYCLevel,
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
                         nameEnquiryRef = Req.nameEnquiryRef,
@@ -198,10 +202,10 @@ namespace MomoSwitch.Actions
                     beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                     beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                     channelCode = Req.channelCode,
-                    debitAccountName = Req.originatorAccountName,
-                    debitAccountNumber = Req.originatorAccountNumber,
-                    debitBankVerificationNumber = Req.originatorBankVerificationNumber,
-                    debitKYCLevel = Req.originatorKYCLevel,
+                    originatorAccountName = Req.originatorAccountName,
+                    originatorAccountNumber = Req.originatorAccountNumber,
+                    originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                    originatorKYCLevel = Req.originatorKYCLevel,
                     destinationInstitutionCode = Req.destinationInstitutionCode,
                     mandateReferenceNumber = Req.mandateReferenceNumber,
                     nameEnquiryRef = Req.nameEnquiryRef,

@@ -14,5 +14,6 @@
         public string SourceAccountName { get; set; }
         public string SourceAccountNumber { get; set; }
         public string NameEnquiryRef { get; set; }
+        public int ChannelCode { get; set; }
     }
 }

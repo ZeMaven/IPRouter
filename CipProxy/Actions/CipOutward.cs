@@ -260,17 +260,18 @@ namespace CipProxy.Actions
                     ResponseMessage = CipRespObj.responseMessage,
                     SourceBankCode = SourceBank,
                     BenefBvn = string.Empty,
-                    BenefKycLevel = string.Empty,
+                    BenefKycLevel =Request.BenefKycLevel,
                     BenefAccountName = CipRespObj.creditAccountName,
                     Amount = CipRespObj.amount,
                     BenefAccountNumber = Request.BenefAccountNumber,
-                    ChannelCode = 1,
+                    ChannelCode = Request.ChannelCode,
                     BenfBankCode = CipRespObj.destinationInstitutionId,
                     NameEnquiryRef = Request.NameEnquiryRef,
                     Narration = CipRespObj.narration,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
-
+                     
+                     
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
