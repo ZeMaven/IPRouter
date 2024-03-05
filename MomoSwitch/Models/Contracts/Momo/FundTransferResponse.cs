@@ -8,10 +8,10 @@
         public int channelCode { get; set; }
         public string nameEnquiryRef { get; set; }
         public string destinationInstitutionCode { get; set; }
-        public string debitAccountName { get; set; }
-        public string debitAccountNumber { get; set; }
-        public string debitBankVerificationNumber { get; set; }
-        public int debitKYCLevel { get; set; }
+        public string originatorAccountName { get; set; }
+        public string originatorAccountNumber { get; set; }
+        public string originatorBankVerificationNumber { get; set; }
+        public int originatorKYCLevel { get; set; }
         public string beneficiaryAccountName { get; set; }
         public string beneficiaryAccountNumber { get; set; }
         public string beneficiaryBankVerificationNumber { get; set; }

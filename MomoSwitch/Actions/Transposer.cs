@@ -27,7 +27,7 @@ namespace MomoSwitch.Actions
             accountName = proxyName.AccountName,
             accountNumber = proxyName.AccountNumber,
             bankVerificationNumber = proxyName.Bvn,
-            channelCode = 0,
+            channelCode = proxyName.ChannelCode,
             kycLevel = proxyName.KycLevel,
             responseCode = proxyName.ResponseCode,
             transactionId = proxyName.TransactionId,
@@ -47,15 +47,15 @@ namespace MomoSwitch.Actions
             beneficiaryBankVerificationNumber = proxyName.BenefBvn,
             beneficiaryKYCLevel = proxyName.BenefKycLevel,
             channelCode = proxyName.ChannelCode,
-            debitAccountName = proxyName.SourceAccountName,
-            debitAccountNumber = proxyName.SourceAccountNumber,
+            originatorAccountName = proxyName.SourceAccountName,
+            originatorAccountNumber = proxyName.SourceAccountNumber,
             destinationInstitutionCode = proxyName.BenfBankCode,
             responseCode = proxyName.ResponseCode,
 
             paymentReference = null,
             mandateReferenceNumber = null,
-            debitBankVerificationNumber = null,
-            debitKYCLevel = 0,
+            originatorBankVerificationNumber = null,
+            originatorKYCLevel = 0,
             transactionFee = 0,
             transactionLocation = 0,
         };
@@ -80,6 +80,7 @@ namespace MomoSwitch.Actions
             AccountId = Request.accountNumber,
             DestinationBankCode = Request.destinationInstitutionCode,
             TransactionId = Request.transactionId,
+            ChannelCode = Request.channelCode,
         };
 
 

@@ -6,5 +6,6 @@
         public string DestinationBankCode { get; set; }
         public string SourceBankCode { get; set; }//Optional
         public string AccountId { get; set; }
+        public int ChannelCode { get; set; }
     }
 }
