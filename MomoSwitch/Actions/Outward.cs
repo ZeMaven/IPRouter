@@ -155,6 +155,9 @@ namespace MomoSwitch.Actions
                     Resp.channelCode= Req.channelCode;
                     Resp.transactionLocation= Req.transactionLocation;
                     Resp.beneficiaryKYCLevel= Req.beneficiaryKYCLevel;
+                    Resp.originatorBankVerificationNumber= Req.originatorBankVerificationNumber;
+                    Resp.originatorKYCLevel = Req.originatorKYCLevel;
+                    Resp.mandateReferenceNumber= Req.mandateReferenceNumber;
 
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
                     JsonStr = JsonSerializer.Serialize(Resp);
@@ -175,6 +178,7 @@ namespace MomoSwitch.Actions
                         originatorAccountNumber = Req.originatorAccountNumber,
                         originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                         originatorKYCLevel = Req.originatorKYCLevel,
+                         
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
                         nameEnquiryRef = Req.nameEnquiryRef,
