@@ -1,4 +1,6 @@
-﻿namespace MomoSwitch.Models.Contracts.Momo
+﻿using System.Text.Json.Serialization;
+
+namespace MomoSwitch.Models.Contracts.Momo
 {
     public class NameEnquiryResponse
     {
@@ -9,6 +11,7 @@
         public string destinationInstitutionCode { get; set; }
         public string kycLevel { get; set; }
         public string responseCode { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string responseMessage { get; set; }// not in Nibss
         public string sessionID { get; set; }
         public string transactionId { get; set; }

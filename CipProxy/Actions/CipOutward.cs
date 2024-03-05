@@ -68,6 +68,7 @@ namespace CipProxy.Actions
                 {
                     return new NameEnquiryPxResponse
                     {
+                        ChannelCode = Request.ChannelCode,
                         SessionId = SessionId,
                         TransactionId = Request.TransactionId,
                         SourceBankCode = SourceBank,
@@ -93,6 +94,7 @@ namespace CipProxy.Actions
                     SourceBankCode = SourceBank,
                     ProxySessionId = SessionId,
                     ResponseMessage = CipRespObj.responseMessage,
+                    ChannelCode = Request.ChannelCode
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -104,6 +106,7 @@ namespace CipProxy.Actions
                 Log.Write("Cip.NameEnquiry", $"Err: {Ex.Message}");
                 return new NameEnquiryPxResponse
                 {
+                    ChannelCode = Request.ChannelCode,
                     SessionId = SessionId,
                     TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
@@ -149,7 +152,7 @@ namespace CipProxy.Actions
                         TransactionId = Request.TransactionId,
                         SourceBankCode = SourceBank,
                         ResponseCode = "09",
-                       
+
                     };
                 }
 
@@ -172,7 +175,7 @@ namespace CipProxy.Actions
                     BenfBankCode = CipRespObj.destinationInstitutionId,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = CipRespObj.sourceAccountId,
-                   
+
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -267,7 +270,7 @@ namespace CipProxy.Actions
                     Narration = CipRespObj.narration,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
-                 
+
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

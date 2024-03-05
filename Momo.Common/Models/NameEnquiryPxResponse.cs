@@ -13,5 +13,6 @@
         public string ResponseCode { get; set; }
         public string ResponseMessage { get; set; }
         public string Bvn { get; set; }
+        public int ChannelCode { get; set; }
     }
 }

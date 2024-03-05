@@ -70,6 +70,7 @@ namespace MomoSwitch.Actions
 
                     Resp = Transposer.ToMomoNameEnquiryResponse(ProcessorRespObj);
 
+                    Resp.responseCode = Resp.responseCode != "00" ? Resp.responseCode = "A6" : Resp.responseCode = "00";
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.NameEnqury", $"Response: {JsonStr}");
                 }
@@ -77,7 +78,7 @@ namespace MomoSwitch.Actions
                 {
                     Resp = new NameEnquiryResponse
                     {
-                        responseCode = "01",
+                        responseCode = "A6",
                         responseMessage = "System challenge",
                         accountNumber = Req.accountNumber,
                         transactionId = Req.transactionId,
@@ -93,7 +94,7 @@ namespace MomoSwitch.Actions
                 Log.Write("Outward.NameEnqury", $"Err: {Ex.Message}");
                 return new NameEnquiryResponse
                 {
-                    responseCode = "01",
+                    responseCode = "A6",
                     responseMessage = "System challenge",
                     accountNumber = Req.accountNumber,
                     transactionId = Req.transactionId,
@@ -356,7 +357,7 @@ namespace MomoSwitch.Actions
                                 signingCredentials: credentials);
                 var jwt_token = new JwtSecurityTokenHandler().WriteToken(token);
                 Log.Write($"AuthController", $"Auth: OK");
-                return new AuthResponse { access_token = jwt_token, token_type = "Bearer", status = "SUCCESS", expires_in=10292929, ext_expires_in=993939339 };
+                return new AuthResponse { access_token = jwt_token, token_type = "Bearer", status = "SUCCESS", expires_in = 10292929, ext_expires_in = 993939339 };
 
             }
             catch (Exception Ex)
