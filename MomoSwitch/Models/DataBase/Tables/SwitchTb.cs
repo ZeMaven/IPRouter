@@ -1,11 +1,17 @@
-﻿namespace MomoSwitch.Models.DataBase.Tables
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MomoSwitch.Models.DataBase.Tables
 {
     public class SwitchTb
     {
         public int Id { get; set; }
-        public string Processor { get; set; } 
+        [StringLength(50)]
+        public string Processor { get; set; }
+        [StringLength(50)]
         public string NameEnquiryUrl { get; set; }
+        [StringLength(50)]
         public string TransferUrl { get; set; }
+        [StringLength(50)]
         public string TranQueryUrl { get; set; }      
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
