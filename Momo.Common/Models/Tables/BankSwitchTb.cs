@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
-    public class TimeRuleTb
+    public class BankSwitchTb
     {
+
         public int Id { get; set; }
         [StringLength(50)]
-        public string TimeA { get; set; }//02:30
-        [StringLength(50)]
-        public string TimeZ { get; set; }//17:00
+        public string BankCode { get; set; }
         [StringLength(50)]
         public string Processor { get; set; }
+
     }
 }

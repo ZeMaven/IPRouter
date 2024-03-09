@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
     public class PriorityTb
     {

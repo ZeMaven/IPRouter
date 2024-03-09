@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
-    public class BankSwitchTb
+    public class AmountRuleTb
     {
-
         public int Id { get; set; }
-        [StringLength(50)]
-        public string BankCode { get; set; }
+        public decimal AmountA { get; set; }
+        public decimal AmountZ { get; set; }
         [StringLength(50)]
         public string Processor { get; set; }
-
     }
 }

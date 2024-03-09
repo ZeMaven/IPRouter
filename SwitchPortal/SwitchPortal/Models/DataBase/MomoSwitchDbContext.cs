@@ -3,9 +3,9 @@ using Momo.Common.Models.Tables;
 using System.Collections.Generic;
 using System.Transactions;
 
-namespace MomoSwitch.Models.DataBase
+namespace SwitchPortal.Models.DataBase
 {
-    public class MomoSwitchDbContext:DbContext
+    public class MomoSwitchDbContext : DbContext
     {
         public MomoSwitchDbContext()
         {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
     public class PortalUserTb
     {
@@ -14,10 +14,10 @@ namespace MomoSwitch.Models.DataBase.Tables
         public string Role { get; set; }
         [DefaultValue(false)]
         public bool IsActive { get; set; }
-        public DateTime EntryDate { get; set;}
+        public DateTime EntryDate { get; set; }
         public DateTime ModifyDate { get; set; }
         [StringLength(50)]
-        public string  UserKey { get; set; } //Use to renew password
+        public string UserKey { get; set; } //Use to renew password
 
 
     }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
     public class SwitchTb
     {
@@ -12,7 +12,7 @@ namespace MomoSwitch.Models.DataBase.Tables
         [StringLength(50)]
         public string TransferUrl { get; set; }
         [StringLength(50)]
-        public string TranQueryUrl { get; set; }      
+        public string TranQueryUrl { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
     }

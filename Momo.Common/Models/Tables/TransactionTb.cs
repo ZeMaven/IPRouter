@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
-namespace MomoSwitch.Models.DataBase.Tables
+namespace Momo.Common.Models.Tables
 {
 
     [Index(nameof(SessionId), IsUnique = true)]
@@ -50,7 +50,7 @@ namespace MomoSwitch.Models.DataBase.Tables
         public string ManadateRef { get; set; }
         [StringLength(50)]
         public string NameEnquiryRef { get; set; }
-    
+
         public decimal Amount { get; set; }
         public decimal Fee { get; set; }
         public string ResponseCode { get; set; }
