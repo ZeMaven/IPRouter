@@ -1,4 +1,4 @@
-﻿namespace SwitchPortal.Models.ViewModels.Amount
+﻿namespace SwitchPortal.Models.ViewModels.Rules.Amount
 {
     public class AmountResponse
     {

@@ -2,7 +2,7 @@
 using Momo.Common.Models.Tables;
 using SwitchPortal.Models;
 using SwitchPortal.Models.DataBase;
-using SwitchPortal.Models.ViewModels.Amount;
+using SwitchPortal.Models.ViewModels.Rules.Amount;
 using System.Text.Json;
 
 namespace SwitchPortal.Actions.Rules
