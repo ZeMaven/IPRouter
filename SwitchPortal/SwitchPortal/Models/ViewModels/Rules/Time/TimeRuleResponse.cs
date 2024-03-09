@@ -1,6 +1,4 @@
-﻿using SwitchPortal.Models.ViewModels.Rules;
-
-namespace SwitchPortal.Models.ViewModels
+﻿namespace SwitchPortal.Models.ViewModels.Rules.Time
 {
     public class TimeRuleResponse
     {
