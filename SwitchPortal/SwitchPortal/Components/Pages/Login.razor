@@ -1,0 +1,57 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using SwitchPortal.Models.Dtos
+@inject ProtectedLocalStorage ProtectedLocalStore
+@inject NavigationManager NavigationManager
+@inject  IUsers users
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@rendermode InteractiveServer
+@attribute [AllowAnonymous]
+<EditForm Model="request" OnValidSubmit="CompleteLogin" FormName="Login">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <CustomValidator @ref="customValidator"></CustomValidator>
+
+    <div>
+        <InputText @bind-Value="request.Username" id="username" placeholder="working?"/>
+        <ValidationMessage For="@( () => request.Username)"/>
+    </div>
+    
+    <div>
+        <InputText @bind-Value="request.Password" id="password" placeholder="working1?"/>
+        <ValidationMessage For="@( () => request.Password)"/>
+    </div>
+
+    <button type="submit" >Sign In</button>
+</EditForm>
+@code {
+    private LoginDto request = new();
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+    private CustomValidator customValidator;
+
+    private async Task CompleteLogin()
+    {
+        LoginDto dto = new()
+        {
+            Username = request.Username,
+            Password = request.Password
+        };
+
+        var errors = new Dictionary<string, List<string>>();
+
+        var result = await users.Login(dto);
+
+        if(result.ResponseHeader.ResponseCode != "00")
+        {
+            errors.Add("", new List<string> { result.ResponseHeader.ResponseMessage });
+            customValidator.DisplayErrors(errors);
+            return;
+        }
+
+        await ProtectedLocalStore.SetAsync("authToken", result.Token);
+
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated();
+        NavigationManager.NavigateTo(ReturnUrl);
+    }
+}

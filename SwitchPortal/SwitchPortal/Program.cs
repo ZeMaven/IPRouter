@@ -1,5 +1,16 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Momo.Common.Actions;
+using SwitchPortal.Actions;
 using SwitchPortal.Client.Pages;
 using SwitchPortal.Components;
+using SwitchPortal.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +18,43 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<IUsers, Users>();
+builder.Services.AddScoped<ILog, Log>();
+builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
+//jwt setup
+var jwtSettings = new JwtSettings();
+builder.Configuration.Bind(nameof(JwtSettings), jwtSettings);
+
+builder.Services.AddSingleton(jwtSettings);
+
+var tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+    ValidateLifetime = true,
+    RequireExpirationTime = false,
+    ValidateIssuer = false,
+    ValidateAudience = false
+};
+
+var tokenValidationParametersForUserAction = new TokenValidationParameters
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+    ValidateLifetime = false,
+    RequireExpirationTime = false,
+    ValidateIssuer = false,
+    ValidateAudience = false
+};
+
+builder.Services.AddSingleton(tokenValidationParametersForUserAction);
+//
+builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthentication(BearerTokenDefaults.AuthenticationScheme).AddBearerToken();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
 
 var app = builder.Build();
 
@@ -31,5 +79,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(SwitchPortal.Client._Imports).Assembly);
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

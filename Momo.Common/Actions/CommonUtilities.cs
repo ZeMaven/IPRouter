@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Momo.Common.Actions
     public interface ICommonUtilities
     {
         string CreateTransactionId();
+        string GetPasswordHash(string password);
     }
 
     public class CommonUtilities : ICommonUtilities
@@ -27,7 +29,21 @@ namespace Momo.Common.Actions
             return TranId;
         }
 
+        public string GetPasswordHash(string password)
+        {
+            var hashedValue = new StringBuilder();
+            using (var hash = SHA256.Create())
+            {
+                var encoding = Encoding.UTF8;
+                var result = hash.ComputeHash(encoding.GetBytes(password));
 
+                foreach (var b in result)
+                {
+                    hashedValue.Append(b.ToString("x2"));
+                }
+            }
+            return hashedValue.ToString();
+        }
 
     }
 }
