@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwitchPortal.Models.DataBase;
 
@@ -11,9 +12,11 @@ using SwitchPortal.Models.DataBase;
 namespace SwitchPortal.Migrations
 {
     [DbContext(typeof(MomoSwitchDbContext))]
-    partial class MomoSwitchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312025030_Migration2")]
+    partial class Migration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

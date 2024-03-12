@@ -22,6 +22,7 @@ builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<IUsers, Users>();
+builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<ILog, Log>();
 builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
 //jwt setup

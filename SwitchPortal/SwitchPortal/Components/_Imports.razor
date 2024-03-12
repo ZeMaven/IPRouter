@@ -1,7 +1,7 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Authentication.JwtBearer;
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Ordinary")]
 @using SwitchPortal.Actions
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization;

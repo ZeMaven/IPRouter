@@ -9,6 +9,10 @@ namespace Momo.Common.Models.Tables
         public int Id { get; set; }
         [StringLength(50)]
         public string Username { get; set; }
+        [StringLength(50)]
+        public string FirstName { get; set; }
+        [StringLength(50)]
+        public string LastName { get; set; }
         [StringLength(100)]
         public string Password { get; set; }
         [StringLength(50)]

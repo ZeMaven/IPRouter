@@ -30,6 +30,22 @@
     private string? ReturnUrl { get; set; }
     private CustomValidator customValidator;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            {               
+                NavigationManager.NavigateTo("/");
+            }
+        }
+    }
     private async Task CompleteLogin()
     {
         LoginDto dto = new()

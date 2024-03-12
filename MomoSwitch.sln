@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipInwardProxy", "NipInward
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NipOutwardProxy", "NipOutwardProxy\NipOutwardProxy.csproj", "{8920EFF0-F093-411F-94B1-2306FD719C22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchPortal", "SwitchPortal\SwitchPortal\SwitchPortal.csproj", "{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal", "SwitchPortal\SwitchPortal\SwitchPortal.csproj", "{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchPortal.Client", "SwitchPortal\SwitchPortal.Client\SwitchPortal.Client.csproj", "{587F3300-2614-4CE7-9E2D-E07CCDC339D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal.Client", "SwitchPortal\SwitchPortal.Client\SwitchPortal.Client.csproj", "{587F3300-2614-4CE7-9E2D-E07CCDC339D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
