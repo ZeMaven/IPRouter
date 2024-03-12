@@ -22,6 +22,7 @@ public interface IUsers
     Task<ResponseHeader> UserIsActive(string username);
     Task<ResponseHeader> ValidateUserKey(string username, string userKey);
     Task<ResponseHeader> ForgotPassword(ForgotPasswordDto dto);
+    Task<ResponseHeader> ChangePassword(ChangePasswordRequest request);
 }
 public class Users : IUsers
 {
@@ -392,7 +393,7 @@ public class Users : IUsers
 
             if (passwordHash == userInDatabase.Password)
             {
-                Log.Write("Users:ForgotPassword", $"eRR: User with username: {userInDatabase.Username} and the entered password  doesn't match");                
+                Log.Write("Users:ForgotPassword", $"eRR: Password the same as existing one");                
                 return new ResponseHeader
                 {
                     ResponseCode = "01",
@@ -413,6 +414,81 @@ public class Users : IUsers
         catch (Exception ex)
         {
             Log.Write("Users:ForgotPassword", $"eRR: {ex.Message}");
+            return new ResponseHeader
+            {
+                ResponseCode = "01",
+                ResponseMessage = "Something went wrong"
+            };
+        }
+    }
+
+    public async Task<ResponseHeader> ChangePassword(ChangePasswordRequest request)
+    {
+        try
+        {
+            var db = new MomoSwitchDbContext();
+            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.Username.ToLower());
+
+            if (userInDatabase == null)
+            {
+                Log.Write("Users:ChangePassword", $"eRR: User with username: {request.Username} doesn't exist");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Something went wrong. Please try again"
+                };
+
+            }
+
+            if (!userInDatabase.IsActive)
+            {
+                //should they be logged out?
+                Log.Write("Users:ChangePassword", $"eRR: User with username: {userInDatabase.Username} is deactivated");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Your account has been deactivated. Please contact the administrator for further assistance."
+                };
+
+            }
+
+            var oldPasswordHash = CommonUtilities.GetPasswordHash(request.OldPassword);
+
+            if(oldPasswordHash != userInDatabase.Password)
+            {
+                Log.Write("Users:ChangePassword", $"eRR: Incorrect old password");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Old Password is incorrect"
+                };
+            }
+
+            var newPasswordHash = CommonUtilities.GetPasswordHash(request.NewPassword);
+
+            if(newPasswordHash == oldPasswordHash)
+            {
+                Log.Write("Users:ForgotPassword", $"eRR: New password cannot be the same as old password");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Old Password is incorrect"
+                };
+            }
+
+            userInDatabase.Password = newPasswordHash;
+            await db.SaveChangesAsync();
+
+            return new ResponseHeader
+            {
+                ResponseCode = "00",
+                ResponseMessage = "Your password changed successfully"
+            };
+        }
+        catch (Exception ex)
+        {
+
+            Log.Write("Users:ChangePassword", $"eRR: {ex.Message}");
             return new ResponseHeader
             {
                 ResponseCode = "01",
