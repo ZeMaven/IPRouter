@@ -21,7 +21,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<IUsers, Users>();
+builder.Services.AddScoped<IAccount, Account>();
 builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<ILog, Log>();
 builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();

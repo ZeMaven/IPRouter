@@ -1,14 +1,14 @@
 ﻿using SwitchPortal.Actions;
 using System.Security.Claims;
 
-namespace SwitchPortal.Models.Dtos
+namespace SwitchPortal.Models
 {
-    public class UserDto
+    public class User
     {
         public string Username { get; set; }
         public bool IsActive { get; set; }
 
-        public static UserDto FromClaimsPrincipal(ClaimsPrincipal principal) => new()
+        public static User FromClaimsPrincipal(ClaimsPrincipal principal) => new()
         {
             Username = principal.FindFirstValue("username")
         };

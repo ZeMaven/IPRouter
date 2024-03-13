@@ -1,0 +1,89 @@
+﻿@page "/CreateUser"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStore
+@inject NavigationManager NavigationManager
+@inject IAccount accountManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <EditForm Context="UserForm" Model="request" OnValidSubmit="CompleteCreateUser" FormName="CreateUser">
+            <div style="color:red;">@CustomError</div>
+            <DataAnnotationsValidator />
+
+            <CustomValidator @ref="customValidator"></CustomValidator>
+
+            <div>
+                <InputText @bind-Value="request.Username" id="username" placeholder="username" />
+                <ValidationMessage For="@( () => request.Username)" />
+            </div>
+
+            <div>
+                <InputText @bind-Value="request.FirstName" id="FirstName" placeholder="FirstName" />
+                <ValidationMessage For="@( () => request.FirstName)" />
+            </div>
+
+            <div>
+                <InputText @bind-Value="request.LastName" id="LastName" placeholder="LastName" />
+                <ValidationMessage For="@( () => request.LastName)" />
+            </div>
+            <div>
+                <InputText @bind-Value="request.Password" id="Password" placeholder="Password" />
+                <ValidationMessage For="@( () => request.Password)" />
+            </div>
+            <div>
+                <InputText @bind-Value="request.Role" id="Role" placeholder="Role" />
+                <ValidationMessage For="@( () => request.Role)" />
+            </div>
+
+            <button type="submit">Sign In</button>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        You cannot do that
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    @* Authorize for only admins*@
+    //Maybe a pop up to confirm submission
+    private CreateUserRequest request = new();
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+    private CustomValidator customValidator;
+    private string CustomError;
+    
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private async Task CompleteCreateUser()
+    {
+        CustomError = string.Empty;
+        var authState = await authenticationState;
+        var user = authState?.User;
+
+        var errors = new Dictionary<string, List<string>>();
+        CreateUserRequest dto = new()
+            {
+                LoggedInUser = user.FindFirst(x => x.Type == "username").Value,
+                Password = request.Password,
+                Username = request.Username,
+                FirstName =request.FirstName,
+                LastName = request.LastName,
+                Role = request.Role                
+            };
+
+        
+        var result = await accountManager.CreateUser(dto);
+
+        if (result.ResponseCode != "00")
+        {
+            CustomError = result.ResponseMessage;
+            return;
+        }
+
+        NavigationManager.NavigateTo("/");
+       
+    }
+}

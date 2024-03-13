@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SwitchPortal.Models.Dtos
+namespace SwitchPortal.Models.ViewModels.Account
 {
-    public class LoginDto
+    public class LoginRequest
     {
         [Required]
         [EmailAddress]

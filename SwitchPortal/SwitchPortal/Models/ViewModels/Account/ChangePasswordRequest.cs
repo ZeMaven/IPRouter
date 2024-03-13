@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SwitchPortal.Models.ViewModels.User
+namespace SwitchPortal.Models.ViewModels.Account
 {
     public class ChangePasswordRequest
     {

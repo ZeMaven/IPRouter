@@ -10,11 +10,11 @@ namespace SwitchPortal.Actions
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly IUsers userManager;
+        private readonly IAccount userManager;
         private readonly ILog Log; 
         private readonly ProtectedLocalStorage ProtectedLocalStore;
         public PortalUserTb CurrentUser { get; private set; } = new();
-        public CustomAuthenticationStateProvider(IUsers userManager, ProtectedLocalStorage protectedLocalStore, ILog log)
+        public CustomAuthenticationStateProvider(IAccount userManager, ProtectedLocalStorage protectedLocalStore, ILog log)
         {
             this.userManager = userManager;
             ProtectedLocalStore = protectedLocalStore;

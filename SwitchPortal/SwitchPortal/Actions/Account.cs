@@ -5,26 +5,26 @@ using Momo.Common.Actions;
 using Momo.Common.Models.Tables;
 using SwitchPortal.Models;
 using SwitchPortal.Models.DataBase;
-using SwitchPortal.Models.Dtos;
-using SwitchPortal.Models.ViewModels.User;
+using SwitchPortal.Models.ViewModels.Account;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace SwitchPortal.Actions;
 
-public interface IUsers
+public interface IAccount
 {
-    Task<UserSignInResponse> Login(LoginDto dto); 
-    Task<ResponseHeader> SendForgotPasswordEmail(ForgotPasswordDto dto);
-    Task<UserSignInResponse> RefreshAsync(string token);
+    Task<UserLoginResponse> Login(LoginRequest request); 
+    Task<ResponseHeader> SendForgotPasswordEmail(ForgotPasswordRequest request);
+    Task<UserLoginResponse> RefreshAsync(string token);
     ClaimsPrincipal GetPrincipalFromToken(string token);
     Task<ResponseHeader> UserIsActive(string username);
     Task<ResponseHeader> ValidateUserKey(string username, string userKey);
-    Task<ResponseHeader> ForgotPassword(ForgotPasswordDto dto);
+    Task<ResponseHeader> ForgotPassword(ForgotPasswordRequest request);
     Task<ResponseHeader> ChangePassword(ChangePasswordRequest request);
+    Task<ResponseHeader> CreateUser(CreateUserRequest request);
 }
-public class Users : IUsers
+public class Account : IAccount
 {
 	private readonly ILog Log;
 	private readonly IEmail Email;
@@ -33,7 +33,7 @@ public class Users : IUsers
     private readonly JwtSettings _jwtSettings;
     private readonly NavigationManager navigationManager;
 
-    public Users(ILog log, ICommonUtilities commonUtilities, TokenValidationParameters tokenValidationParameters, JwtSettings jwtSettings, NavigationManager navigationManager, IEmail email)
+    public Account(ILog log, ICommonUtilities commonUtilities, TokenValidationParameters tokenValidationParameters, JwtSettings jwtSettings, NavigationManager navigationManager, IEmail email)
     {
         Log = log;
         CommonUtilities = commonUtilities;
@@ -43,17 +43,17 @@ public class Users : IUsers
         Email = email;
     }
 
-    public async Task<UserSignInResponse> Login(LoginDto dto)
+    public async Task<UserLoginResponse> Login(LoginRequest request)
     {
 		try
 		{
             var db = new MomoSwitchDbContext();
-            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == dto.Username.ToLower());
+            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.Username.ToLower());
 
             if (userInDatabase == null)
             {
-                Log.Write("Users:Login", $"eRR: User with username: {dto.Username} doesn't exist");
-                return new UserSignInResponse
+                Log.Write("Users:Login", $"eRR: User with username: {request.Username} doesn't exist");
+                return new UserLoginResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -66,7 +66,7 @@ public class Users : IUsers
             if (!userInDatabase.IsActive)
             {
                 Log.Write("Users:Login", $"eRR: User with username: {userInDatabase.Username} is deactivated");
-                return new UserSignInResponse
+                return new UserLoginResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -76,12 +76,12 @@ public class Users : IUsers
                 };
             }
 
-            var passwordHash = CommonUtilities.GetPasswordHash(dto.Password);
+            var passwordHash = CommonUtilities.GetPasswordHash(request.Password);
 
             if(passwordHash != userInDatabase.Password)
             {
                 Log.Write("Users:Login", $"eRR: User with username: {userInDatabase.Username} and the entered password  doesn't match");
-                return new UserSignInResponse
+                return new UserLoginResponse
                 {
                     ResponseHeader = new ResponseHeader
                     {
@@ -97,7 +97,7 @@ public class Users : IUsers
 		catch (Exception ex)
 		{
             Log.Write("Users:Login", $"eRR: {ex.Message}");
-            return new UserSignInResponse
+            return new UserLoginResponse
             {
                 ResponseHeader = new ResponseHeader
                 {
@@ -133,13 +133,13 @@ public class Users : IUsers
             return new ResponseHeader { ResponseCode = "01" };
         }
     }
-    public async Task<UserSignInResponse> RefreshAsync(string token)
+    public async Task<UserLoginResponse> RefreshAsync(string token)
     {
-        var validatedToken = GetPrincipalFromToken(token);
+        var validaterequestken = GetPrincipalFromToken(token);
 
-        if (validatedToken == null)
+        if (validaterequestken == null)
         {
-            return new UserSignInResponse
+            return new UserLoginResponse
             {
                 ResponseHeader = new ResponseHeader
                 {
@@ -149,7 +149,7 @@ public class Users : IUsers
             };
         }        
        
-        var username = validatedToken.Claims.Single(x => x.Type == "username").Value;
+        var username = validaterequestken.Claims.Single(x => x.Type == "username").Value;
 
 
         var db = new MomoSwitchDbContext();
@@ -164,9 +164,9 @@ public class Users : IUsers
 
         try
         {
-            var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
+            var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validaterequestken);
 
-            return IsJwtWithValidSecurityAlgorithm(validatedToken) ? principal : null;
+            return IsJwtWithValidSecurityAlgorithm(validaterequestken) ? principal : null;
         }
         catch
         {
@@ -174,14 +174,14 @@ public class Users : IUsers
         }
     }
 
-    private static bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
+    private static bool IsJwtWithValidSecurityAlgorithm(SecurityToken validaterequestken)
     {
-        return (validatedToken is JwtSecurityToken securityToken)
+        return (validaterequestken is JwtSecurityToken securityToken)
                && securityToken.Header.Alg
                    .Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
     }
 
-    private UserSignInResponse GenerateAuthenticationResultForUser(PortalUserTb user)
+    private UserLoginResponse GenerateAuthenticationResultForUser(PortalUserTb user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret));
@@ -207,7 +207,7 @@ public class Users : IUsers
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
       
-        return new UserSignInResponse
+        return new UserLoginResponse
         {
             ResponseHeader = new ResponseHeader
             {
@@ -219,16 +219,16 @@ public class Users : IUsers
         };
     }
 
-    public async Task<ResponseHeader> SendForgotPasswordEmail(ForgotPasswordDto dto)
+    public async Task<ResponseHeader> SendForgotPasswordEmail(ForgotPasswordRequest request)
     {
         try
         {
             var db = new MomoSwitchDbContext();
-            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == dto.Username.ToLower());
+            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.Username.ToLower());
 
             if (userInDatabase == null)
             {
-                Log.Write("Users:SendForgotPasswordEmail", $"eRR: User with username: {dto.Username} doesn't exist");
+                Log.Write("Users:SendForgotPasswordEmail", $"eRR: User with username: {request.Username} doesn't exist");
                 return new ResponseHeader
                     {
                         ResponseCode = "01",
@@ -350,16 +350,16 @@ public class Users : IUsers
         }
     }
 
-    public async Task<ResponseHeader> ForgotPassword(ForgotPasswordDto dto)
+    public async Task<ResponseHeader> ForgotPassword(ForgotPasswordRequest request)
     {
         try
         {
             var db = new MomoSwitchDbContext();
-            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == dto.Username.ToLower());
+            var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.Username.ToLower());
 
             if (userInDatabase == null)
             {
-                Log.Write("Users:ForgotPassword", $"eRR: User with username: {dto.Username} doesn't exist");
+                Log.Write("Users:ForgotPassword", $"eRR: User with username: {request.Username} doesn't exist");
                 return new ResponseHeader
                 {
                     ResponseCode = "01",
@@ -379,7 +379,7 @@ public class Users : IUsers
 
             }
 
-            if (userInDatabase.UserKey != dto.Key)
+            if (userInDatabase.UserKey != request.Key)
             {
                 Log.Write("Users:ForgotPassword", $"eRR: Invalid UserKey");
                 return new ResponseHeader
@@ -389,7 +389,7 @@ public class Users : IUsers
                 };
             }
 
-            var passwordHash = CommonUtilities.GetPasswordHash(dto.NewPassword);
+            var passwordHash = CommonUtilities.GetPasswordHash(request.NewPassword);
 
             if (passwordHash == userInDatabase.Password)
             {
@@ -487,8 +487,91 @@ public class Users : IUsers
         }
         catch (Exception ex)
         {
-
             Log.Write("Users:ChangePassword", $"eRR: {ex.Message}");
+            return new ResponseHeader
+            {
+                ResponseCode = "01",
+                ResponseMessage = "Something went wrong"
+            };
+        }
+    }
+
+    public async Task<ResponseHeader> CreateUser(CreateUserRequest request)
+    {
+        try
+        {
+            var db = new MomoSwitchDbContext();
+            var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.LoggedInUser.ToLower());
+            var usernameExists = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == request.Username.ToLower());
+
+            if (loggedInUserInDatabase == null)
+            {
+                Log.Write("Users:CreateUser", $"eRR: Logged in user not gotten");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Something went wrong. Please try again"
+                };
+
+            }
+
+            if (!loggedInUserInDatabase.IsActive)
+            {
+                //should they be logged out?
+                Log.Write("Users:ChangePassword", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Your account has been deactivated. Please contact the administrator for further assistance."
+                };
+
+            }
+
+            if(loggedInUserInDatabase.Role != Role.Administrator.ToString())
+            {
+                Log.Write("Users:CreateUser", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "You are not authorized to complete this action"
+                };
+            }
+
+            if (usernameExists != null)
+            {
+                Log.Write("Users:CreateUser", $"eRR: User with username: {usernameExists.Username} already exists");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "User with username already exists"
+                };
+            }
+
+            var passwordHash = CommonUtilities.GetPasswordHash(request.Password);
+            var newUser = new PortalUserTb
+            {
+                EntryDate = DateTime.Now,
+                Password = passwordHash,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                IsActive = true,
+                Role = request.Role,
+                Username = request.Username
+            };
+
+            await db.PortalUserTb.AddAsync(newUser);
+            await db.SaveChangesAsync();
+
+
+            return new ResponseHeader
+            {
+                ResponseCode = "00",
+                ResponseMessage = "User created successfully"
+            };
+        }
+        catch (Exception ex)
+        {
+            Log.Write("Users:CreateUser", $"eRR: {ex.Message}");
             return new ResponseHeader
             {
                 ResponseCode = "01",
