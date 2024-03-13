@@ -2,6 +2,7 @@
 using Momo.Common.Actions;
 using SwitchPortal.Models;
 using SwitchPortal.Models.DataBase;
+using SwitchPortal.Models.ViewModels.Rules.BankSwitch;
 using SwitchPortal.Models.ViewModels.Rules.Time;
 using System.Text;
 using System.Text.Json;
@@ -143,6 +144,51 @@ namespace SwitchPortal.Actions.Rules
                 return Resp;
             }
         }
+
+        public async Task<ResponseHeader> Edit(TimeDetails Request)
+        {
+            try
+            {
+                string JsonStr = JsonSerializer.Serialize(Request);
+                Log.Write("TimeRule.Edit", $"Request: {JsonStr}");
+                var Db = new MomoSwitchDbContext();
+                var Data = Db.TimeRuleTb.Where(x => x.Id == Request.Id).SingleOrDefault();
+                if (Data != null)
+                {
+                    Log.Write("TimeRule.Edit", $"Rule not found: Id:{Request.Id}");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "System challenge"
+                    };
+                }
+
+                Data.Processor = Request.Processor;
+                Data.TimeZ = Request.TimeZ;
+                Data.TimeA= Request.TimeA;
+
+                await Db.SaveChangesAsync();
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "00",
+                    ResponseMessage = "Successful"
+                };
+                JsonStr = JsonSerializer.Serialize(Resp);
+                Log.Write("TimeRule.Edit", $"Response: {JsonStr}");
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("TimeRule.Edit", $"Err: {Ex.Message}");
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "System challenge"
+                };
+                return Resp;
+            }
+        }
+
 
         public async Task<ResponseHeader> Delete(int Id)
         {

@@ -1,3 +1,5 @@
+using Momo.Common.Actions;
+using SwitchPortal.Actions.Rules;
 using SwitchPortal.Client.Pages;
 using SwitchPortal.Components;
 
@@ -8,7 +10,20 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+
+builder.Services.AddSingleton<ILog, Log>();
+builder.Services.AddSingleton<IAmountRule, AmountRule>();
+builder.Services.AddSingleton<IBankSwitch, BankSwitch>();
+builder.Services.AddSingleton<IPriority, Priority>();
+builder.Services.AddSingleton<ISwitch, Switch>();
+builder.Services.AddSingleton<ITimeRule, TimeRule>();
+
+
+
 var app = builder.Build();
+
+
+ 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
