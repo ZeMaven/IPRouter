@@ -1,0 +1,38 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "../../../../../../Downloads/nibss.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, NipService"
+    ],
+    "references": [
+      "BouncyCastle.Crypto, {Portable.BouncyCastle, 1.9.0}",
+      "C:\\Users\\CoralPay\\source\\repos\\MomoSwitch\\NipOutwardProxy\\bin\\Debug\\net8.0\\Momo.Common.dll",
+      "CoralPay, {CoralPay, 1.9.0.3}",
+      "Microsoft.EntityFrameworkCore, {Microsoft.EntityFrameworkCore, 7.0.12}",
+      "Microsoft.EntityFrameworkCore.Abstractions, {Microsoft.EntityFrameworkCore.Abstractions, 7.0.12}",
+      "Microsoft.Extensions.Caching.Abstractions, {Microsoft.Extensions.Caching.Abstractions, 7.0.0}",
+      "Microsoft.Extensions.Caching.Memory, {Microsoft.Extensions.Caching.Memory, 7.0.0}",
+      "Microsoft.Extensions.Configuration, {Microsoft.Extensions.Configuration, 7.0.0}",
+      "Microsoft.Extensions.Configuration.Abstractions, {Microsoft.Extensions.Configuration.Abstractions, 7.0.0}",
+      "Microsoft.Extensions.DependencyInjection, {Microsoft.Extensions.DependencyInjection, 7.0.0}",
+      "Microsoft.Extensions.DependencyInjection.Abstractions, {Microsoft.Extensions.DependencyInjection.Abstractions, 7.0.0}",
+      "Microsoft.Extensions.Logging, {Microsoft.Extensions.Logging, 7.0.0}",
+      "Microsoft.Extensions.Logging.Abstractions, {Microsoft.Extensions.Logging.Abstractions, 7.0.0}",
+      "Microsoft.Extensions.Options, {Microsoft.Extensions.Options, 7.0.0}",
+      "Microsoft.Extensions.Primitives, {Microsoft.Extensions.Primitives, 7.0.0}",
+      "Microsoft.OpenApi, {Microsoft.OpenApi, 1.2.3}",
+      "Newtonsoft.Json, {Newtonsoft.Json, 13.0.3}",
+      "Swashbuckle.AspNetCore.Swagger, {Swashbuckle.AspNetCore.Swagger, 6.4.0}",
+      "Swashbuckle.AspNetCore.SwaggerGen, {Swashbuckle.AspNetCore.SwaggerGen, 6.4.0}",
+      "Swashbuckle.AspNetCore.SwaggerUI, {Swashbuckle.AspNetCore.SwaggerUI, 6.4.0}"
+    ],
+    "targetFramework": "net8.0",
+    "typeReuseMode": "All"
+  }
+}

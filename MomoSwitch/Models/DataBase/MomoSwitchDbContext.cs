@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MomoSwitch.Models.DataBase.Tables;
+using Momo.Common.Models.Tables;
 using System.Collections.Generic;
 using System.Transactions;
 
@@ -27,5 +27,6 @@ namespace MomoSwitch.Models.DataBase
         public DbSet<SwitchTb> SwitchTb { get; set; }
         public DbSet<TimeRuleTb> TimeRuleTb { get; set; }
         public DbSet<TransactionTb> TransactionTb { get; set; }
+        public DbSet<PortalUserTb> PortalUserTb { get; set; }
     }
 }

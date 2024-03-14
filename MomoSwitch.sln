@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Momo.Common", "Momo.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipInwardProxy", "NipInwardProxy\NipInwardProxy.csproj", "{70B61F9B-06BC-4B0A-BA66-5F23ED57C90E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NipOutwardProxy", "NipOutwardProxy\NipOutwardProxy.csproj", "{8920EFF0-F093-411F-94B1-2306FD719C22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NipOutwardProxy", "NipOutwardProxy\NipOutwardProxy.csproj", "{8920EFF0-F093-411F-94B1-2306FD719C22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal", "SwitchPortal\SwitchPortal\SwitchPortal.csproj", "{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal.Client", "SwitchPortal\SwitchPortal.Client\SwitchPortal.Client.csproj", "{587F3300-2614-4CE7-9E2D-E07CCDC339D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MomoSwitchPortal", "MomoSwitchPortal\MomoSwitchPortal.csproj", "{5B0D8615-0352-41DC-9792-87DBEB49E214}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{8920EFF0-F093-411F-94B1-2306FD719C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8920EFF0-F093-411F-94B1-2306FD719C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08F1AD6D-FD31-4F90-AB10-BF2E4B723C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{587F3300-2614-4CE7-9E2D-E07CCDC339D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{587F3300-2614-4CE7-9E2D-E07CCDC339D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{587F3300-2614-4CE7-9E2D-E07CCDC339D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{587F3300-2614-4CE7-9E2D-E07CCDC339D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0D8615-0352-41DC-9792-87DBEB49E214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0D8615-0352-41DC-9792-87DBEB49E214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0D8615-0352-41DC-9792-87DBEB49E214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0D8615-0352-41DC-9792-87DBEB49E214}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
