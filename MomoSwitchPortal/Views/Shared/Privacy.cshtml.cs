@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MomoSwitchPortal.Pages
+namespace MomoSwitchPortal.Views.Shared
 {
     public class PrivacyModel : PageModel
     {

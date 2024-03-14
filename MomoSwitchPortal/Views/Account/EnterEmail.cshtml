@@ -1,0 +1,58 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Account.ForgotPasswordUsernameViewModel
+
+<div class="flex justify-center h-screen">
+    <div class="w-[100%] input_wrap">
+        <div class="w-[464px] lg:mt-[10px] md:mt-[60px] sm:mt-[0px]  input_cont">
+            <a href="#" class="flex items-center justify-center biller_cont">
+                <img src="~/assets/images/coralpay.png" alt="billerone-logo" class="coralpaylogo">
+            </a>
+            <div class="sign-details w-full">
+                <div class=" flex items-center justify-center welcome_txt">
+                    <p class="lg:text-3xl md:text-3xl m:text-3xl text-2xl mr-[10px] text-[#000000] font-normal text-sans">
+                        Forgot Password
+                    </p>
+                </div>
+                <div class=" mt-[23px] mb-[54px] credentials-wrap">
+                    @if (!Model.EmailSent)
+                    {
+                        <p class=" text-center text-sm text-[rgba(0,0,0,0.7)] w-[350px] mx-auto">
+                            No worries enter your correct email, and an otp would be sent to it
+                        </p>
+
+                       
+                        <form action="~/account/forgotpassword" method="post">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div>
+                                <div class="flex flex-col input-wrap relative lg:mb-5 md:mb-14 sm:mb-12 mb-12" id="username">
+                                    @Html.TextBoxFor(M => M.Username, new
+                                        {
+                                            @class = "brd h-[52px] mt-2 w-[100%] bg-[rgba(0,0,0,0.05)] focus:outline-0 focus:ring-0 relative z-0 rounded-[5px] px-5 border-0 placeholder:text-[rgba(0,0,0,0.5)]",
+                                            placeholder = "example@disbutePortal.com / example"
+                                        })
+                                    <label for="Username" class="font-normal form-label ease-in-out duration-300 px-1 whitespace-nowrap text-[14px]">Username</label>
+                                    @Html.ValidationMessageFor(M => M.Username, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="flex items-center justify-center bil-btn-gradient text-base font-normal grad3 w-full h-[52px] first-letter text-[#F0F0F0] rounded-[5px]">Send Otp</button>
+
+
+
+                        </form>                        
+                    }
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                     @if (Model.EmailSent)
+{
+<div>
+    Check your mail bro
+</div>    
+}
