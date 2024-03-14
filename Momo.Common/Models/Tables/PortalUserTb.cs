@@ -8,6 +8,7 @@ namespace Momo.Common.Models.Tables
     {
         public int Id { get; set; }
         [StringLength(50)]
+        [EmailAddress]
         public string Username { get; set; }
         [StringLength(50)]
         public string FirstName { get; set; }

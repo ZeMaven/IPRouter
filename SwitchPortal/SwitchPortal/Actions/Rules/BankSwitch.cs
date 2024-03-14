@@ -5,6 +5,7 @@ using SwitchPortal.Models.DataBase;
 using SwitchPortal.Models.ViewModels.Rules.BankSwitch;
 using Momo.Common.Models.Tables;
 using System.Text.Json;
+using SwitchPortal.Models.ViewModels.Rules.Amount;
 
 namespace SwitchPortal.Actions.Rules
 {
@@ -12,6 +13,7 @@ namespace SwitchPortal.Actions.Rules
     {
         Task<ResponseHeader> Create(BankSwitchDetails Request);
         Task<ResponseHeader> Delete(int Id);
+        Task<ResponseHeader> Edit(BankSwitchDetails Request);
         BankSwitchResponse Get();
         BankSwitchResponse Get(int Id);
     }
@@ -132,6 +134,49 @@ namespace SwitchPortal.Actions.Rules
             catch (Exception Ex)
             {
                 Log.Write("BankSwitch.Create", $"Err: {Ex.Message}");
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "System challenge"
+                };
+                return Resp;
+            }
+        }
+
+        public async Task<ResponseHeader> Edit(BankSwitchDetails Request)
+        {
+            try
+            {
+                string JsonStr = JsonSerializer.Serialize(Request);
+                Log.Write("BankSwitch.Edit", $"Request: {JsonStr}");
+                var Db = new MomoSwitchDbContext();
+                var Data = Db.BankSwitchTb.Where(x => x.Id == Request.Id).SingleOrDefault();
+                if (Data != null)
+                {
+                    Log.Write("BankSwitch.Edit", $"Rule not found: Id:{Request.Id}");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "System challenge"
+                    };
+                }
+
+                Data.Processor = Request.Processor;
+                Data.BankCode = Request.BankCode;               
+
+                await Db.SaveChangesAsync();
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "00",
+                    ResponseMessage = "Successful"
+                };
+                JsonStr = JsonSerializer.Serialize(Resp);
+                Log.Write("BankSwitch.Edit", $"Response: {JsonStr}");
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("BankSwitch.Edit", $"Err: {Ex.Message}");
                 var Resp = new ResponseHeader()
                 {
                     ResponseCode = "01",

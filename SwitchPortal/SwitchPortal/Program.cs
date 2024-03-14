@@ -1,12 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Momo.Common.Actions;
-using SwitchPortal.Actions;
 using SwitchPortal.Client.Pages;
 using SwitchPortal.Components;
 using SwitchPortal.Models;
@@ -58,6 +49,9 @@ builder.Services.AddAuthentication(BearerTokenDefaults.AuthenticationScheme).Add
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
 
 var app = builder.Build();
+
+
+ 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

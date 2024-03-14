@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Momo.Common.Actions;
 using Momo.Common.Models;
+using Momo.Common.Models.Tables;
 using MomoSwitch.Models;
 using MomoSwitch.Models.Contracts;
 using MomoSwitch.Models.Contracts.Momo;
@@ -152,12 +153,12 @@ namespace MomoSwitch.Actions
 
                     Resp = Transposer.ToMomoFundTransferResponse(ProcessorRespObj);
                     Resp.paymentReference = Resp.transactionId;
-                    Resp.channelCode= Req.channelCode;
-                    Resp.transactionLocation= Req.transactionLocation;
-                    Resp.beneficiaryKYCLevel= Req.beneficiaryKYCLevel;
-                    Resp.originatorBankVerificationNumber= Req.originatorBankVerificationNumber;
+                    Resp.channelCode = Req.channelCode;
+                    Resp.transactionLocation = Req.transactionLocation;
+                    Resp.beneficiaryKYCLevel = Req.beneficiaryKYCLevel;
+                    Resp.originatorBankVerificationNumber = Req.originatorBankVerificationNumber;
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
-                    Resp.mandateReferenceNumber= Req.mandateReferenceNumber;
+                    Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
 
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
                     JsonStr = JsonSerializer.Serialize(Resp);
@@ -178,7 +179,7 @@ namespace MomoSwitch.Actions
                         originatorAccountNumber = Req.originatorAccountNumber,
                         originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                         originatorKYCLevel = Req.originatorKYCLevel,
-                         
+
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
                         nameEnquiryRef = Req.nameEnquiryRef,
@@ -384,7 +385,7 @@ namespace MomoSwitch.Actions
             {
                 var Db = new MomoSwitchDbContext();
 
-                Db.TransactionTb.Add(new Models.DataBase.Tables.TransactionTb
+                Db.TransactionTb.Add(new TransactionTb
                 {
                     Date = DateTime.Now,
                     Processor = Proccesor,

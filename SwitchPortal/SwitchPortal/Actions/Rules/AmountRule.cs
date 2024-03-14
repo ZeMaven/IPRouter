@@ -3,6 +3,7 @@ using Momo.Common.Models.Tables;
 using SwitchPortal.Models;
 using SwitchPortal.Models.DataBase;
 using SwitchPortal.Models.ViewModels.Rules.Amount;
+using SwitchPortal.Models.ViewModels.Rules.Priority;
 using System.Text.Json;
 
 namespace SwitchPortal.Actions.Rules
@@ -12,6 +13,7 @@ namespace SwitchPortal.Actions.Rules
     {
         Task<ResponseHeader> Create(AmountDetails Request);
         Task<ResponseHeader> Delete(int Id);
+        Task<ResponseHeader> Edit(AmountDetails Request);
         AmountResponse Get();
         AmountResponse Get(int Id);
     }
@@ -134,6 +136,51 @@ namespace SwitchPortal.Actions.Rules
             catch (Exception Ex)
             {
                 Log.Write("AmountRule.Create", $"Err: {Ex.Message}");
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "System challenge"
+                };
+                return Resp;
+            }
+        }
+
+
+        public async Task<ResponseHeader> Edit(AmountDetails Request)
+        {
+            try
+            {
+                string JsonStr = JsonSerializer.Serialize(Request);
+                Log.Write("AmountRule.Edit", $"Request: {JsonStr}");
+                var Db = new MomoSwitchDbContext();
+                var Data = Db.AmountRuleTb.Where(x => x.Id == Request.Id).SingleOrDefault();
+                if (Data != null)
+                {
+                    Log.Write("AmountRule.Edit", $"Rule not found: Id:{Request.Id}");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "System challenge"
+                    };
+                }
+
+                Data.Processor = Request.Processor;
+                Data.AmountA = Request.AmountA;
+                Data.AmountZ = Request.AmountZ;
+
+                await Db.SaveChangesAsync();
+                var Resp = new ResponseHeader()
+                {
+                    ResponseCode = "00",
+                    ResponseMessage = "Successful"
+                };
+                JsonStr = JsonSerializer.Serialize(Resp);
+                Log.Write("AmountRule.Edit", $"Response: {JsonStr}");
+                return Resp;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("AmountRule.Edit", $"Err: {Ex.Message}");
                 var Resp = new ResponseHeader()
                 {
                     ResponseCode = "01",
