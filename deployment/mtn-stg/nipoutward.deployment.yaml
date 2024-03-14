@@ -26,11 +26,18 @@ spec:
         ports:
         - containerPort: 80
           protocol: TCP
+        volumeMounts:
+            - name: keys
+              mountPath: /app/keys
         envFrom:
         - secretRef:
             name: nipoutward
       imagePullSecrets:
         - name: docker-cred
+      volumes:
+        - name: keys
+          secret:
+            secretName: nipoutward
 ---
 
 apiVersion: v1
