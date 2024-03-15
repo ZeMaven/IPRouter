@@ -1,0 +1,50 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.User.EditUserViewModel
+@{
+    ViewData["Title"] = "New User page";
+    ViewData["CreateUser"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit User</h2>
+        <a href="~/users">
+            <button type="submit" class="btn btn-secondary shadow-none">Back</button>
+        </a>
+    </div>
+    <form action="~/users/edituser" method="post">              
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="FirstName" class="form-label font-weight-bold">First Name</label>
+                <input type="text" class="form-control border px-3" name="FirstName" value="@Model.FirstName" id="FirstName" placeholder="First name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="LastName" class="form-label font-weight-bold">Last Name</label>
+                <input type="text" class="form-control border px-3" name="LastName" id="LastName" value="@Model.LastName" placeholder="Last Name" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label font-weight-bold">Username</label>
+            <input type="email" class="form-control border px-3" name="username" id="username" value="@Model.Username" placeholder="Username" required>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="userType" class="form-label font-weight-bold">User Type</label>
+                <select class="form-select px-3" id="userType" name="Role" required>
+                    <option value="" selected disabled>Select User Type</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Ordinary">Ordinary</option>
+                </select>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="IsActive" class="form-label font-weight-bold">Is-Active</label>
+                <select class="form-select px-3" id="isActive" name="IsActive" required>
+                    <option value="" selected disabled>Select isActive</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Update User</button>
+
+    </form>
+
+</div>

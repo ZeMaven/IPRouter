@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IAccount, Account>();
 builder.Services.AddScoped<ILog, Log>();
+builder.Services.AddScoped<IUser, User>();
 builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
 

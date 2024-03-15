@@ -1,86 +1,54 @@
 ﻿@model MomoSwitchPortal.Models.ViewModels.Account.SignInViewModel
+
 @{
-    ViewData["Title"] = "Sign In";
-    // Layout = "~/Views/Shared/AccountLayout.cshtml";
+    ViewData["Title"] = "Login page";
+    Layout = "AccountLayout";
 }
-
-
-<div class="flex justify-center h-screen">
-    <div class="w-[100%] input_wrap">
-        <div class="w-[464px] lg:mt-[10px] md:mt-[60px] sm:mt-[0px]  input_cont">
-            <a href="#" class="flex items-center justify-center">
-                <img src="~/assets/images/coralpay.png" alt="billerone-logo" class="coralpaylogo">
-            </a>
-            <div class="sign-details w-full">
-                <div class=" flex items-center justify-center welcome_txt">
-                    <p class="lg:text-3xl md:text-3xl m:text-3xl text-2xl mr-[10px] text-[#000000] font-normal text-sans">
-                        Welcome back
-                    </p>
-                    <svg width="32" height="32" viewBox="0 0 37 37" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.33549 9.16749C6.27549 8.51049 7.69249 8.63649 8.53649 9.33349L7.56849 7.92649C6.78949 6.81549 7.06849 5.61349 8.18049 4.83349C9.29249 4.05649 12.4435 6.14549 12.4435 6.14549C11.6575 5.02349 11.8045 3.60149 12.9265 2.81449C14.0485 2.03049 15.5965 2.30149 16.3825 3.42549L26.8025 18.1455L25.4745 31.0205L14.3915 26.9785L4.72449 12.6455C3.93149 11.5165 4.20549 9.95949 5.33549 9.16749Z"
-                              fill="#90603E"></path>
-                        <path d="M3.16958 17.3565C3.16958 17.3565 2.03758 15.7065 3.68858 14.5755C5.33758 13.4445 6.46858 15.0935 6.46858 15.0935L11.7196 22.7515C11.9006 22.4495 12.0986 22.1515 12.3196 21.8575L5.03158 11.2305C5.03158 11.2305 3.90058 9.58147 5.55058 8.45047C7.19958 7.31947 8.33058 8.96847 8.33058 8.96847L15.1856 18.9655C15.4406 18.7575 15.7016 18.5485 15.9706 18.3435L8.02358 6.75247C8.02358 6.75247 6.89258 5.10347 8.54258 3.97247C10.1916 2.84147 11.3226 4.49047 11.3226 4.49047L19.2696 16.0795C19.5616 15.9005 19.8506 15.7455 20.1406 15.5815L12.7126 4.74947C12.7126 4.74947 11.5816 3.10047 13.2306 1.96947C14.8796 0.838466 16.0106 2.48747 16.0106 2.48747L23.8646 13.9415L25.0586 15.6835C20.1106 19.0775 19.6396 25.4625 22.4666 29.5855C23.0316 30.4105 23.8566 29.8455 23.8566 29.8455C20.4636 24.8965 21.4996 19.3355 26.4486 15.9425L24.9896 8.64047C24.9896 8.64047 24.4446 6.71647 26.3676 6.17047C28.2916 5.62547 28.8376 7.54947 28.8376 7.54947L30.5226 12.5535C31.1906 14.5375 31.9016 16.5145 32.8426 18.3845C35.4996 23.6645 33.9126 30.2265 28.9026 33.6635C23.4376 37.4105 15.9666 36.0175 12.2186 30.5535L3.16958 17.3565Z"
-                              fill="#AF7E57"></path>
-                        <path d="M12.4746 32.0625C8.47462 32.0625 4.43262 28.0205 4.43262 24.0205C4.43262 23.4675 4.02762 23.0205 3.47462 23.0205C2.92162 23.0205 2.43262 23.4675 2.43262 24.0205C2.43262 30.0205 6.47462 34.0625 12.4746 34.0625C13.0276 34.0625 13.4746 33.5735 13.4746 33.0205C13.4746 32.4675 13.0276 32.0625 12.4746 32.0625Z"
-                              fill="#FBB201"></path>
-                        <path d="M7.47461 34.0205C4.47461 34.0205 2.47461 32.0205 2.47461 29.0205C2.47461 28.4675 2.02761 28.0205 1.47461 28.0205C0.921609 28.0205 0.474609 28.4675 0.474609 29.0205C0.474609 33.0205 3.47461 36.0205 7.47461 36.0205C8.02761 36.0205 8.47461 35.5735 8.47461 35.0205C8.47461 34.4675 8.02761 34.0205 7.47461 34.0205ZM24.4746 2.02051C23.9226 2.02051 23.4746 2.46851 23.4746 3.02051C23.4746 3.57251 23.9226 4.02051 24.4746 4.02051C28.4746 4.02051 32.4746 7.60951 32.4746 12.0205C32.4746 12.5725 32.9226 13.0205 33.4746 13.0205C34.0266 13.0205 34.4746 12.5725 34.4746 12.0205C34.4746 6.50651 30.4746 2.02051 24.4746 2.02051Z"
-                              fill="#FBB201"></path>
-                        <path d="M29.4746 0.0625C28.9226 0.0625 28.4746 0.4685 28.4746 1.0205C28.4746 1.5725 28.9226 2.0625 29.4746 2.0625C32.4746 2.0625 34.4326 4.2875 34.4326 7.0205C34.4326 7.5725 34.9216 8.0205 35.4746 8.0205C36.0276 8.0205 36.4326 7.5725 36.4326 7.0205C36.4326 3.1835 33.4746 0.0625 29.4746 0.0625Z"
-                              fill="#FBB201"></path>
-                    </svg>
-                </div>
-                <div class=" mt-[23px] mb-[54px] credentials-wrap">
-                    <p class=" text-center text-sm text-[rgba(0,0,0,0.7)] w-[350px] mx-auto">
-                        Please
-                        enter your correct login credentials to gain access to your dashboard
-                    </p>
-                </div>
-                <form action="~/account/signin" method="post">
-
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-                    <div>
-                        <div class="flex flex-col input-wrap relative lg:mb-14 md:mb-14 sm:mb-12 mb-12">
-
-                            @Html.TextBoxFor(M => M.Username, new
-                                {
-                                    @class = "brd  h-[52px] mt-2  w-[100%] bg-[rgba(0,0,0,0.05)] focus:outline-0 focus:ring-0 relative z-0 rounded-[5px] px-5 border-0 placeholder:text-[rgba(0,0,0,0.5)]",
-                                    placeholder = "example@disbutePortal.com"
-                                })
-                            <label for="Username"
-                                   class="font-normal form-label ease-in-out duration-300  px-1  whitespace-nowrap text-[14px]">
-                                Username
-                            </label>
-                            @Html.ValidationMessageFor(M => M.Username, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="flex flex-col input-wrap relative mb-7">
-                        <span class="absolute right-[24px] top-[23px] z-20">
-                            <span class="show_password toggle_password text-[rgba(0,0,0,0.7)] cursor-pointer">
-                                <i class="far fa-eye" id="togglePassword"></i>
-                            </span>
-                        </span>
-                        <input type="password" id="Password" name="Password" class="brd  h-[52px] mt-2 input-control w-[100%] bg-[rgba(0,0,0,0.05)] focus:outline-0 focus:ring-0  relative z-0 rounded-[5px] px-5 border-0 placeholder:text-[rgba(0,0,0,0.5)]" placeholder="*******">
-                        <label for="Password" class="font-normal form-label ease-in-out duration-300  px-1  whitespace-nowrap text-[14px]">Password</label>
-                        @Html.ValidationMessageFor(M => M.Password, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="flex ">
-                        <input type="checkbox" id="KeppLoggedIn" name="KeepLoggedin" class="form-checkbox h-4 w-4 text-green-500 rounded">
-                        <label for="KeepLoggedIn" class="text-sm text-gray-400 ml-[5px]">Remember me</label>
-                    </div>
-                    <a href="~/account/forgotPassword"
-                       class="text-sm font-medium text-sans text-[#000] flex mt-[10px] lg:mb-[15px] md:mb-[15px] sm:mb-[35px] mb-[35px] justify-end ">
-                        Forgot Password?
+<div class="card z-index-0 fadeIn3 fadeInBottom">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="border-radius-lg py-3 pe-1" style="background-color: #003E5F;">
+            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
+            <div class="row mt-3">
+                <div class="col-2 text-center ms-auto">
+                    <a class="btn btn-link px-3" href="https://www.facebook.com/MoMofromMTN/">
+                        <i class="fa fa-facebook text-white text-lg"></i>
                     </a>
-
-                    <button type="submit" class="flex items-center justify-center bil-btn-gradient text-base font-normal grad3 w-full h-[52px] first-letter text-[#F0F0F0] rounded-[5px]">Login</button>
-
-                </form>
+                </div>
+                <div class="col-2 text-center px-1">
+                    <a class="btn btn-link px-3" href="https://www.instagram.com/momofrommtn/?igsh=MWx3ZWZoYTF5NmwzZw%3D%3D">
+                        <i class="fa fa-instagram text-white text-lg"></i>
+                    </a>
+                </div>
+                <div class="col-2 text-center me-auto">
+                    <a class="btn btn-link px-3" href="https://www.momo.ng/">
+                        <i class="fa fa-google text-white text-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="card-body">
+        <form action="~/account/signin" method="post" class="text-start">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+      
+            <div class="input-group input-group-outline my-3">
+                <input type="email" name="Username" value="@Model?.Username" class="form-control" placeholder="Username">
+            </div>
+            <div class="input-group input-group-outline mb-3">
+                <input type="password" value="@Model?.Password" name="Password" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-check form-switch d-flex align-items-center mb-3">
+                <input class="form-check-input" type="checkbox" name="KeepLoggedin" id="KeppLoggedIn" value="true">
+                <label class="form-check-label mb-0 ms-3" for="KeppLoggedIn">Remember me</label>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn w-100 my-4 mb-2" style="background-color: #003E5F; color: white;">Sign in</button>
+            </div>
+            <p class="mt-1 text-sm text-center">
+                <a href="~/account/ForgotPassword" class="text-gradient font-weight-bold" style="background-color: #003E5F;">Forgot Password?</a>
+            </p>
+        </form>
     </div>
 </div>
 

@@ -141,6 +141,11 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View("ForgotPassword", model);
+                }
+
                 var db = new MomoSwitchDbContext();
                 var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == model.Username.ToLower());
 
@@ -148,21 +153,23 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: User with username: {model.Username} doesn't exist");
                     ModelState.AddModelError("", "Something went wrong. Please try again");
-                    return View(model);
+                    return View("ForgotPassword", model);
                 }
 
                 if (!userInDatabase.IsActive)
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: User with username: {userInDatabase.Username} is deactivated");
                     ModelState.AddModelError("", "Your account has been deactivated. Please contact the administrator for further assistance.");
-                    return View(model);
+                    return View("ForgotPassword", model);
+
                 }
 
                 if (userInDatabase.UserKey != model.Key)
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: Invalid UserKey");
                     ModelState.AddModelError("", "Invalid UserKey");
-                    return View(model);
+                    return View("ForgotPassword", model);
+
                 }
 
 
@@ -172,11 +179,13 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: New Password the same as existing one");
                     ModelState.AddModelError("", "New Password cannot be the same as existing one");
-                    return View(model);
+                    return View("ForgotPassword", model);
+
                 }
 
                 userInDatabase.Password = passwordHash;
                 userInDatabase.UserKey = string.Empty;
+                userInDatabase.ModifyDate = DateTime.Now;
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Signin");
@@ -185,7 +194,8 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("AccountController:ResetPassword", $"eRR: {ex.Message}. User:{model.Username}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View(model);
+                return View("ForgotPassword", model);
+
             }
         }
 
@@ -204,6 +214,12 @@ namespace MomoSwitchPortal.Controllers
                     return View("EnterEmail",model);
                 }
 
+                if (string.IsNullOrWhiteSpace(model.Username))
+                {
+                    ModelState.AddModelError("", "Username is required");
+                    return View(model);
+                }
+
                 Log.Write($"AccountController:ForgotPassword", $"Request: {model.Username}");
 
                 var _context = new MomoSwitchDbContext();
@@ -212,7 +228,7 @@ namespace MomoSwitchPortal.Controllers
                 if (userInDatabase == null)
                 {
                     Log.Write($"AccountController:ForgotPassword", $"eRR: User with username: {model.Username} doesn't exist");
-                    ModelState.AddModelError("Username", "User with the entered username doesn't exist");
+                    ModelState.AddModelError("", "User with the entered username doesn't exist");
                     return View("EnterEmail", model);
 
                 }
