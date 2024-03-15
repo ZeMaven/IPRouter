@@ -89,14 +89,18 @@ namespace MomoSwitchPortal.Controllers
                 if (result.ResponseHeader.ResponseCode != "00")
                     return View("Error");
 
-                var filteredList = result.SwitchDetails.Where(x => x.Processor.ToLower().Contains(processor?.ToLower())).ToList();
-                result.SwitchDetails = filteredList;
-                result.Processor = processor;//just to initialize the username search
+                if (!string.IsNullOrWhiteSpace(processor))
+                {
+                    var filteredList = result.SwitchDetails.Where(x => x.Processor.Contains(processor, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                    result.SwitchDetails = filteredList;
+                }
+               
+                result.Processor = processor;//just to initialize the processor search
                 return View(result);
             }
             catch (Exception ex)
             {
-                Log.Write("UserController:Users", $"eRR: {ex.Message}");
+                Log.Write("SwitchRuleController:Index", $"eRR: {ex.Message}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
                 return View("Error");
 
