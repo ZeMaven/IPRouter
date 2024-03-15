@@ -53,7 +53,7 @@ namespace MomoSwitchPortal.Controllers
                 if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
                 {
                     Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
-                    return RedirectToAction("Logout", "Account");
+                    return RedirectToAction("Index", "Home");//or unauthorzed
                 }
                 var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase);
                 
@@ -69,7 +69,53 @@ namespace MomoSwitchPortal.Controllers
                 return View();
             }
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(string username)
+        {
+            try
+            {
+                int pageSize = 25;
+                int pageNumber = 1;
+                var db = new MomoSwitchDbContext();
+                var loggedInUser = HttpContext.GetLoggedInUser();
+
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+
+                if (loggedInUserInDatabase == null)
+                {
+                    Log.Write("UserController:Users", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
+                {
+                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                    return RedirectToAction("Index", "Home");//or unauthorzed
+                }
+                var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase, username);
+
+                if (result.ResponseHeader.ResponseCode != "00")
+                    return View("Error");
+
+                result.Username = username;//just to initialize the username search
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("UserController:Users", $"eRR: {ex.Message}");
+                ModelState.AddModelError("", "Something went wrong. Please try again later");
+                return View();
+            }
+        }
         [HttpGet]
         public IActionResult CreateUser()
         {
@@ -127,8 +173,8 @@ namespace MomoSwitchPortal.Controllers
                 var db = new MomoSwitchDbContext();
                 ViewBag.status = new SelectList(new[] { true, false });
                 ViewBag.roles = new SelectList(new[] { "Administrator", "Ordinary" });
-
-                var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == id);  
+                var loggedInUser = HttpContext.GetLoggedInUser();
+                var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == id && x.Username != loggedInUser);  
 
                 if (existingUser == null)
                 {
@@ -167,8 +213,8 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
                 var db = new MomoSwitchDbContext();
-                var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == model.Id);
-
+                var loggedInUser = HttpContext.GetLoggedInUser();
+                var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == model.Id && x.Username != loggedInUser);  
                 if (existingUser == null)
                 {
                     Log.Write("UserController:EditUser", $"eRR: User doesn't exist");

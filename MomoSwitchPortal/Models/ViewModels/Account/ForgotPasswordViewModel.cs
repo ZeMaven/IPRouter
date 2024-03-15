@@ -10,7 +10,7 @@ namespace MomoSwitchPortal.Models.ViewModels.Account
         [Required]
         public string Password { get; set; }
         [Required]
-        [Compare(nameof(Password), ErrorMessage = "This must be the same as Password")]
+        [Compare(nameof(Password), ErrorMessage = "Confirm Password must be the same as Password")]
         public string ConfirmPassword { get; set; }
     }
 }

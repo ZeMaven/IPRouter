@@ -9,11 +9,6 @@ namespace MomoSwitchPortal.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-        
-        public IActionResult hmm()
-        {
-            return View();
-        }
+        }        
     }
 }

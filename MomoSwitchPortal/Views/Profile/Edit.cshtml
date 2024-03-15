@@ -1,0 +1,41 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Profile.EditProfileViewModel
+@{
+    ViewData["Title"] = "Edit Profile page";
+    ViewData["CreateUser"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit Profile</h2>
+        <a href="/profile">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/profile/edit" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="mb-3">
+            <label for="FirstName" class="form-label font-weight-bold">First Name</label>
+            <input type="text" name="FirstName" value="@Model.FirstName" class="form-control border px-3" id="FirstName" placeholder="Enter First Name" required>
+        </div>
+        <div class="mb-3">
+            <label for="LastName" class="form-label font-weight-bold">Last Name</label>
+            <input type="text" name="LastName" value="@Model.LastName" class="form-control border px-3" id="LastName" placeholder="Enter Last Name" required>
+        </div>
+        <div class="mb-3">
+            <label for="OldPassword" class="form-label font-weight-bold">Old Password</label>
+            <input type="password" name="OldPassword" value="@Model.OldPassword" class="form-control border px-3" id="OldPassword" placeholder="Old Password" >
+        </div>
+        <div class="mb-3">
+            <label for="NewPassword" class="form-label font-weight-bold">New Password</label>
+            <input type="password" name="NewPassword" value="@Model.NewPassword" class="form-control border px-3" id="NewPassword" placeholder="New Password">
+        </div>
+        <div class="mb-3">
+            <label for="ConfirmPassword" class="form-label font-weight-bold">Confirm Password</label>
+            <input type="password" name="ConfirmPassword" value="@Model.ConfirmPassword" class="form-control border px-3" id="ConfirmPassword" placeholder="Confirm Password">
+        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>

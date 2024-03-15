@@ -201,6 +201,7 @@ namespace MomoSwitchPortal.Actions
                 userInDatabase.LastName = user.LastName;
                 userInDatabase.Role = user.Role;
                 userInDatabase.IsActive = user.IsActive;
+                userInDatabase.ModifyDate = DateTime.Now;
                 await db.SaveChangesAsync();
 
                 return new ResponseHeader
