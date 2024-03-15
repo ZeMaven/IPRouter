@@ -1,0 +1,52 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Switch.CreateSwitchRuleViewModel
+@{
+    ViewData["Title"] = "Switch page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Create Switch</h2>
+        <a href="/switch">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/switchrule/create" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="processor" class="form-label font-weight-bold">Processor</label>
+                <input type="text" name="Processor" value="@Model?.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="TransferUrl" class="form-label font-weight-bold">Tranfer Url</label>
+                <input type="text" name="TransferUrl" value="@Model?.TransferUrl" class="form-control border px-3" id="TransferUrl" placeholder="ttps://....">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="NameEnquiryurl" class="form-label font-weight-bold">Name Enquiry Url</label>
+                <input type="text" name="NameEnquiryUrl" value="@Model?.NameEnquiryUrl" class="form-control border px-3" id="NameEnquiryUrl" placeholder="https: //....">
+            </div>
+            <div class="col-6 mb-3">
+                <label for="TranQueryUrl" class="form-label font-weight-bold">Tran Query Url</label>
+                <input type="text" name="TranQueryUrl" value="@Model?.TranQueryUrl" class="form-control border px-3" id="TranQueryurl" placeholder="https: //....">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="isDefault" class="form-label font-weight-bold">Is-Default</label>
+                @Html.DropDownListFor(x => x.IsDefault, ViewBag.status as SelectList, "Select", new { @Class = "form-control border px-3", @title = " Is Default", @required = true })
+            </div>
+            <div class="col-6 mb-3">
+                <label for="isActive" class="form-label font-weight-bold">Is-Active</label>
+                @Html.DropDownListFor(x => x.IsActive, ViewBag.status as SelectList, "Select", new { @Class = "form-control border px-3", @title = " Is Active", @required = true })
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>
+

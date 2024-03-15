@@ -64,9 +64,8 @@ namespace MomoSwitchPortal.Controllers
 			}
 			catch (Exception ex)
 			{
-                Log.Write("UserController:Users", $"eRR: {ex.Message}");
-                ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View();
+                Log.Write("UserController:Users", $"eRR: {ex.Message}");             
+                return View("Error");
             }
         }
 
@@ -113,7 +112,8 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("UserController:Users", $"eRR: {ex.Message}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View();
+                return View("Error");
+
             }
         }
         [HttpGet]

@@ -4,5 +4,6 @@
     {
         public ResponseHeader ResponseHeader { get; set; }
         public List<SwitchDetails> SwitchDetails { get; set; }
+        public string Processor { get; set; }
     }
 }

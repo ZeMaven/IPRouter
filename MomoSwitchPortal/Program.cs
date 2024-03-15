@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Momo.Common.Actions;
 using MomoSwitchPortal.Actions;
+using MomoSwitchPortal.Actions.Rules;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IAccount, Account>();
 builder.Services.AddScoped<ILog, Log>();
 builder.Services.AddScoped<IUser, User>();
+builder.Services.AddScoped<ISwitch, Switch>();
+builder.Services.AddScoped<IAmountRule, AmountRule>();
+builder.Services.AddScoped<IBankSwitch, BankSwitch>();
+builder.Services.AddScoped<ITimeRule, TimeRule>();
+builder.Services.AddScoped<IPriority, Priority>();
 builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<IProfile, Profile>();
 builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();

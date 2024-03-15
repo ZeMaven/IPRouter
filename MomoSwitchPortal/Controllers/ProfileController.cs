@@ -101,6 +101,7 @@ namespace MomoSwitchPortal.Controllers
         } 
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditProfileViewModel model)
         {
             try
