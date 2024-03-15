@@ -5,6 +5,7 @@ namespace MomoSwitchPortal.Models.ViewModels.Account
     public class ForgotPasswordViewModel
     {
         public string Key { get; set; }
+        [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }

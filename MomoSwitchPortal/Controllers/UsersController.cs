@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
 using MomoSwitchPortal.Actions;
 using MomoSwitchPortal.Models.Database;
+using MomoSwitchPortal.Models.Internals;
 using MomoSwitchPortal.Models.ViewModels.User;
 
 namespace MomoSwitchPortal.Controllers
@@ -30,7 +32,30 @@ namespace MomoSwitchPortal.Controllers
 			{
                 int pageSize = 25;
                 int pageNumber = (page ?? 1);
-                var result = await userManager.UserList(pageNumber, pageSize);
+                var db = new MomoSwitchDbContext();
+                var loggedInUser = HttpContext.GetLoggedInUser();
+
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+
+                if (loggedInUserInDatabase == null)
+                {
+                    Log.Write("UserController:Users", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
+                {
+                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                    return RedirectToAction("Logout", "Account");
+                }
+                var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase);
                 
                 if (result.ResponseHeader.ResponseCode != "00")
                     return View("Error");
@@ -49,8 +74,9 @@ namespace MomoSwitchPortal.Controllers
         public IActionResult CreateUser()
         {
 			try
-			{
-				return View();	
+			{       
+                ViewBag.roles = new SelectList(new[] { "Administrator", "Ordinary" });
+                return View();	
 			}
 			catch (Exception ex)
 			{
@@ -65,7 +91,8 @@ namespace MomoSwitchPortal.Controllers
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             try
-            {
+            {         
+                ViewBag.roles = new SelectList(new[] { "Administrator", "Ordinary" });
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -82,7 +109,7 @@ namespace MomoSwitchPortal.Controllers
                 }
 
                 Log.Write($"UserController:CreateUser", $"User created successfully");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)
             {
@@ -98,6 +125,9 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 var db = new MomoSwitchDbContext();
+                ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.roles = new SelectList(new[] { "Administrator", "Ordinary" });
+
                 var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == id);  
 
                 if (existingUser == null)
@@ -112,15 +142,54 @@ namespace MomoSwitchPortal.Controllers
                     LastName = existingUser.LastName,
                     IsActive = existingUser.IsActive,
                     Role = existingUser.Role,
-                    Username = existingUser.Username
+                    Username = existingUser.Username,
+                    EntryDate = existingUser.EntryDate.ToString("dddd, dd MMMM yyyy")
                 };
                 return View(viewModel);
             }
             catch (Exception ex)
             {
+                Log.Write("UserController:EditUser", $"eRR: {ex.Message}");                
+                return View("Error");
+            }
+        }
+
+        [HttpPost("edituser")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            try
+            {
+                ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.roles = new SelectList(new[] { "Administrator", "Ordinary" });
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var db = new MomoSwitchDbContext();
+                var existingUser = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == model.Id);
+
+                if (existingUser == null)
+                {
+                    Log.Write("UserController:EditUser", $"eRR: User doesn't exist");
+                    //return View("NotFound");
+                    return RedirectToAction("Index", "Users"); //or error
+                }
+
+                var result = await userManager.EditUser(model);
+
+                if(result.ResponseCode != "00")
+                {
+                    ModelState.AddModelError("", result.ResponseMessage);
+                    return View(model);
+                }
+
+                return RedirectToAction("Index");    
+            }
+            catch (Exception ex)
+            {
                 Log.Write("UserController:EditUser", $"eRR: {ex.Message}");
-                ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View();
+                return View("Error");
             }
         }
     }

@@ -20,7 +20,7 @@
     <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
+            <a class="navbar-brand m-0" href="~/" target="_blank">
                 <img src="../assets/img/logo.png" class="navbar-brand-img h-100" alt="main_logo">
                 <span class="ms-1 font-weight-bold text-white">Momo Portal</span>
             </a>
@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="@ViewData["Dashboard"] nav-link text-white " href="/">
+                    <a class="@ViewData["Dashboard"] nav-link text-white " href="~/">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">dashboard</i>
                         </div>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="@ViewData["Transaction"]  nav-link text-white " href="/transactionList">
+                    <a class="@ViewData["Transaction"]  nav-link text-white " href="~/transactionList">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
@@ -56,7 +56,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
                         <li>
-                            <a class="dropdown-item d-flex" href="/Switch">
+                            <a class="dropdown-item d-flex" href="~/Switch">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">toggle_off</i>
                                 </div>
@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex" href="/TimeRuleSetUp">
+                            <a class="dropdown-item d-flex" href="~/TimeRuleSetUp">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">schedule</i>
                                 </div>
@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex" href="/PiorityRule">
+                            <a class="dropdown-item d-flex" href="~/PiorityRule">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">priority_high</i>
                                 </div>
@@ -80,7 +80,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex" href="/AmountBasedRule">
+                            <a class="dropdown-item d-flex" href="~/AmountBasedRule">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">attach_money</i>
                                 </div>
@@ -94,7 +94,7 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="@ViewData["Profile"] nav-link text-white" href="/profile">
+                    <a class="@ViewData["Profile"] nav-link text-white" href="~/profile">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
@@ -102,11 +102,11 @@
                     </a>
                 </li
                 <li class="nav-item">
-                    <a class="@ViewData["CreateUser"] nav-link text-white " href="~/users/CreateUser">
+                    <a class="@ViewData["CreateUser"] nav-link text-white " href="~/users">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons text-lg position-relative">person_add</i>
+                            <i class="material-icons text-lg position-relative">people</i>
                         </div>
-                        <span class="nav-link-text ms-1">Create User</span>
+                        <span class="nav-link-text ms-1">Users</span>
                     </a>
                 </li>
            
@@ -115,7 +115,7 @@
 
         <div class="sidenav-footer position-absolute w-100 bottom-0 ">
             <div class="mx-3 d-xl-none">
-                <a class="btn bg-gradient-warning w-100" href="/" type="button">LogOut</a>
+                <a class="btn bg-gradient-warning w-100" href="~/account/logout" type="button">LogOut</a>
             </div>
         </div>
     </aside>

@@ -81,6 +81,109 @@ namespace MomoSwitchPortal.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<IActionResult> ActivateAccount([FromQuery] string username, [FromQuery] string key) //Signin
+        {
+            try
+            {             
+                var viewModel = new ForgotPasswordUsernameViewModel();
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(key))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                var db = new MomoSwitchDbContext();
+                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == username.ToLower());
+
+                if (userInDatabase == null)
+                {
+                    Log.Write("AccountController:ForgotPassword", $"eRR: User with username: {username} doesn't exist");                
+                    return View("Error");
+                }
+
+                if (userInDatabase.IsActive)
+                {
+                    Log.Write("Users:ValidateUserKey", $"eRR: User with username: {userInDatabase.Username} is already activated");
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (userInDatabase.UserKey != key)
+                {
+                    Log.Write("Users:ValidateUserKey", $"eRR: Invalid Key");                   
+                    return View("Error");
+                }
+
+                var fpViewModel = new ForgotPasswordViewModel
+                {
+                    Username = username
+                };
+                return View(fpViewModel);
+
+            }
+            catch (Exception ex)
+            {
+                Log.Write("AccountController:ActivateAccount", $"eRR: {ex.Message}. User:{username}");
+                ModelState.AddModelError("", "Something went wrong. Please try again later");
+                var viewModel = new ForgotPasswordUsernameViewModel();
+                return View(viewModel);
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivateAccount(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var db = new MomoSwitchDbContext();
+                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == model.Username.ToLower());
+
+                if (userInDatabase == null)
+                {
+                    Log.Write("AccountController:ActivateAccount", $"eRR: User with username: {model.Username} doesn't exist");
+                    ModelState.AddModelError("", "Something went wrong. Please try again");
+                    return View(model);
+                }
+
+                if (userInDatabase.IsActive)
+                {
+                    Log.Write("Users:ValidateUserKey", $"eRR: User with username: {userInDatabase.Username} is already activated");
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (userInDatabase.UserKey != model.Key)
+                {
+                    Log.Write("AccountController:ActivateAccount", $"eRR: Invalid UserKey");
+                    ModelState.AddModelError("", "Invalid Key");
+                    return View(model);
+                }
+
+
+                var passwordHash = commonUtilities.GetPasswordHash(model.Password);
+
+                userInDatabase.Password = passwordHash;
+                userInDatabase.UserKey = string.Empty;
+                userInDatabase.ModifyDate = DateTime.Now;
+                userInDatabase.IsActive = true;
+                await db.SaveChangesAsync();
+
+                return RedirectToAction("Signin");
+            }
+            catch (Exception ex)
+            {
+                Log.Write("AccountController:ActivateAccount", $"eRR: {ex.Message}. User:{model.Username}");
+                ModelState.AddModelError("", "Something went wrong. Please try again later");
+                return View("ForgotPassword", model);
+
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromQuery] string username, [FromQuery] string key) //Signin
         {
             try
@@ -159,7 +262,7 @@ namespace MomoSwitchPortal.Controllers
                 if (!userInDatabase.IsActive)
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: User with username: {userInDatabase.Username} is deactivated");
-                    ModelState.AddModelError("", "Your account has been deactivated. Please contact the administrator for further assistance.");
+                    ModelState.AddModelError("", "Your account has been deactivated.");
                     return View("ForgotPassword", model);
 
                 }
@@ -167,9 +270,8 @@ namespace MomoSwitchPortal.Controllers
                 if (userInDatabase.UserKey != model.Key)
                 {
                     Log.Write("AccountController:ResetPassword", $"eRR: Invalid UserKey");
-                    ModelState.AddModelError("", "Invalid UserKey");
+                    ModelState.AddModelError("", "Invalid Key");
                     return View("ForgotPassword", model);
-
                 }
 
 
@@ -237,7 +339,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     //log here
                     Log.Write($"AccountController:ForgotPassword", $"Account deactivated. Username: {model.Username} ");
-                    ModelState.AddModelError("", "Your account has been deactivated. Please contact the administrator for further assistance.");
+                    ModelState.AddModelError("", "Your account has been deactivated.");
                     return View("EnterEmail", model);
 
                 }

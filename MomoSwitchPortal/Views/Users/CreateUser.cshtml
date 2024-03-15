@@ -31,11 +31,7 @@
             </div>
             <div class="col-6 mb-3">
                 <label for="userType" class="form-label font-weight-bold">User Type</label>
-                <select class="form-select px-3" id="userType" name="Role" required>
-                    <option value="" selected disabled>Select User Type</option>
-                    <option value="Administrator">Administrator</option>
-                    <option value="Ordinary">Ordinary</option>
-                </select>
+                @Html.DropDownListFor(x => x.Role, ViewBag.roles as SelectList, "Select User Type", new { @Class = "form-control border px-3", @title = " User Type", @required = true })
             </div>
         </div>
       

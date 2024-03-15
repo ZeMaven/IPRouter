@@ -14,7 +14,8 @@ namespace MomoSwitchPortal.Actions
     public interface IUser
     {
         Task<ResponseHeader> CreateUser(CreateUserViewModel model);
-        Task<UserListViewModel> UserList(int pageNumber, int pageSize, string username = null);
+        Task<UserListViewModel> UserList(int pageNumber, int pageSize, PortalUserTb loggedInUser, string username = null);
+        Task<ResponseHeader> EditUser(EditUserViewModel user);
     }
     public class User : IUser
     {
@@ -108,7 +109,7 @@ namespace MomoSwitchPortal.Actions
                 var result = await Email.SendEmail(new MailRequest
                 {
                     Subject = "Welcome to Momo Router Portal",
-                    Body = $"Welcome to Momo Router Portal, \n \n Click here to finish setting up your account: \n {currentUrl}/account/forgotpassword?username={newUser.Username}&key={key} \n \n Yours truly,\nThe ETG Team",
+                    Body = $"Welcome to Momo Router Portal, \n \n Click here to finish setting up your account: \n {currentUrl}/account/activateaccount?username={newUser.Username}&key={key} \n \n Yours truly,\nThe ETG Team",
                     FromName = "Coralpay",
                     From = "Corlpay",
                     To = newUser.Username,
@@ -142,25 +143,23 @@ namespace MomoSwitchPortal.Actions
             }
         }
 
-        public async Task<UserListViewModel> UserList(int pageNumber, int pageSize, string username = null)
+        public async Task<ResponseHeader> EditUser(EditUserViewModel user)
         {
             try
             {
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = _contextAccessor.HttpContext.GetLoggedInUser();
 
-                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());              
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Id == user.Id);
 
                 if (loggedInUserInDatabase == null)
                 {
-                    Log.Write("User:UserList", $"eRR: Logged in user not gotten");
-                    return new UserListViewModel
+                    Log.Write("User:EditUser", $"eRR: Logged in user not gotten");
+                    return new ResponseHeader
                     {
-                        ResponseHeader = new ResponseHeader
-                        {
-                            ResponseCode = "01",
-                            ResponseMessage = "Something went wrong. Please try again"
-                        }                       
+                        ResponseCode = "01",
+                        ResponseMessage = "Something went wrong. Please try again"
                     };
 
                 }
@@ -168,36 +167,69 @@ namespace MomoSwitchPortal.Actions
                 if (!loggedInUserInDatabase.IsActive)
                 {
                     //should they be logged out?
-                    Log.Write("User:UserList", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
-                    return new UserListViewModel
+                    Log.Write("User:EditUser", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return new ResponseHeader
                     {
-                        ResponseHeader = new ResponseHeader
-                        {
-                            ResponseCode = "01",
-                            ResponseMessage = "Your account has been deactivated. Please contact the administrator for further assistance."
-                        }
-                      
+                        ResponseCode = "01",
+                        ResponseMessage = "Your account has been deactivated."
                     };
 
                 }
 
                 if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
                 {
-                    Log.Write("User:UserList", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
-                    return new UserListViewModel
+                    Log.Write("User:EditUser", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                    return new ResponseHeader
                     {
-                        ResponseHeader = new ResponseHeader
-                        {
-                            ResponseCode = "01",
-                            ResponseMessage = "You are not authorized to complete this action"
-                        }                       
+                        ResponseCode = "01",
+                        ResponseMessage = "You are not authorized to complete this action"
                     };
                 }
 
+                if (userInDatabase == null)
+                {
+                    Log.Write("User:EditUser", $"eRR: User doesn't exist");
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Something went wrong. Please try again"
+                    };
+
+                }
+
+                userInDatabase.FirstName = user.FirstName;
+                userInDatabase.LastName = user.LastName;
+                userInDatabase.Role = user.Role;
+                userInDatabase.IsActive = user.IsActive;
+                await db.SaveChangesAsync();
+
+                return new ResponseHeader
+                {
+                    ResponseCode = "00",
+                    ResponseMessage = "User updated successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Write("User:EditUser", $"eRR: {ex.Message}");
+                return new ResponseHeader
+                {
+                    ResponseCode = "01",
+                    ResponseMessage = "Something went wrong"
+                };
+            }
+        }
+
+        public async Task<UserListViewModel> UserList(int pageNumber, int pageSize, PortalUserTb loggedInUser, string username = null)
+        {
+            try
+            {
+                var db = new MomoSwitchDbContext();               
+                
                 var userList = new List<UserDetailsViewModel>();
                 if (!string.IsNullOrWhiteSpace(username))
                 {
-                    userList = await db.PortalUserTb.Where(x => x.Username.Contains(username)).Select(x => new UserDetailsViewModel
+                    userList = await db.PortalUserTb.Where(x => x.Username.Contains(username) && x.Id != loggedInUser.Id).Select(x => new UserDetailsViewModel
                     {
                         EntryDate = x.EntryDate,
                         FirstName = x.FirstName,
@@ -211,7 +243,7 @@ namespace MomoSwitchPortal.Actions
 
                 else
                 {
-                    userList = await db.PortalUserTb.Select(x => new UserDetailsViewModel
+                    userList = await db.PortalUserTb.Where(x => x.Id != loggedInUser.Id).Select(x => new UserDetailsViewModel
                     {
                         EntryDate = x.EntryDate,
                         FirstName = x.FirstName,
@@ -237,7 +269,14 @@ namespace MomoSwitchPortal.Actions
             catch (Exception ex)
             {
                 Log.Write("User:UserList", $"eRR: {ex.Message}");
-                return new UserListViewModel();
+                return new UserListViewModel
+                {
+                    ResponseHeader = new ResponseHeader
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Something went wrong"
+                    }
+                };
             }
         }
     }

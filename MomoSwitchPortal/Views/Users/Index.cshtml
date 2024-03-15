@@ -11,11 +11,16 @@
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
                     <h6 class="text-white text-capitalize ps-3">User List</h6>
+                    <a href="/users/createuser" class="text-decoration-none">
+                        <button class="btn btn-dark btn-sm me-3 my-0">+  Create User</button>
+                    </a>
                 </div>
 
             </div>
+           
             <div class="card-body px-0 pb-2">
                 <div class="container pb-3" style="margin-left: 20px;">
+                   
                     <form action="~/users" method="post">
                         <div class="row">
                             <div class="col-md-3">
@@ -27,13 +32,15 @@
                                 <button type="submit" class="btn btn-dark mt-2 ">Search</button>
                             </div>
                         </div>
-                    </form>
+                    </form>                   
                 </div>
                 <div class="table-responsive p-0">
                     <table class="table align-items-center justify-content-center mb-0">
                         <thead>
                             <tr>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder ">Username</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder ">Last Name</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder ">First Name</th>                                
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">User Type</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">is-Active</th>
                                 <th></th>
@@ -50,6 +57,14 @@
                                             <tr>
                                                 <td>
                                                     <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.Username</p>
+                                                </td>
+                                                
+                                                <td>
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.LastName</p>
+                                                </td>
+                                                
+                                                <td>
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.FirstName</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Role</p>

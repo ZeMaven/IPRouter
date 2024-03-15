@@ -1,58 +1,63 @@
 ﻿@model MomoSwitchPortal.Models.ViewModels.Account.ForgotPasswordUsernameViewModel
-
-<div class="flex justify-center h-screen">
-    <div class="w-[100%] input_wrap">
-        <div class="w-[464px] lg:mt-[10px] md:mt-[60px] sm:mt-[0px]  input_cont">
-            <a href="#" class="flex items-center justify-center biller_cont">
-                <img src="~/assets/images/coralpay.png" alt="billerone-logo" class="coralpaylogo">
-            </a>
-            <div class="sign-details w-full">
-                <div class=" flex items-center justify-center welcome_txt">
-                    <p class="lg:text-3xl md:text-3xl m:text-3xl text-2xl mr-[10px] text-[#000000] font-normal text-sans">
-                        Forgot Password
-                    </p>
-                </div>
-                <div class=" mt-[23px] mb-[54px] credentials-wrap">
-                    @if (!Model.EmailSent)
-                    {
-                        <p class=" text-center text-sm text-[rgba(0,0,0,0.7)] w-[350px] mx-auto">
-                            No worries enter your correct email, and an otp would be sent to it
-                        </p>
-
-                       
-                        <form action="~/account/forgotpassword" method="post">
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-                            <div>
-                                <div class="flex flex-col input-wrap relative lg:mb-5 md:mb-14 sm:mb-12 mb-12" id="username">
-                                    @Html.TextBoxFor(M => M.Username, new
-                                        {
-                                            @class = "brd h-[52px] mt-2 w-[100%] bg-[rgba(0,0,0,0.05)] focus:outline-0 focus:ring-0 relative z-0 rounded-[5px] px-5 border-0 placeholder:text-[rgba(0,0,0,0.5)]",
-                                            placeholder = "example@disbutePortal.com / example"
-                                        })
-                                    <label for="Username" class="font-normal form-label ease-in-out duration-300 px-1 whitespace-nowrap text-[14px]">Username</label>
-                               
-
-                                </div>
-                            </div>
-
-
-                            <button type="submit" class="flex items-center justify-center bil-btn-gradient text-base font-normal grad3 w-full h-[52px] first-letter text-[#F0F0F0] rounded-[5px]">Send Otp</button>
-
-
-
-                        </form>                        
-                    }
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                     @if (Model.EmailSent)
-{
-<div>
-    Check your mail bro
-</div>    
+@{
+    ViewData["Title"] = "Login page";
+    Layout = "AccountLayout";
 }
+<div class="card z-index-0 fadeIn3 fadeInBottom">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="border-radius-lg py-3 pe-1" style="background-color: #003E5F;">
+            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Forgot Password</h4>
+            <div class="row mt-3">
+                <div class="col-2 text-center ms-auto">
+                    <a class="btn btn-link px-3" href="https://www.facebook.com/MoMofromMTN/">
+                        <i class="fa fa-facebook text-white text-lg"></i>
+                    </a>
+                </div>
+                <div class="col-2 text-center px-1">
+                    <a class="btn btn-link px-3" href="https://www.instagram.com/momofrommtn/?igsh=MWx3ZWZoYTF5NmwzZw%3D%3D">
+                        <i class="fa fa-instagram text-white text-lg"></i>
+                    </a>
+                </div>
+                <div class="col-2 text-center me-auto">
+                    <a class="btn btn-link px-3" href="https://www.momo.ng/">
+                        <i class="fa fa-google text-white text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (!Model.EmailSent)
+        {
+            <p class=" text-center text-sm text-[rgba(0,0,0,0.7)] w-[350px] mx-auto">
+                No worries enter your correct username, and an email would be sent to it
+            </p>
+
+
+            <form action="~/account/forgotpassword" method="post" class="text-start">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div>
+                    <div class="input-group input-group-outline mb-3">
+                        @Html.TextBoxFor(M => M.Username, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Username"
+                            })
+                    </div>
+                </div>
+                <button type="submit" class="btn w-100 my-4 mb-2" style="background-color: #003E5F; color: white;">Submit</button>
+            </form>
+        }
+        @if (Model.EmailSent)
+        {
+            <div style="color:green;font-size:16px;">
+                Follow the steps sent to your email
+            </div>
+        }
+    </div>
+</div>
+
+                    

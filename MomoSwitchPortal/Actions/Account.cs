@@ -57,7 +57,7 @@ public class Account : IAccount
                 return new ResponseHeader
                 {
                     ResponseCode = "01",
-                    ResponseMessage = $"Your account has been deactivated. Please contact the administrator for further assistance."
+                    ResponseMessage = $"Your account has been deactivated."
 
                 };
             }
