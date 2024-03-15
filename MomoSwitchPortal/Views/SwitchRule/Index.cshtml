@@ -68,7 +68,7 @@
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                                                             <li><a class="dropdown-item" href="~/switchrule/edit/@Item.Id">Edit</a></li>                                                    
-                                                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                                                            <li><a class="dropdown-item confirmation" href="~/switchrule/delete/@Item.Id">Delete</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -84,3 +84,11 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $('.confirmation').on('click', function () {
+            return confirm('Are you sure you want to delete this item?');
+        });
+    </script>
+}

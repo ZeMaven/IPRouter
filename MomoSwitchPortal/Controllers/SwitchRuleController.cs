@@ -182,7 +182,7 @@ namespace MomoSwitchPortal.Controllers
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
                 var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
-                var existingUser = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == id);
+                var existingSwitch = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == id);
 
                 if (loggedInUserInDatabase == null)
                 {
@@ -197,7 +197,7 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Logout", "Account");
                 }
 
-                if (existingUser == null)
+                if (existingSwitch == null)
                 {
                     Log.Write("SwitchRuleController:Edit", $"eRR: Switch rule doesn't exist");
                     //return View("NotFound");
@@ -206,13 +206,13 @@ namespace MomoSwitchPortal.Controllers
 
                 var viewModel = new CreateSwitchRuleViewModel
                 {
-                    Id = existingUser.Id,
-                    IsActive = existingUser.IsActive,
-                    Processor = existingUser.Processor,
-                    IsDefault = existingUser.IsDefault,
-                    NameEnquiryUrl = existingUser.NameEnquiryUrl,
-                    TranQueryUrl = existingUser.TranQueryUrl,
-                    TransferUrl = existingUser.TransferUrl
+                    Id = existingSwitch.Id,
+                    IsActive = existingSwitch.IsActive,
+                    Processor = existingSwitch.Processor,
+                    IsDefault = existingSwitch.IsDefault,
+                    NameEnquiryUrl = existingSwitch.NameEnquiryUrl,
+                    TranQueryUrl = existingSwitch.TranQueryUrl,
+                    TransferUrl = existingSwitch.TransferUrl
                 };
 
 
@@ -240,7 +240,7 @@ namespace MomoSwitchPortal.Controllers
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
                 var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
-                var existingUser = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == model.Id);
+                var existingSwitch = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == model.Id);
 
                 if (loggedInUserInDatabase == null)
                 {
@@ -255,9 +255,9 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Logout", "Account");
                 }
 
-                if(existingUser == null)
+                if(existingSwitch == null)
                 {
-                    Log.Write("UserController:EditUser", $"eRR: User doesn't exist");
+                    Log.Write("SwitchRuleController:EditUser", $"eRR: Switch doesn't exist");
                     //return View("NotFound");
                     return RedirectToAction("Index"); //or error
                 }
@@ -290,5 +290,51 @@ namespace MomoSwitchPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var db = new MomoSwitchDbContext();
+                var loggedInUser = HttpContext.GetLoggedInUser();
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+                var existingSwitch = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == id);
+
+                if (loggedInUserInDatabase == null)
+                {
+                    Log.Write("SwitchRuleController:Delete", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("SwitchRuleController:Delete", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (existingSwitch == null)
+                {
+                    Log.Write("UserController:Delete", $"eRR: Switch doesn't exist");
+                    //return View("NotFound");
+                    return RedirectToAction("Index"); //or error
+                }
+
+                var result = await switchManager.Delete(id);
+
+                if (result.ResponseCode != "00")
+                {                 
+                    return RedirectToAction("Index");
+                }
+
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception ex)
+            {
+                Log.Write("SwitchRuleController:Delete", $"eRR: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

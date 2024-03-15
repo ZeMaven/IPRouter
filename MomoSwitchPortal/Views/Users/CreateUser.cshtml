@@ -12,22 +12,22 @@
     </div>
     <form action="~/users/createuser" method="post">
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
         <div class="row mb-3">
             <div class="col-6">
                 <label for="firstName" class="form-label font-weight-bold ">First Name</label>
-                <input type="text" name="FirstName"class="form-control border px-3 " id="firstName" placeholder="Enter First name" required>
+                <input type="text" name="FirstName"class="form-control border px-3 " id="firstName" placeholder="Enter First name" >
             </div>
             <div class="col-6">
                 <label for="lastName" class="form-label font-weight-bold ">Last Name</label>
-                <input type="text" name="LastName" class="form-control border px-3 " id="LastName" placeholder="Enter Last name" required>
+                <input type="text" name="LastName" class="form-control border px-3 " id="LastName" placeholder="Enter Last name" >
             </div>
         </div>
         <div class="row">
             <div class="col-6 mb-3">
                 <label for="email" class="form-label font-weight-bold">Username</label>
-                <input type="text" name="Username" class="form-control border px-3" id="Username" placeholder="Enter username" required>
+                <input type="text" name="Username" class="form-control border px-3" id="Username" placeholder="Enter username" >
             </div>
             <div class="col-6 mb-3">
                 <label for="userType" class="form-label font-weight-bold">User Type</label>

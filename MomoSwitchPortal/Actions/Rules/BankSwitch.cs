@@ -6,6 +6,7 @@ using MomoSwitchPortal.Models;
 using MomoSwitchPortal.Models.ViewModels.Rules.BankSwitch;
 using System.Text.Json;
 using Momo.Common.Models.Tables;
+using Microsoft.EntityFrameworkCore;
 
 namespace MomoSwitchPortal.Actions.Rules
 {
@@ -150,8 +151,9 @@ namespace MomoSwitchPortal.Actions.Rules
                 string JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("BankSwitch.Edit", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.BankSwitchTb.Where(x => x.Id == Request.Id).SingleOrDefault();
-                if (Data != null)
+                var Data = Db.BankSwitchTb.SingleOrDefault(x => x.Id == Request.Id);
+
+                if (Data == null)
                 {
                     Log.Write("BankSwitch.Edit", $"Rule not found: Id:{Request.Id}");
                     return new ResponseHeader()
@@ -161,6 +163,17 @@ namespace MomoSwitchPortal.Actions.Rules
                     };
                 }
 
+                var bankSwitchExists = await Db.BankSwitchTb.SingleOrDefaultAsync(x => x.BankCode == Request.BankCode && x.Processor == Request.Processor && x.Id != Request.Id);
+
+                if( bankSwitchExists != null)
+                {
+                    Log.Write("BankSwitch.Edit", $"Bank Switch Relationship already exists: Id:{bankSwitchExists.Id}");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Bank-Switch Relationship already exists"
+                    };
+                }
                 Data.Processor = Request.Processor;
                 Data.BankCode = Request.BankCode;
 
@@ -192,8 +205,8 @@ namespace MomoSwitchPortal.Actions.Rules
             {
                 Log.Write("BankSwitch.Delete", $"Request: {Id}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.BankSwitchTb.Where(x => x.Id == Id).ToList();
-                Db.Remove(Data);
+                var Data = Db.BankSwitchTb.SingleOrDefault(x => x.Id == Id);
+                Db.BankSwitchTb.Remove(Data);
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
                 {

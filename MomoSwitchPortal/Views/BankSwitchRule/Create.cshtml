@@ -1,0 +1,32 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.BankSwitch.CreateBankSwitchRuleViewModel
+@{
+    ViewData["Title"] = "Bank Switch page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Create Bank Switch</h2>
+        <a href="/bankswitchrule">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/bankswitchrule/create" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="processor" class="form-label font-weight-bold">Processor</label>
+                @Html.DropDownListFor(x => x.Processor, ViewBag.switches as SelectList, "Select Processor", new { @Class = "form-control border px-3", @title = " Select Processor", @required = true })
+            </div>
+            <div class="col-6 mb-3">
+                <label for="BankCode" class="form-label font-weight-bold">Bank Code</label>
+                <input type="text" name="BankCode" value="@Model?.BankCode" class="form-control border px-3" id="BankCode" placeholder="Bank Code">
+            </div>
+        </div>     
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>
+

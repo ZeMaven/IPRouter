@@ -4,6 +4,7 @@ using MomoSwitchPortal.Models.ViewModels.Rules.Switch;
 using System.Text.Json;
 using Momo.Common.Actions;
 using Momo.Common.Models.Tables;
+using Microsoft.EntityFrameworkCore;
 
 namespace MomoSwitchPortal.Actions.Rules
 {
@@ -206,8 +207,8 @@ namespace MomoSwitchPortal.Actions.Rules
             {
                 Log.Write("Switch.Delete", $"Request: {Id}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.SwitchTb.Where(x => x.Id == Id).ToList();
-                Db.Remove(Data);
+                var Data = await Db.SwitchTb.SingleOrDefaultAsync(x => x.Id == Id);
+                Db.SwitchTb.Remove(Data);
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
                 {
