@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -21,12 +22,15 @@ namespace MomoSwitchPortal.Controllers
         private readonly IAccount accountManager;
         private readonly ICommonUtilities commonUtilities;
         private readonly IEmail Email;
-        public AccountController(ILog log, IAccount account, IEmail email, ICommonUtilities commonUtilities)
+        private readonly INotyfService ToastNotification;
+
+        public AccountController(ILog log, IAccount account, IEmail email, ICommonUtilities commonUtilities, INotyfService toastNotification)
         {
             Log = log;
             accountManager = account;
             Email = email;
             this.commonUtilities = commonUtilities;
+            ToastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -81,46 +85,40 @@ namespace MomoSwitchPortal.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ActivateAccount([FromQuery] string username, [FromQuery] string key) //Signin
+        public async Task<IActionResult> ActivateAccount([FromQuery] string key) //Signin
         {
             try
             {             
                 var viewModel = new ForgotPasswordUsernameViewModel();
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(key))
+                if (string.IsNullOrWhiteSpace(key))
                 {
                     return RedirectToAction("Index", "Home");
                 }
                 var db = new MomoSwitchDbContext();
-                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == username.ToLower());
+                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.UserKey == key);
 
                 if (userInDatabase == null)
                 {
-                    Log.Write("AccountController:ForgotPassword", $"eRR: User with username: {username} doesn't exist");                
+                    Log.Write("AccountController:ActivateAccount", $"eRR: User with userKey: {key} doesn't exist");                
                     return View("Error");
                 }
 
                 if (userInDatabase.IsActive)
                 {
-                    Log.Write("Users:ValidateUserKey", $"eRR: User with username: {userInDatabase.Username} is already activated");
+                    Log.Write("AccountController:ActivateAccount", $"eRR: User with username: {userInDatabase.Username} is already activated");
                     return RedirectToAction("Index", "Home");
                 }
-
-                if (userInDatabase.UserKey != key)
-                {
-                    Log.Write("Users:ValidateUserKey", $"eRR: Invalid Key");                   
-                    return View("Error");
-                }
-
+              
                 var fpViewModel = new ForgotPasswordViewModel
                 {
-                    Username = username
+                    Username = userInDatabase.Username
                 };
                 return View(fpViewModel);
 
             }
             catch (Exception ex)
             {
-                Log.Write("AccountController:ActivateAccount", $"eRR: {ex.Message}. User:{username}");
+                Log.Write("AccountController:ActivateAccount", $"eRR: {ex.Message}. Userkey:{key}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
                 var viewModel = new ForgotPasswordUsernameViewModel();
                 return View(viewModel);
@@ -171,6 +169,8 @@ namespace MomoSwitchPortal.Controllers
                 userInDatabase.IsActive = true;
                 await db.SaveChangesAsync();
 
+
+                ToastNotification.Success("Account activated");
                 return RedirectToAction("Signin");
             }
             catch (Exception ex)
@@ -184,7 +184,7 @@ namespace MomoSwitchPortal.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([FromQuery] string username, [FromQuery] string key) //Signin
+        public async Task<IActionResult> ForgotPassword([FromQuery] string key) //Signin
         {
             try
             {
@@ -192,23 +192,23 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Index", "Home");
 
                 var viewModel = new ForgotPasswordUsernameViewModel();
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(key))
+                if (string.IsNullOrWhiteSpace(key))
                 {
                     return View("EnterEmail", viewModel);
                 }
                 var db = new MomoSwitchDbContext();
-                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == username.ToLower());
+                var userInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.UserKey == key);
 
                 if (userInDatabase == null)
                 {
-                    Log.Write("AccountController:ForgotPassword", $"eRR: User with username: {username} doesn't exist");
-                    ModelState.AddModelError("", "Something went wrong. Please try again");
+                    Log.Write("AccountController:ForgotPassword", $"eRR: User with userKey: {key} doesn't exist");
+                    ModelState.AddModelError("", "Invalid Key");
                     return View("EnterEmail", viewModel);
                 }
 
                 if (!userInDatabase.IsActive)
                 {
-                    Log.Write("Users:ValidateUserKey", $"eRR: User with username: {userInDatabase.Username} is deactivated");
+                    Log.Write("AccountController:ForgotPassword", $"eRR: User with username: {userInDatabase.Username} is deactivated");
                     ModelState.AddModelError("", "Your account has been deactivated. Please contact the administrator for further assistance.");
                     return View("EnterEmail", viewModel);
 
@@ -216,21 +216,21 @@ namespace MomoSwitchPortal.Controllers
 
                 if (userInDatabase.UserKey != key)
                 {
-                    Log.Write("Users:ValidateUserKey", $"eRR: Invalid UserKey");
-                    ModelState.AddModelError("", "Invalid UserKey");
+                    Log.Write("AccountController:ForgotPassword", $"eRR: Invalid UserKey");
+                    ModelState.AddModelError("", "Invalid Key");
                     return View("EnterEmail", viewModel);
                 }
 
                 var fpViewModel = new ForgotPasswordViewModel
                 {
-                    Username = username
+                    Username = userInDatabase.Username
                 };
                 return View(fpViewModel);
 
             }
             catch (Exception ex)
             {
-                Log.Write("AccountController:ForgotPassword", $"eRR: {ex.Message}. User:{username}");
+                Log.Write("AccountController:ForgotPassword", $"eRR: {ex.Message}. Key: {key}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
                 var viewModel = new ForgotPasswordUsernameViewModel();
                 return View("EnterEmail", viewModel);
@@ -290,6 +290,7 @@ namespace MomoSwitchPortal.Controllers
                 userInDatabase.ModifyDate = DateTime.Now;
                 await db.SaveChangesAsync();
 
+                ToastNotification.Success("Password changed successfully");
                 return RedirectToAction("Signin");
             }
             catch (Exception ex)
@@ -358,7 +359,7 @@ namespace MomoSwitchPortal.Controllers
                 var result = await Email.SendEmail(new MailRequest
                 {
                     Subject = "Reset your Momo Switch portal password",
-                    Body = $"Dear {userInDatabase.FirstName}, \n \n To reset your password click the link below: \n {currentUrl}/account/forgotpassword?username={userInDatabase.Username}&key={key} \n \n Yours truly,\nThe ETG Team",
+                    Body = $"Dear {userInDatabase.FirstName}, \n \n To reset your password click the link below: \n {currentUrl}/account/forgotpassword?key={key} \n \n Yours truly,\nThe ETG Team",
                     FromName = "Coralpay",
                     From = "Corlpay",
                     To = userInDatabase.Username,

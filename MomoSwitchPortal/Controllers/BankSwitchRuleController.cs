@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +18,14 @@ namespace MomoSwitchPortal.Controllers
         private ILog Log;
         private readonly IBankSwitch bankSwitchManager;
         private readonly ISwitch switchManager;
+        private readonly INotyfService ToastNotification;
 
-        public BankSwitchRuleController(IBankSwitch bankSwitchManager, ILog log, ISwitch switchManager)
+        public BankSwitchRuleController(IBankSwitch bankSwitchManager, ILog log, ISwitch switchManager, INotyfService toastNotification)
         {
             this.bankSwitchManager = bankSwitchManager;
             Log = log;
             this.switchManager = switchManager;
+            ToastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -182,6 +185,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Bank-switch created successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -298,6 +302,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Bank-switch modified successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

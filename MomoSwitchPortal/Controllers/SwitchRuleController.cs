@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,13 @@ namespace MomoSwitchPortal.Controllers
     {
         private ILog Log;
         private readonly ISwitch switchManager;
-        public SwitchRuleController(ILog log, ISwitch switchManager)
+        private readonly INotyfService ToastNotification;
+
+        public SwitchRuleController(ILog log, ISwitch switchManager, INotyfService toastNotification)
         {
             Log = log;
             this.switchManager = switchManager;
+            ToastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -50,6 +54,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     return View("Error");
                 }
+
 
                 return View(result);
             }
@@ -149,7 +154,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     IsActive = model.IsActive,
                     Processor = model.Processor,
-                    IsDefault = model.IsDefault,
+                    IsDefault = false,
                     NameEnquiryUrl = model.NameEnquiryUrl,
                     TranQueryUrl = model.TranQueryUrl,
                     TransferUrl = model.TransferUrl
@@ -162,6 +167,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Switch created successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -281,6 +287,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Switch edited successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -290,51 +297,51 @@ namespace MomoSwitchPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                var db = new MomoSwitchDbContext();
-                var loggedInUser = HttpContext.GetLoggedInUser();
-                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
-                var existingSwitch = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == id);
+        //[HttpGet]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var db = new MomoSwitchDbContext();
+        //        var loggedInUser = HttpContext.GetLoggedInUser();
+        //        var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+        //        var existingSwitch = await db.SwitchTb.SingleOrDefaultAsync(x => x.Id == id);
 
-                if (loggedInUserInDatabase == null)
-                {
-                    Log.Write("SwitchRuleController:Delete", $"eRR: Logged in user not gotten");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (loggedInUserInDatabase == null)
+        //        {
+        //            Log.Write("SwitchRuleController:Delete", $"eRR: Logged in user not gotten");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                if (!loggedInUserInDatabase.IsActive)
-                {
-                    //should they be logged out?
-                    Log.Write("SwitchRuleController:Delete", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (!loggedInUserInDatabase.IsActive)
+        //        {
+        //            //should they be logged out?
+        //            Log.Write("SwitchRuleController:Delete", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                if (existingSwitch == null)
-                {
-                    Log.Write("UserController:Delete", $"eRR: Switch doesn't exist");
-                    //return View("NotFound");
-                    return RedirectToAction("Index"); //or error
-                }
+        //        if (existingSwitch == null)
+        //        {
+        //            Log.Write("UserController:Delete", $"eRR: Switch doesn't exist");
+        //            //return View("NotFound");
+        //            return RedirectToAction("Index"); //or error
+        //        }
 
-                var result = await switchManager.Delete(id);
+        //        var result = await switchManager.Delete(id);
 
-                if (result.ResponseCode != "00")
-                {                 
-                    return RedirectToAction("Index");
-                }
+        //        if (result.ResponseCode != "00")
+        //        {                 
+        //            return RedirectToAction("Index");
+        //        }
 
-                return RedirectToAction("Index");
+        //        return RedirectToAction("Index");
 
-            }
-            catch (Exception ex)
-            {
-                Log.Write("SwitchRuleController:Delete", $"eRR: {ex.Message}");
-                return RedirectToAction("Index");
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Write("SwitchRuleController:Delete", $"eRR: {ex.Message}");
+        //        return RedirectToAction("Index");
+        //    }
+        //}
     }
 }

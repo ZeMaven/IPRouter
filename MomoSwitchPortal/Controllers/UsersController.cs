@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,15 @@ namespace MomoSwitchPortal.Controllers
         private ILog Log;
         private readonly IUser userManager;
         private readonly ICommonUtilities commonUtilities;
+        private readonly INotyfService ToastNotification;
 
-        public UsersController(ILog log, IUser userManager, ICommonUtilities commonUtilities)
+
+        public UsersController(ILog log, IUser userManager, ICommonUtilities commonUtilities, INotyfService toastNotification)
         {
             Log = log;
             this.userManager = userManager;
             this.commonUtilities = commonUtilities;
+            ToastNotification = toastNotification;
         }
 
 
@@ -112,8 +116,7 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("UserController:Users", $"eRR: {ex.Message}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View("Error");
-
+                return View();
             }
         }
         [HttpGet]
@@ -155,6 +158,8 @@ namespace MomoSwitchPortal.Controllers
                 }
 
                 Log.Write($"UserController:CreateUser", $"User created successfully");
+
+                ToastNotification.Success("User created successfully");
                 return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)
@@ -230,6 +235,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("User modified successfully");
                 return RedirectToAction("Index");    
             }
             catch (Exception ex)

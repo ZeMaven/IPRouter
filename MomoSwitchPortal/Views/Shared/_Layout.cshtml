@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using MomoSwitchPortal.Models.Internals
+@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -45,8 +47,11 @@
                     </a>
                 </li>
             
-
-                <li class="nav-item dropdown">
+                  @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.Administrator.ToString())
+                    {
+                         <li class="nav-item dropdown">
                     <a class="@ViewData["RouterSetup"]   nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -97,6 +102,9 @@
                         </li>
                     </ul>
                 </li>
+                    }
+                }
+               
 
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
@@ -109,14 +117,22 @@
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
                 </li
-                <li class="nav-item">
-                    <a class="@ViewData["CreateUser"] nav-link text-white " href="~/users">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons text-lg position-relative">people</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Users</span>
-                    </a>
-                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if(User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.Administrator.ToString())
+                    {
+                         <li class="nav-item">
+                            <a class="@ViewData["CreateUser"] nav-link text-white " href="~/users">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons text-lg position-relative">people</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Users</span>
+                            </a>
+                         </li>
+                    }
+                   
+                }
+              
            
             </ul>
         </div>
@@ -442,5 +458,8 @@
     <script src="../lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="../lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    @await Component.InvokeAsync("Notyf")
+
 </body>
 </html>

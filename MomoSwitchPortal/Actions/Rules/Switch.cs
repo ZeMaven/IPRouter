@@ -123,6 +123,16 @@ namespace MomoSwitchPortal.Actions.Rules
                 string JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("Switch.Create", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
+                var processorExists = await Db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == Request.Processor.ToLower());
+
+                if(processorExists != null)
+                {
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = $"Processor with name {Request.Processor} already exists."
+                    };
+                }
                 Db.SwitchTb.Add(new SwitchTb
                 {
                     IsActive = Request.IsActive,
@@ -171,7 +181,15 @@ namespace MomoSwitchPortal.Actions.Rules
                         ResponseMessage = "System challenge"
                     };
                 }
+                var currentDefault = await Db.SwitchTb.SingleOrDefaultAsync(x => x.IsDefault);
 
+                if (Request.IsDefault && currentDefault != null)
+                {
+                    if(currentDefault.Id != Request.Id)
+                    {
+                        currentDefault.IsDefault = false;
+                    }
+                }
                 Data.TranQueryUrl = Request.TranQueryUrl;
                 Data.TransferUrl = Request.TransferUrl;
                 Data.NameEnquiryUrl = Request.NameEnquiryUrl;

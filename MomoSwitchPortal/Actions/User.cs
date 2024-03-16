@@ -109,7 +109,7 @@ namespace MomoSwitchPortal.Actions
                 var result = await Email.SendEmail(new MailRequest
                 {
                     Subject = "Welcome to Momo Router Portal",
-                    Body = $"Welcome to Momo Router Portal, \n \n Click here to finish setting up your account: \n {currentUrl}/account/activateaccount?username={newUser.Username}&key={key} \n \n Yours truly,\nThe ETG Team",
+                    Body = $"Welcome to Momo Router Portal, \n \n Click here to finish setting up your account: \n {currentUrl}/account/activateaccount?key={key} \n \n Yours truly,\nThe ETG Team",
                     FromName = "Coralpay",
                     From = "Corlpay",
                     To = newUser.Username,

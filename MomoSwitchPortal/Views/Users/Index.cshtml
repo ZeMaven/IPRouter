@@ -89,7 +89,17 @@
                                 }
                             }                                
                         </tbody>
-                    </table>                  
+                    </table>
+                    @{
+                        if (Model != null)
+                        {
+                            if (Model.UserList?.Count > 0)
+                            {
+                                @*@Model.ReportPagedList.PageCount < Model.ReportPagedList.PageNumber ? 0 : Model.ReportPagedList.PageNumber of @Model.ReportPagedList.PageCount*@
+                                @Html.PagedListPager(Model.UserList, page => Url.Action("Index", new { page }))
+                            }
+                        }
+                    }
                 </div>
             </div>
         </div>

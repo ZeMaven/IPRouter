@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
@@ -15,11 +16,14 @@ namespace MomoSwitchPortal.Controllers
         private ILog Log;
         private ICommonUtilities CommonUtilities;
         private readonly IProfile profileManager;
-        public ProfileController(ILog log, IProfile profileManager, ICommonUtilities commonUtilities)
+        private readonly INotyfService ToastNotification;
+
+        public ProfileController(ILog log, IProfile profileManager, ICommonUtilities commonUtilities, INotyfService toastNotification)
         {
             Log = log;
             this.profileManager = profileManager;
             CommonUtilities = commonUtilities;
+            ToastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -126,6 +130,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     //should they be logged out?
                     Log.Write("ProfileController:Edit", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    ToastNotification.Error("Your account is de-activated");
                     return RedirectToAction("Logout", "Account");
                 }
 
@@ -150,10 +155,13 @@ namespace MomoSwitchPortal.Controllers
                     loggedInUserInDatabase.Password = newPasswordHash;
                     loggedInUserInDatabase.ModifyDate = DateTime.Now;
                     await db.SaveChangesAsync();
+
+                    ToastNotification.Success("Password changed successfully23");
                     return RedirectToAction("Logout","Account");
                 }
                 await db.SaveChangesAsync();
 
+                ToastNotification.Success("Account modified successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

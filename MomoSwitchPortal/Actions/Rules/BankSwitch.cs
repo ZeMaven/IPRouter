@@ -117,6 +117,19 @@ namespace MomoSwitchPortal.Actions.Rules
                 string JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("BankSwitch.Create", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
+
+                var bankSwitchExists = await Db.BankSwitchTb.SingleOrDefaultAsync(x => x.BankCode == Request.BankCode && x.Processor.ToLower() == Request.Processor.ToLower());
+
+                if (bankSwitchExists != null)
+                {
+                    Log.Write("BankSwitch.Create", $"Bank Switch Relationship already exists: Id:{bankSwitchExists.Id}");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Bank-Switch Relationship already exists"
+                    };
+                }
+
                 Db.BankSwitchTb.Add(new BankSwitchTb
                 {
                     Processor = Request.Processor,

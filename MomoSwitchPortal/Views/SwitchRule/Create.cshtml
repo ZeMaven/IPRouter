@@ -21,7 +21,7 @@
             </div>
             <div class="col-6 mb-3">
                 <label for="TransferUrl" class="form-label font-weight-bold">Tranfer Url</label>
-                <input type="text" name="TransferUrl" value="@Model?.TransferUrl" class="form-control border px-3" id="TransferUrl" placeholder="ttps://....">
+                <input type="text" name="TransferUrl" value="@Model?.TransferUrl" class="form-control border px-3" id="TransferUrl" placeholder="https://....">
             </div>
         </div>
         <div class="row">
@@ -34,11 +34,7 @@
                 <input type="text" name="TranQueryUrl" value="@Model?.TranQueryUrl" class="form-control border px-3" id="TranQueryurl" placeholder="https: //....">
             </div>
         </div>
-        <div class="row">
-            <div class="col-6 mb-3">
-                <label for="isDefault" class="form-label font-weight-bold">Is-Default</label>
-                @Html.DropDownListFor(x => x.IsDefault, ViewBag.status as SelectList, "Select", new { @Class = "form-control border px-3", @title = " Is Default", @required = true })
-            </div>
+        <div class="row">       
             <div class="col-6 mb-3">
                 <label for="isActive" class="form-label font-weight-bold">Is-Active</label>
                 @Html.DropDownListFor(x => x.IsActive, ViewBag.status as SelectList, "Select", new { @Class = "form-control border px-3", @title = " Is Active", @required = true })
