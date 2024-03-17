@@ -25,7 +25,7 @@ namespace Momo.Common.Models.Tables
         public string PaymentReference { get; set; }
         [StringLength(50)]
         public string BenefBankCode { get; set; }
-        [StringLength(50)]
+        [StringLength(150)]
         public string BenefAccountName { get; set; }
         [StringLength(50)]
         public string BenefAccountNumber { get; set; }
@@ -49,12 +49,14 @@ namespace Momo.Common.Models.Tables
         public string ChannelCode { get; set; }
         [StringLength(50)]
         public string ManadateRef { get; set; }
-        [StringLength(50)]
+        [StringLength(150)]
         public string NameEnquiryRef { get; set; }
 
         public decimal Amount { get; set; }
         public decimal Fee { get; set; }
+        [StringLength(50)]
         public string ResponseCode { get; set; }
+        [StringLength(50)]
         public string ResponseMessage { get; set; }
     }
 }

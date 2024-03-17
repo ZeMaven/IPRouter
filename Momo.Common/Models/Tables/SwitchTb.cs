@@ -7,11 +7,11 @@ namespace Momo.Common.Models.Tables
         public int Id { get; set; }
         [StringLength(50)]
         public string Processor { get; set; }
-        [StringLength(50)]
+        [StringLength(250)]
         public string NameEnquiryUrl { get; set; }
-        [StringLength(50)]
+        [StringLength(250)]
         public string TransferUrl { get; set; }
-        [StringLength(50)]
+        [StringLength(250)]
         public string TranQueryUrl { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
