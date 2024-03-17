@@ -1,0 +1,39 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Amount.CreateAmountRuleViewModel
+@{
+    ViewData["Title"] = "Amount Rule page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit Amount Rule</h2>
+        <a href="/amountrule">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/amountrule/edit" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger font-weight-bold" })
+        @Html.HiddenFor(x => x.Id)
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="amountA" class="form-label font-weight-bold">Start Amount</label>
+                <input type="text" name="amountA" value="@Model?.AmountA" class="form-control border px-3" id="amountA" placeholder="NGN" required>
+            </div>
+
+            <div class="col-6 mb-3">
+                <label for="amountZ" class="form-label font-weight-bold">End Amount</label>
+                <input type="text" name="amountZ" value="@Model?.AmountZ" class="form-control border px-3" id="amountZ" placeholder="NGN" required>
+            </div>
+        </div>
+        <div class="col-6 mb-3">
+            <label for="processor" class="form-label font-weight-bold">Processor</label>
+            <input type="text" name="Processor" value="@Model?.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>
+

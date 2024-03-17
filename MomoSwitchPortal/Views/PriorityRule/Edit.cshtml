@@ -1,0 +1,34 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Priority.CreatePriorityRuleViewModel
+@{
+    ViewData["Title"] = "Priority Rule page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit Priority Rule</h2>
+        <a href="/priorityrule">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/priorityrule/edit" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger font-weight-bold" })
+        @Html.HiddenFor(x => x.Id)
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="rule" class="form-label font-weight-bold">Rule</label>
+                <input type="text" name="rule" value="@Model?.Rule" class="form-control border px-3" id="rule" placeholder="Rule" required>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="Priority" class="form-label font-weight-bold">Priority</label>
+                <input type="number" name="Priority" value="@Model?.Priority" class="form-control border px-3" id="Priority" placeholder="Priority" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>
+

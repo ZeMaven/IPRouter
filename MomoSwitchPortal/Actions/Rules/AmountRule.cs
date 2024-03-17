@@ -152,7 +152,7 @@ namespace MomoSwitchPortal.Actions.Rules
                 Log.Write("AmountRule.Edit", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
                 var Data = Db.AmountRuleTb.Where(x => x.Id == Request.Id).SingleOrDefault();
-                if (Data != null)
+                if (Data == null)
                 {
                     Log.Write("AmountRule.Edit", $"Rule not found: Id:{Request.Id}");
                     return new ResponseHeader()
@@ -194,8 +194,8 @@ namespace MomoSwitchPortal.Actions.Rules
             {
                 Log.Write("AmountRule.Delete", $"Request: {Id}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.AmountRuleTb.Where(x => x.Id == Id).ToList();
-                Db.Remove(Data);
+                var Data = Db.AmountRuleTb.SingleOrDefault(x => x.Id == Id);
+                Db.AmountRuleTb.Remove(Data);
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
                 {
