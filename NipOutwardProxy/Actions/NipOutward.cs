@@ -22,7 +22,7 @@ namespace NipOutwardProxy.Actions
         private readonly IHttpService HttpService;
         private readonly IPgp Pgp;
         private readonly IXmlConverter XmlConverter;
-        private readonly NibssPortClient Nip;
+        private NibssPortClient Nip;
 
         public NipOutward(IConfiguration config, ILog log, ICommonUtilities utilities, IHttpService httpService, IPgp pgp, IXmlConverter xmlConverter)
         {
