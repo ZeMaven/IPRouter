@@ -73,15 +73,11 @@
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.IsActive</p>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        <button class="btn btn-link text-secondary mb-0 " type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="material-icons text-md">more_vert</i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                                            <li><a class="dropdown-item" href="/edituser/@Item.Id">Edit</a></li>
-                                                            @*<li><a class="dropdown-item" href="#">Delete</a></li>*@
-                                                        </ul>
-                                                    </div>
+                                                    <a href="/edituser/@Item.Id">
+                                                        <i class="material-icons text-md text-secondary" data-bs-toggle="tooltip" title="Edit">edit</i>
+
+                                                    </a>
+
                                                 </td>
                                             </tr>
                                         }

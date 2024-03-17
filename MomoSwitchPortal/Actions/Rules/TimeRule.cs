@@ -10,6 +10,7 @@ namespace MomoSwitchPortal.Actions.Rules
     public interface ITimeRule
     {
         Task<ResponseHeader> Create(TimeDetails Request);
+        Task<ResponseHeader> Edit(TimeDetails Request);
         Task<ResponseHeader> Delete(int Id);
         TimeRuleResponse Get();
         TimeRuleResponse Get(int Id);
@@ -151,7 +152,7 @@ namespace MomoSwitchPortal.Actions.Rules
                 Log.Write("TimeRule.Edit", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
                 var Data = Db.TimeRuleTb.Where(x => x.Id == Request.Id).SingleOrDefault();
-                if (Data != null)
+                if (Data == null)
                 {
                     Log.Write("TimeRule.Edit", $"Rule not found: Id:{Request.Id}");
                     return new ResponseHeader()
@@ -194,8 +195,8 @@ namespace MomoSwitchPortal.Actions.Rules
             {
                 Log.Write("TimeRule.Delete", $"Request: {Id}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.TimeRuleTb.Where(x => x.Id == Id).ToList();
-                Db.Remove(Data);
+                var Data = Db.TimeRuleTb.SingleOrDefault(x => x.Id == Id);
+                Db.TimeRuleTb.Remove(Data);
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
                 {

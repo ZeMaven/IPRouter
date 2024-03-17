@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Momo.Common">
-      <HintPath>..\Momo.Common\bin\Debug\net7.0\Momo.Common.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Momo.Common\Momo.Common.csproj" />
   </ItemGroup>
 
 </Project>

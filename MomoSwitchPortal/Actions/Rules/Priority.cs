@@ -151,7 +151,7 @@ namespace MomoSwitchPortal.Actions.Rules
                 Log.Write("Priority.Edit", $"Request: {JsonStr}");
                 var Db = new MomoSwitchDbContext();
                 var Data = Db.PriorityTb.Where(x => x.Id == Request.Id).SingleOrDefault();
-                if (Data != null)
+                if (Data == null)
                 {
                     Log.Write("Priority.Edit", $"Rule not found: Id:{Request.Id}");
                     return new ResponseHeader()
@@ -192,8 +192,8 @@ namespace MomoSwitchPortal.Actions.Rules
             {
                 Log.Write("Priority.Delete", $"Request: {Id}");
                 var Db = new MomoSwitchDbContext();
-                var Data = Db.PriorityTb.Where(x => x.Id == Id).ToList();
-                Db.Remove(Data);
+                var Data = Db.PriorityTb.SingleOrDefault(x => x.Id == Id);
+                Db.PriorityTb.Remove(Data);
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
                 {

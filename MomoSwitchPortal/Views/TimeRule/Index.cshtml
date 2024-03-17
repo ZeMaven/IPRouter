@@ -1,6 +1,6 @@
-﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Switch.SwitchResponse
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Time.TimeRuleResponse
 @{
-    ViewData["Title"] = "Switch page";
+    ViewData["Title"] = "Time Rule page";
     ViewData["RouterSetup"] = "active bg-gradient-warning";
 }
 <div class="row">
@@ -8,18 +8,18 @@
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
-                    <h6 class="text-white text-capitalize ps-3">Switch Set-up</h6>
-                    <a href="~/switchrule/create" class="text-decoration-none">
+                    <h6 class="text-white text-capitalize ps-3">Time Rule</h6>
+                    <a href="~/timerule/create" class="text-decoration-none">
                         <button type="submit" class="btn btn-dark btn-sm me-3 my-0">+ Create</button>
                     </a>
                 </div>
             </div>
             <div class="card-body px-0 pb-2">
                 <div class="container pb-3 px-4">
-                    <form action="~/switchrule" method="post">
+                    <form action="~/timerule" method="post">
                         <div class="row">
                             <div class="col-sm-6 col-md-4 col-lg-3">
-                                <label for="Processor" class="form-label">Processor:</label>
+                                <label for="rule" class="form-label">Processor:</label>
                                 <input type="text" value="@Model.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="Processor">
                             </div>
 
@@ -33,10 +33,9 @@
                     <table class="table align-items-center justify-content-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xs font-weight-bolder ">Processor</th>
-                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Transfer Url</th>                                
-                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Is-Default</th>
-                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Is-Active</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder ">Start Time </th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">End Time </th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Processor</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -44,22 +43,19 @@
                             @{
                                 if (Model != null)
                                 {
-                                    if (Model.SwitchDetails.Count > 0)
+                                    if (Model.TimeDetails.Count > 0)
                                     {
-                                        foreach (var Item in Model.SwitchDetails)
+                                        foreach (var Item in Model.TimeDetails)
                                         {
                                             <tr>
                                                 <td>
-                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.Processor</p>
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.TimeA</p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.TransferUrl</p>
-                                                </td>                                             
-                                                <td class="align-middle text-center">
-                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.IsDefault</p>
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.TimeZ</p>
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.IsActive</p>
+                                                <td>
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Processor</p>
                                                 </td>
                                                 <td>
                                                     <div>
@@ -67,8 +63,8 @@
                                                             <i class="material-icons text-md">more_vert</i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                                            <li><a class="dropdown-item" href="~/switchrule/edit/@Item.Id">Edit</a></li>                                                    
-                                                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                                                            <li><a class="dropdown-item" href="~/timerule/edit/@Item.Id">Edit</a></li>
+                                                            <li><a class="dropdown-item confirmation" href="~/timerule/delete/@Item.Id">Delete</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -76,7 +72,7 @@
                                         }
                                     }
                                 }
-                            }                              
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -84,3 +80,11 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $('.confirmation').on('click', function () {
+            return confirm('Are you sure you want to delete this item?');
+        });
+    </script>
+}
