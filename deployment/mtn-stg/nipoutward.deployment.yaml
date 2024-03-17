@@ -32,6 +32,8 @@ spec:
         envFrom:
         - secretRef:
             name: nipoutward
+        - configMapRef:
+            name: nipoutward
       imagePullSecrets:
         - name: docker-cred
       volumes:
