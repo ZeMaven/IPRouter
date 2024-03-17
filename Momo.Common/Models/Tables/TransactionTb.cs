@@ -17,11 +17,11 @@ namespace Momo.Common.Models.Tables
         public DateTime? ValidateDate { get; set; }
         [StringLength(50)]
         public string Processor { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string TransactionId { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string SessionId { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string PaymentReference { get; set; }
         [StringLength(50)]
         public string BenefBankCode { get; set; }
@@ -33,7 +33,7 @@ namespace Momo.Common.Models.Tables
         public string BenefBvn { get; set; }
         [StringLength(50)]
         public string BenefKycLevel { get; set; }
-        [StringLength(50)]
+        [StringLength(200)]
         public string Narration { get; set; }
         [StringLength(50)]
         public string SourceAccountName { get; set; }
