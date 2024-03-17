@@ -18,6 +18,7 @@ builder.Services.AddScoped<IBankSwitch, BankSwitch>();
 builder.Services.AddScoped<ITimeRule, TimeRule>();
 builder.Services.AddScoped<IPriority, Priority>();
 builder.Services.AddScoped<IEmail, Email>();
+builder.Services.AddScoped<IHome, Home>();
 builder.Services.AddScoped<IProfile, Profile>();
 builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
 

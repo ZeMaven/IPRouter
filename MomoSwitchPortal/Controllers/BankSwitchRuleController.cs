@@ -350,6 +350,7 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Index");
                 }
 
+                ToastNotification.Success("Item deleted successfully");
                 return RedirectToAction("Index");
 
             }
