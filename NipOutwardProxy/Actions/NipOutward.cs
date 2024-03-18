@@ -2,7 +2,7 @@
 using Momo.Common.Models;
 using NipOutwardProxy.Models.Nibss;
 using System.Text.Json;
-using NipService;
+using NipService; 
 
 namespace NipOutwardProxy.Actions
 {
@@ -57,7 +57,8 @@ namespace NipOutwardProxy.Actions
                 Log.Write("NibssOutward.NameEnquiry", $"Request to Nibss xml: {XmlRequest}");
                 var EncRequest = Pgp.Ecryption(XmlRequest);
                 Log.Write("NibssOutward.NameEnquiry", $"Request to Nibss enc: {EncRequest}");
-                var NipResp = await Nip.nameenquirysingleitemAsync(EncRequest);
+                var NipResp = await Nip.nameenquirysingleitemAsync(EncRequest);               
+                Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss: {JsonSerializer.Serialize(NipResp)}");
                 var NibssResponseEnc = NipResp.Body.@return; 
 
                 Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss enc: {NibssResponseEnc}");
@@ -196,6 +197,9 @@ namespace NipOutwardProxy.Actions
                 var EncRequest = Pgp.Ecryption(XmlRequest);
                 Log.Write("NibssOutward.Transfer", $"Request to Nibss enc: {EncRequest}");
                 var NipResp = await Nip.fundtransfersingleitem_dcAsync(EncRequest);
+
+
+
                 var NibssResponseEnc = NipResp.Body.@return;
 
                 Log.Write("NibssOutward.Transfer", $"Response from Nibss enc: {NibssResponseEnc}");
