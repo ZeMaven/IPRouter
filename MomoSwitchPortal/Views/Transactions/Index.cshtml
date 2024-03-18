@@ -1,0 +1,148 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Transaction.TransactionViewModel
+@{
+    ViewData["Title"] = "Transaction List page";
+    ViewData["Transaction"] = "active bg-gradient-warning";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                    <h6 class="text-white text-capitalize ps-3">Transaction List</h6>
+                    <a href="" class="text-decoration-none">
+                       
+
+                            @if (Model != null)
+                            {
+                                if (Model.Transactions.Count > 0)
+                                {
+                                using (Html.BeginForm("DownloadTransactionsReport", "Transactions", FormMethod.Post))
+                                    {
+                                        <form>
+                                            @Html.HiddenFor(z => z.TransactionId)
+                                            @Html.HiddenFor(z => z.Processor)
+                                            @Html.HiddenFor(z => z.ResponseCode)                                            
+                                            @Html.HiddenFor(z => z.TranType)
+                                            @Html.HiddenFor(z => z.StartDate)
+                                            @Html.HiddenFor(z => z.EndDate)
+                                            <button type class="btn btn-dark btn-sm me-3 my-0">Download</button>
+
+                                        </form>
+                                    }
+                                }
+                            }
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="container pb-3" style="margin-left: 20px;">
+                    <form action="~/transactions" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="startDate" class="form-label">Start Date:</label>
+                                <input value="@Model?.StartDate" type="date" class="form-control border p-2" id="StartDate" name="StartDate">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="endDate" class="form-label">End Date:</label>
+                                <input type="date" value="@Model?.EndDate" class="form-control border p-2" id="EndDate" name="EndDate">
+                            </div>
+                          
+                            <div class="col-md-3">
+                                <label for="transactionId" class="form-label">Transaction ID:</label>
+                                <input type="text" value="@Model?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="TransactionId">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="Processor" class="form-label">Processor:</label>
+                                <input type="text" value="@Model?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="Processor">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="ResponseCode" class="form-label">Response Code:</label>
+                                <input type="text" value="@Model?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="ResponseCode">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="TranType" class="form-label">Tran Type:</label>
+                                @Html.DropDownListFor(x => x.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
+                            </div>
+                            <div class="col-md-3 align-self-end pt-4">
+                                <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                            </div>
+
+                        </div>
+                       
+                    </form>
+                </div>
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">S/N</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">Transaction Id</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  text-center ps-2">Amount</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Processor</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Source</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Beneficiary</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Response Code</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    if (Model.Transactions.Count > 0)
+                                    {
+                                        foreach (var Item in Model.Transactions)
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@(Model.Transactions.IndexOf(Item) + 1)</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.TransactionId</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Amount</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Processor</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.SourceBankCode</p>
+                                                </td>
+                                                
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.BenefBankCode</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.ResponseCode</p>
+                                                </td>
+                                                
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Date</p>
+                                                </td>
+                                                <td>
+                                                    <a href="~/transactions/@Item.Id" title="View Transaction Details" data-toggle="tooltip" data-placement="top">
+                                                        <i class="material-icons text-md">visibility</i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+                                    }
+                                }
+                            }                                                         
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

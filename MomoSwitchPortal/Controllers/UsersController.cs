@@ -43,20 +43,20 @@ namespace MomoSwitchPortal.Controllers
 
                 if (loggedInUserInDatabase == null)
                 {
-                    Log.Write("UserController:Users", $"eRR: Logged in user not gotten");
+                    Log.Write("UserController:Index", $"eRR: Logged in user not gotten");
                     return RedirectToAction("Logout", "Account");
                 }
 
                 if (!loggedInUserInDatabase.IsActive)
                 {
                     //should they be logged out?
-                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    Log.Write("UserController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
                     return RedirectToAction("Logout", "Account");
                 }
 
                 if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
                 {
-                    Log.Write("UserController:Users", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                    Log.Write("UserController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
                     return RedirectToAction("Index", "Home");//or unauthorzed
                 }
                 var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase);
@@ -70,7 +70,7 @@ namespace MomoSwitchPortal.Controllers
 			}
 			catch (Exception ex)
 			{
-                Log.Write("UserController:Users", $"eRR: {ex.Message}");             
+                Log.Write("UserController:Index", $"eRR: {ex.Message}");             
                 return View("Error");
             }
         }

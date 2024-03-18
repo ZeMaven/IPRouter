@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using MomoSwitchPortal.Models.ViewModels.Rules.Amount;
 
 namespace MomoSwitchPortal.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AmountRuleController : Controller
     {
         private ILog Log;
