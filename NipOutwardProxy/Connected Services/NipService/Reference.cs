@@ -12,417 +12,57 @@ namespace NipService
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.mtn.com/aggregator/nibss/", ConfigurationName="NipService.NibssPort")]
-    public interface NibssPort
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://core.nip.nibss/", ConfigurationName="NipService.NIPInterface")]
+    public interface NIPInterface
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> fundtransfersingleitem_dcAsync(NipService.fundtransfersingleitem_dcRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.accountunblockResponse> accountunblockAsync(NipService.accountunblockRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> fundtransfersingleitem_ddAsync(NipService.fundtransfersingleitem_ddRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> fundtransferAdvice_ddAsync(NipService.fundtransferAdvice_ddRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> fundtransferAdvice_dcAsync(NipService.fundtransferAdvice_dcRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.mandateadviceResponse> mandateadviceAsync(NipService.mandateadviceRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.amountunblockResponse> amountunblockAsync(NipService.amountunblockRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> financialinstitutionlistAsync(NipService.financialinstitutionlistRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NipService.balanceenquiryResponse> balanceenquiryAsync(NipService.balanceenquiryRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/nameenquirysingleitemRequest", ReplyAction="http://core.nip.nibss/NIPInterface/nameenquirysingleitemResponse")]
         System.Threading.Tasks.Task<NipService.nameenquirysingleitemResponse> nameenquirysingleitemAsync(NipService.nameenquirysingleitemRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/fundtransfersingleitem_dcRequest", ReplyAction="http://core.nip.nibss/NIPInterface/fundtransfersingleitem_dcResponse")]
+        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> fundtransfersingleitem_dcAsync(NipService.fundtransfersingleitem_dcRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/fundtransfersingleitem_ddRequest", ReplyAction="http://core.nip.nibss/NIPInterface/fundtransfersingleitem_ddResponse")]
+        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> fundtransfersingleitem_ddAsync(NipService.fundtransfersingleitem_ddRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/txnstatusquerysingleitemRequest", ReplyAction="http://core.nip.nibss/NIPInterface/txnstatusquerysingleitemResponse")]
+        System.Threading.Tasks.Task<NipService.txnstatusquerysingleitemResponse> txnstatusquerysingleitemAsync(NipService.txnstatusquerysingleitemRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/balanceenquiryRequest", ReplyAction="http://core.nip.nibss/NIPInterface/balanceenquiryResponse")]
+        System.Threading.Tasks.Task<NipService.balanceenquiryResponse> balanceenquiryAsync(NipService.balanceenquiryRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/amountblockRequest", ReplyAction="http://core.nip.nibss/NIPInterface/amountblockResponse")]
         System.Threading.Tasks.Task<NipService.amountblockResponse> amountblockAsync(NipService.amountblockRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/amountunblockRequest", ReplyAction="http://core.nip.nibss/NIPInterface/amountunblockResponse")]
+        System.Threading.Tasks.Task<NipService.amountunblockResponse> amountunblockAsync(NipService.amountunblockRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/accountblockRequest", ReplyAction="http://core.nip.nibss/NIPInterface/accountblockResponse")]
         System.Threading.Tasks.Task<NipService.accountblockResponse> accountblockAsync(NipService.accountblockRequest request);
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransfersingleitem_dcRequest
-    {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_dcRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransfersingleitem_dcRequest1;
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/accountunblockRequest", ReplyAction="http://core.nip.nibss/NIPInterface/accountunblockResponse")]
+        System.Threading.Tasks.Task<NipService.accountunblockResponse> accountunblockAsync(NipService.accountunblockRequest request);
         
-        public fundtransfersingleitem_dcRequest()
-        {
-        }
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/adjustNIPSettingsRequest", ReplyAction="http://core.nip.nibss/NIPInterface/adjustNIPSettingsResponse")]
+        System.Threading.Tasks.Task<NipService.adjustNIPSettingsResponse> adjustNIPSettingsAsync(NipService.adjustNIPSettingsRequest request);
         
-        public fundtransfersingleitem_dcRequest(string fundtransfersingleitem_dcRequest1)
-        {
-            this.fundtransfersingleitem_dcRequest1 = fundtransfersingleitem_dcRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransfersingleitem_dcResponse
-    {
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/mandateadviceRequest", ReplyAction="http://core.nip.nibss/NIPInterface/mandateadviceResponse")]
+        System.Threading.Tasks.Task<NipService.mandateadviceResponse> mandateadviceAsync(NipService.mandateadviceRequest request);
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_dcResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransfersingleitem_dcResponse1;
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/financialinstitutionlistRequest", ReplyAction="http://core.nip.nibss/NIPInterface/financialinstitutionlistResponse")]
+        System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> financialinstitutionlistAsync(NipService.financialinstitutionlistRequest request);
         
-        public fundtransfersingleitem_dcResponse()
-        {
-        }
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/fundtransferAdvice_dcRequest", ReplyAction="http://core.nip.nibss/NIPInterface/fundtransferAdvice_dcResponse")]
+        System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> fundtransferAdvice_dcAsync(NipService.fundtransferAdvice_dcRequest request);
         
-        public fundtransfersingleitem_dcResponse(string fundtransfersingleitem_dcResponse1)
-        {
-            this.fundtransfersingleitem_dcResponse1 = fundtransfersingleitem_dcResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class accountunblockRequest
-    {
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/fundtransferAdvice_ddRequest", ReplyAction="http://core.nip.nibss/NIPInterface/fundtransferAdvice_ddResponse")]
+        System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> fundtransferAdvice_ddAsync(NipService.fundtransferAdvice_ddRequest request);
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountunblockRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string accountunblockRequest1;
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/privateAdjustmentOfSettingsRequest", ReplyAction="http://core.nip.nibss/NIPInterface/privateAdjustmentOfSettingsResponse")]
+        System.Threading.Tasks.Task<NipService.privateAdjustmentOfSettingsResponse> privateAdjustmentOfSettingsAsync(NipService.privateAdjustmentOfSettingsRequest request);
         
-        public accountunblockRequest()
-        {
-        }
-        
-        public accountunblockRequest(string accountunblockRequest1)
-        {
-            this.accountunblockRequest1 = accountunblockRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class accountunblockResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountunblockResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string accountunblockResponse1;
-        
-        public accountunblockResponse()
-        {
-        }
-        
-        public accountunblockResponse(string accountunblockResponse1)
-        {
-            this.accountunblockResponse1 = accountunblockResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransfersingleitem_ddRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_ddRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransfersingleitem_ddRequest1;
-        
-        public fundtransfersingleitem_ddRequest()
-        {
-        }
-        
-        public fundtransfersingleitem_ddRequest(string fundtransfersingleitem_ddRequest1)
-        {
-            this.fundtransfersingleitem_ddRequest1 = fundtransfersingleitem_ddRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransfersingleitem_ddResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_ddResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransfersingleitem_ddResponse1;
-        
-        public fundtransfersingleitem_ddResponse()
-        {
-        }
-        
-        public fundtransfersingleitem_ddResponse(string fundtransfersingleitem_ddResponse1)
-        {
-            this.fundtransfersingleitem_ddResponse1 = fundtransfersingleitem_ddResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransferAdvice_ddRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_ddRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransferAdvice_ddRequest1;
-        
-        public fundtransferAdvice_ddRequest()
-        {
-        }
-        
-        public fundtransferAdvice_ddRequest(string fundtransferAdvice_ddRequest1)
-        {
-            this.fundtransferAdvice_ddRequest1 = fundtransferAdvice_ddRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransferAdvice_ddResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_ddResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransferAdvice_ddResponse1;
-        
-        public fundtransferAdvice_ddResponse()
-        {
-        }
-        
-        public fundtransferAdvice_ddResponse(string fundtransferAdvice_ddResponse1)
-        {
-            this.fundtransferAdvice_ddResponse1 = fundtransferAdvice_ddResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransferAdvice_dcRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_dcRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransferAdvice_dcRequest1;
-        
-        public fundtransferAdvice_dcRequest()
-        {
-        }
-        
-        public fundtransferAdvice_dcRequest(string fundtransferAdvice_dcRequest1)
-        {
-            this.fundtransferAdvice_dcRequest1 = fundtransferAdvice_dcRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class fundtransferAdvice_dcResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_dcResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string fundtransferAdvice_dcResponse1;
-        
-        public fundtransferAdvice_dcResponse()
-        {
-        }
-        
-        public fundtransferAdvice_dcResponse(string fundtransferAdvice_dcResponse1)
-        {
-            this.fundtransferAdvice_dcResponse1 = fundtransferAdvice_dcResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class mandateadviceRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="mandateadviceRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string mandateadviceRequest1;
-        
-        public mandateadviceRequest()
-        {
-        }
-        
-        public mandateadviceRequest(string mandateadviceRequest1)
-        {
-            this.mandateadviceRequest1 = mandateadviceRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class mandateadviceResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="mandateadviceResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string mandateadviceResponse1;
-        
-        public mandateadviceResponse()
-        {
-        }
-        
-        public mandateadviceResponse(string mandateadviceResponse1)
-        {
-            this.mandateadviceResponse1 = mandateadviceResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class amountunblockRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountunblockRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string amountunblockRequest1;
-        
-        public amountunblockRequest()
-        {
-        }
-        
-        public amountunblockRequest(string amountunblockRequest1)
-        {
-            this.amountunblockRequest1 = amountunblockRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class amountunblockResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountunblockResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string amountunblockResponse1;
-        
-        public amountunblockResponse()
-        {
-        }
-        
-        public amountunblockResponse(string amountunblockResponse1)
-        {
-            this.amountunblockResponse1 = amountunblockResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class financialinstitutionlistRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="financialinstitutionlistRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string financialinstitutionlistRequest1;
-        
-        public financialinstitutionlistRequest()
-        {
-        }
-        
-        public financialinstitutionlistRequest(string financialinstitutionlistRequest1)
-        {
-            this.financialinstitutionlistRequest1 = financialinstitutionlistRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class financialinstitutionlistResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="financialinstitutionlistResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string financialinstitutionlistResponse1;
-        
-        public financialinstitutionlistResponse()
-        {
-        }
-        
-        public financialinstitutionlistResponse(string financialinstitutionlistResponse1)
-        {
-            this.financialinstitutionlistResponse1 = financialinstitutionlistResponse1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class balanceenquiryRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="balanceenquiryRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string balanceenquiryRequest1;
-        
-        public balanceenquiryRequest()
-        {
-        }
-        
-        public balanceenquiryRequest(string balanceenquiryRequest1)
-        {
-            this.balanceenquiryRequest1 = balanceenquiryRequest1;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class balanceenquiryResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="balanceenquiryResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string balanceenquiryResponse1;
-        
-        public balanceenquiryResponse()
-        {
-        }
-        
-        public balanceenquiryResponse(string balanceenquiryResponse1)
-        {
-            this.balanceenquiryResponse1 = balanceenquiryResponse1;
-        }
+        [System.ServiceModel.OperationContractAttribute(Action="http://core.nip.nibss/NIPInterface/ftackcreditrequestRequest", ReplyAction="http://core.nip.nibss/NIPInterface/ftackcreditrequestResponse")]
+        System.Threading.Tasks.Task<NipService.ftackcreditrequestResponse> ftackcreditrequestAsync(NipService.ftackcreditrequestRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -432,16 +72,36 @@ namespace NipService
     public partial class nameenquirysingleitemRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="nameenquirysingleitemRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string nameenquirysingleitemRequest1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="nameenquirysingleitem", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.nameenquirysingleitemRequestBody Body;
         
         public nameenquirysingleitemRequest()
         {
         }
         
-        public nameenquirysingleitemRequest(string nameenquirysingleitemRequest1)
+        public nameenquirysingleitemRequest(NipService.nameenquirysingleitemRequestBody Body)
         {
-            this.nameenquirysingleitemRequest1 = nameenquirysingleitemRequest1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class nameenquirysingleitemRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public nameenquirysingleitemRequestBody()
+        {
+        }
+        
+        public nameenquirysingleitemRequestBody(string request)
+        {
+            this.request = request;
         }
     }
     
@@ -452,16 +112,356 @@ namespace NipService
     public partial class nameenquirysingleitemResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="nameenquirysingleitemResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string nameenquirysingleitemResponse1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="nameenquirysingleitemResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.nameenquirysingleitemResponseBody Body;
         
         public nameenquirysingleitemResponse()
         {
         }
         
-        public nameenquirysingleitemResponse(string nameenquirysingleitemResponse1)
+        public nameenquirysingleitemResponse(NipService.nameenquirysingleitemResponseBody Body)
         {
-            this.nameenquirysingleitemResponse1 = nameenquirysingleitemResponse1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class nameenquirysingleitemResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public nameenquirysingleitemResponseBody()
+        {
+        }
+        
+        public nameenquirysingleitemResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransfersingleitem_dcRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_dc", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransfersingleitem_dcRequestBody Body;
+        
+        public fundtransfersingleitem_dcRequest()
+        {
+        }
+        
+        public fundtransfersingleitem_dcRequest(NipService.fundtransfersingleitem_dcRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransfersingleitem_dcRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public fundtransfersingleitem_dcRequestBody()
+        {
+        }
+        
+        public fundtransfersingleitem_dcRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransfersingleitem_dcResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_dcResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransfersingleitem_dcResponseBody Body;
+        
+        public fundtransfersingleitem_dcResponse()
+        {
+        }
+        
+        public fundtransfersingleitem_dcResponse(NipService.fundtransfersingleitem_dcResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransfersingleitem_dcResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public fundtransfersingleitem_dcResponseBody()
+        {
+        }
+        
+        public fundtransfersingleitem_dcResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransfersingleitem_ddRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_dd", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransfersingleitem_ddRequestBody Body;
+        
+        public fundtransfersingleitem_ddRequest()
+        {
+        }
+        
+        public fundtransfersingleitem_ddRequest(NipService.fundtransfersingleitem_ddRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransfersingleitem_ddRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public fundtransfersingleitem_ddRequestBody()
+        {
+        }
+        
+        public fundtransfersingleitem_ddRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransfersingleitem_ddResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransfersingleitem_ddResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransfersingleitem_ddResponseBody Body;
+        
+        public fundtransfersingleitem_ddResponse()
+        {
+        }
+        
+        public fundtransfersingleitem_ddResponse(NipService.fundtransfersingleitem_ddResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransfersingleitem_ddResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public fundtransfersingleitem_ddResponseBody()
+        {
+        }
+        
+        public fundtransfersingleitem_ddResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class txnstatusquerysingleitemRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="txnstatusquerysingleitem", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.txnstatusquerysingleitemRequestBody Body;
+        
+        public txnstatusquerysingleitemRequest()
+        {
+        }
+        
+        public txnstatusquerysingleitemRequest(NipService.txnstatusquerysingleitemRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class txnstatusquerysingleitemRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public txnstatusquerysingleitemRequestBody()
+        {
+        }
+        
+        public txnstatusquerysingleitemRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class txnstatusquerysingleitemResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="txnstatusquerysingleitemResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.txnstatusquerysingleitemResponseBody Body;
+        
+        public txnstatusquerysingleitemResponse()
+        {
+        }
+        
+        public txnstatusquerysingleitemResponse(NipService.txnstatusquerysingleitemResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class txnstatusquerysingleitemResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public txnstatusquerysingleitemResponseBody()
+        {
+        }
+        
+        public txnstatusquerysingleitemResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class balanceenquiryRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="balanceenquiry", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.balanceenquiryRequestBody Body;
+        
+        public balanceenquiryRequest()
+        {
+        }
+        
+        public balanceenquiryRequest(NipService.balanceenquiryRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class balanceenquiryRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public balanceenquiryRequestBody()
+        {
+        }
+        
+        public balanceenquiryRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class balanceenquiryResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="balanceenquiryResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.balanceenquiryResponseBody Body;
+        
+        public balanceenquiryResponse()
+        {
+        }
+        
+        public balanceenquiryResponse(NipService.balanceenquiryResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class balanceenquiryResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public balanceenquiryResponseBody()
+        {
+        }
+        
+        public balanceenquiryResponseBody(string @return)
+        {
+            this.@return = @return;
         }
     }
     
@@ -472,16 +472,36 @@ namespace NipService
     public partial class amountblockRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountblockRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string amountblockRequest1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountblock", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.amountblockRequestBody Body;
         
         public amountblockRequest()
         {
         }
         
-        public amountblockRequest(string amountblockRequest1)
+        public amountblockRequest(NipService.amountblockRequestBody Body)
         {
-            this.amountblockRequest1 = amountblockRequest1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class amountblockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public amountblockRequestBody()
+        {
+        }
+        
+        public amountblockRequestBody(string request)
+        {
+            this.request = request;
         }
     }
     
@@ -492,16 +512,116 @@ namespace NipService
     public partial class amountblockResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountblockResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string amountblockResponse1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountblockResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.amountblockResponseBody Body;
         
         public amountblockResponse()
         {
         }
         
-        public amountblockResponse(string amountblockResponse1)
+        public amountblockResponse(NipService.amountblockResponseBody Body)
         {
-            this.amountblockResponse1 = amountblockResponse1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class amountblockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public amountblockResponseBody()
+        {
+        }
+        
+        public amountblockResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class amountunblockRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountunblock", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.amountunblockRequestBody Body;
+        
+        public amountunblockRequest()
+        {
+        }
+        
+        public amountunblockRequest(NipService.amountunblockRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class amountunblockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public amountunblockRequestBody()
+        {
+        }
+        
+        public amountunblockRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class amountunblockResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="amountunblockResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.amountunblockResponseBody Body;
+        
+        public amountunblockResponse()
+        {
+        }
+        
+        public amountunblockResponse(NipService.amountunblockResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class amountunblockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public amountunblockResponseBody()
+        {
+        }
+        
+        public amountunblockResponseBody(string @return)
+        {
+            this.@return = @return;
         }
     }
     
@@ -512,16 +632,36 @@ namespace NipService
     public partial class accountblockRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountblockRequest", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string accountblockRequest1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountblock", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.accountblockRequestBody Body;
         
         public accountblockRequest()
         {
         }
         
-        public accountblockRequest(string accountblockRequest1)
+        public accountblockRequest(NipService.accountblockRequestBody Body)
         {
-            this.accountblockRequest1 = accountblockRequest1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class accountblockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public accountblockRequestBody()
+        {
+        }
+        
+        public accountblockRequestBody(string request)
+        {
+            this.request = request;
         }
     }
     
@@ -532,27 +672,687 @@ namespace NipService
     public partial class accountblockResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountblockResponse", Namespace="http://www.mtn.com/aggregator/nibss/", Order=0)]
-        public string accountblockResponse1;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountblockResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.accountblockResponseBody Body;
         
         public accountblockResponse()
         {
         }
         
-        public accountblockResponse(string accountblockResponse1)
+        public accountblockResponse(NipService.accountblockResponseBody Body)
         {
-            this.accountblockResponse1 = accountblockResponse1;
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class accountblockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public accountblockResponseBody()
+        {
+        }
+        
+        public accountblockResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class accountunblockRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountunblock", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.accountunblockRequestBody Body;
+        
+        public accountunblockRequest()
+        {
+        }
+        
+        public accountunblockRequest(NipService.accountunblockRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class accountunblockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public accountunblockRequestBody()
+        {
+        }
+        
+        public accountunblockRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class accountunblockResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="accountunblockResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.accountunblockResponseBody Body;
+        
+        public accountunblockResponse()
+        {
+        }
+        
+        public accountunblockResponse(NipService.accountunblockResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class accountunblockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public accountunblockResponseBody()
+        {
+        }
+        
+        public accountunblockResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class adjustNIPSettingsRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="adjustNIPSettings", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.adjustNIPSettingsRequestBody Body;
+        
+        public adjustNIPSettingsRequest()
+        {
+        }
+        
+        public adjustNIPSettingsRequest(NipService.adjustNIPSettingsRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class adjustNIPSettingsRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public adjustNIPSettingsRequestBody()
+        {
+        }
+        
+        public adjustNIPSettingsRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class adjustNIPSettingsResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="adjustNIPSettingsResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.adjustNIPSettingsResponseBody Body;
+        
+        public adjustNIPSettingsResponse()
+        {
+        }
+        
+        public adjustNIPSettingsResponse(NipService.adjustNIPSettingsResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class adjustNIPSettingsResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public adjustNIPSettingsResponseBody()
+        {
+        }
+        
+        public adjustNIPSettingsResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mandateadviceRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mandateadvice", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.mandateadviceRequestBody Body;
+        
+        public mandateadviceRequest()
+        {
+        }
+        
+        public mandateadviceRequest(NipService.mandateadviceRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class mandateadviceRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public mandateadviceRequestBody()
+        {
+        }
+        
+        public mandateadviceRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mandateadviceResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mandateadviceResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.mandateadviceResponseBody Body;
+        
+        public mandateadviceResponse()
+        {
+        }
+        
+        public mandateadviceResponse(NipService.mandateadviceResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class mandateadviceResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public mandateadviceResponseBody()
+        {
+        }
+        
+        public mandateadviceResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class financialinstitutionlistRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="financialinstitutionlist", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.financialinstitutionlistRequestBody Body;
+        
+        public financialinstitutionlistRequest()
+        {
+        }
+        
+        public financialinstitutionlistRequest(NipService.financialinstitutionlistRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class financialinstitutionlistRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public financialinstitutionlistRequestBody()
+        {
+        }
+        
+        public financialinstitutionlistRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class financialinstitutionlistResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="financialinstitutionlistResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.financialinstitutionlistResponseBody Body;
+        
+        public financialinstitutionlistResponse()
+        {
+        }
+        
+        public financialinstitutionlistResponse(NipService.financialinstitutionlistResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class financialinstitutionlistResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public financialinstitutionlistResponseBody()
+        {
+        }
+        
+        public financialinstitutionlistResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransferAdvice_dcRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_dc", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransferAdvice_dcRequestBody Body;
+        
+        public fundtransferAdvice_dcRequest()
+        {
+        }
+        
+        public fundtransferAdvice_dcRequest(NipService.fundtransferAdvice_dcRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransferAdvice_dcRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public fundtransferAdvice_dcRequestBody()
+        {
+        }
+        
+        public fundtransferAdvice_dcRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransferAdvice_dcResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_dcResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransferAdvice_dcResponseBody Body;
+        
+        public fundtransferAdvice_dcResponse()
+        {
+        }
+        
+        public fundtransferAdvice_dcResponse(NipService.fundtransferAdvice_dcResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransferAdvice_dcResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public fundtransferAdvice_dcResponseBody()
+        {
+        }
+        
+        public fundtransferAdvice_dcResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransferAdvice_ddRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_dd", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransferAdvice_ddRequestBody Body;
+        
+        public fundtransferAdvice_ddRequest()
+        {
+        }
+        
+        public fundtransferAdvice_ddRequest(NipService.fundtransferAdvice_ddRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransferAdvice_ddRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public fundtransferAdvice_ddRequestBody()
+        {
+        }
+        
+        public fundtransferAdvice_ddRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class fundtransferAdvice_ddResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="fundtransferAdvice_ddResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.fundtransferAdvice_ddResponseBody Body;
+        
+        public fundtransferAdvice_ddResponse()
+        {
+        }
+        
+        public fundtransferAdvice_ddResponse(NipService.fundtransferAdvice_ddResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class fundtransferAdvice_ddResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public fundtransferAdvice_ddResponseBody()
+        {
+        }
+        
+        public fundtransferAdvice_ddResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class privateAdjustmentOfSettingsRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="privateAdjustmentOfSettings", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.privateAdjustmentOfSettingsRequestBody Body;
+        
+        public privateAdjustmentOfSettingsRequest()
+        {
+        }
+        
+        public privateAdjustmentOfSettingsRequest(NipService.privateAdjustmentOfSettingsRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class privateAdjustmentOfSettingsRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public privateAdjustmentOfSettingsRequestBody()
+        {
+        }
+        
+        public privateAdjustmentOfSettingsRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class privateAdjustmentOfSettingsResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="privateAdjustmentOfSettingsResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.privateAdjustmentOfSettingsResponseBody Body;
+        
+        public privateAdjustmentOfSettingsResponse()
+        {
+        }
+        
+        public privateAdjustmentOfSettingsResponse(NipService.privateAdjustmentOfSettingsResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class privateAdjustmentOfSettingsResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public privateAdjustmentOfSettingsResponseBody()
+        {
+        }
+        
+        public privateAdjustmentOfSettingsResponseBody(string @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ftackcreditrequestRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ftackcreditrequest", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.ftackcreditrequestRequestBody Body;
+        
+        public ftackcreditrequestRequest()
+        {
+        }
+        
+        public ftackcreditrequestRequest(NipService.ftackcreditrequestRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class ftackcreditrequestRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string request;
+        
+        public ftackcreditrequestRequestBody()
+        {
+        }
+        
+        public ftackcreditrequestRequestBody(string request)
+        {
+            this.request = request;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ftackcreditrequestResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ftackcreditrequestResponse", Namespace="http://core.nip.nibss/", Order=0)]
+        public NipService.ftackcreditrequestResponseBody Body;
+        
+        public ftackcreditrequestResponse()
+        {
+        }
+        
+        public ftackcreditrequestResponse(NipService.ftackcreditrequestResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="")]
+    public partial class ftackcreditrequestResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string @return;
+        
+        public ftackcreditrequestResponseBody()
+        {
+        }
+        
+        public ftackcreditrequestResponseBody(string @return)
+        {
+            this.@return = @return;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public interface NibssPortChannel : NipService.NibssPort, System.ServiceModel.IClientChannel
+    public interface NIPInterfaceChannel : NipService.NIPInterface, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public partial class NibssPortClient : System.ServiceModel.ClientBase<NipService.NibssPort>, NipService.NibssPort
+    public partial class NIPInterfaceClient : System.ServiceModel.ClientBase<NipService.NIPInterface>, NipService.NIPInterface
     {
         
         /// <summary>
@@ -562,193 +1362,261 @@ namespace NipService
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        public NibssPortClient() : 
-                base(NibssPortClient.GetDefaultBinding(), NibssPortClient.GetDefaultEndpointAddress())
+        public NIPInterfaceClient() : 
+                base(NIPInterfaceClient.GetDefaultBinding(), NIPInterfaceClient.GetDefaultEndpointAddress())
         {
-            this.Endpoint.Name = EndpointConfiguration.NibssPortSoap11.ToString();
+            this.Endpoint.Name = EndpointConfiguration.NIPInterfacePort.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public NibssPortClient(EndpointConfiguration endpointConfiguration) : 
-                base(NibssPortClient.GetBindingForEndpoint(endpointConfiguration), NibssPortClient.GetEndpointAddress(endpointConfiguration))
-        {
-            this.Endpoint.Name = endpointConfiguration.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public NibssPortClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
-                base(NibssPortClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
+        public NIPInterfaceClient(EndpointConfiguration endpointConfiguration) : 
+                base(NIPInterfaceClient.GetBindingForEndpoint(endpointConfiguration), NIPInterfaceClient.GetEndpointAddress(endpointConfiguration))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public NibssPortClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(NibssPortClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
+        public NIPInterfaceClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+                base(NIPInterfaceClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public NibssPortClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public NIPInterfaceClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(NIPInterfaceClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
+        {
+            this.Endpoint.Name = endpointConfiguration.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
+        }
+        
+        public NIPInterfaceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress)
         {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> NipService.NibssPort.fundtransfersingleitem_dcAsync(NipService.fundtransfersingleitem_dcRequest request)
-        {
-            return base.Channel.fundtransfersingleitem_dcAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> fundtransfersingleitem_dcAsync(string fundtransfersingleitem_dcRequest1)
-        {
-            NipService.fundtransfersingleitem_dcRequest inValue = new NipService.fundtransfersingleitem_dcRequest();
-            inValue.fundtransfersingleitem_dcRequest1 = fundtransfersingleitem_dcRequest1;
-            return ((NipService.NibssPort)(this)).fundtransfersingleitem_dcAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.accountunblockResponse> NipService.NibssPort.accountunblockAsync(NipService.accountunblockRequest request)
-        {
-            return base.Channel.accountunblockAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.accountunblockResponse> accountunblockAsync(string accountunblockRequest1)
-        {
-            NipService.accountunblockRequest inValue = new NipService.accountunblockRequest();
-            inValue.accountunblockRequest1 = accountunblockRequest1;
-            return ((NipService.NibssPort)(this)).accountunblockAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> NipService.NibssPort.fundtransfersingleitem_ddAsync(NipService.fundtransfersingleitem_ddRequest request)
-        {
-            return base.Channel.fundtransfersingleitem_ddAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> fundtransfersingleitem_ddAsync(string fundtransfersingleitem_ddRequest1)
-        {
-            NipService.fundtransfersingleitem_ddRequest inValue = new NipService.fundtransfersingleitem_ddRequest();
-            inValue.fundtransfersingleitem_ddRequest1 = fundtransfersingleitem_ddRequest1;
-            return ((NipService.NibssPort)(this)).fundtransfersingleitem_ddAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> NipService.NibssPort.fundtransferAdvice_ddAsync(NipService.fundtransferAdvice_ddRequest request)
-        {
-            return base.Channel.fundtransferAdvice_ddAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> fundtransferAdvice_ddAsync(string fundtransferAdvice_ddRequest1)
-        {
-            NipService.fundtransferAdvice_ddRequest inValue = new NipService.fundtransferAdvice_ddRequest();
-            inValue.fundtransferAdvice_ddRequest1 = fundtransferAdvice_ddRequest1;
-            return ((NipService.NibssPort)(this)).fundtransferAdvice_ddAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> NipService.NibssPort.fundtransferAdvice_dcAsync(NipService.fundtransferAdvice_dcRequest request)
-        {
-            return base.Channel.fundtransferAdvice_dcAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> fundtransferAdvice_dcAsync(string fundtransferAdvice_dcRequest1)
-        {
-            NipService.fundtransferAdvice_dcRequest inValue = new NipService.fundtransferAdvice_dcRequest();
-            inValue.fundtransferAdvice_dcRequest1 = fundtransferAdvice_dcRequest1;
-            return ((NipService.NibssPort)(this)).fundtransferAdvice_dcAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.mandateadviceResponse> NipService.NibssPort.mandateadviceAsync(NipService.mandateadviceRequest request)
-        {
-            return base.Channel.mandateadviceAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.mandateadviceResponse> mandateadviceAsync(string mandateadviceRequest1)
-        {
-            NipService.mandateadviceRequest inValue = new NipService.mandateadviceRequest();
-            inValue.mandateadviceRequest1 = mandateadviceRequest1;
-            return ((NipService.NibssPort)(this)).mandateadviceAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.amountunblockResponse> NipService.NibssPort.amountunblockAsync(NipService.amountunblockRequest request)
-        {
-            return base.Channel.amountunblockAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.amountunblockResponse> amountunblockAsync(string amountunblockRequest1)
-        {
-            NipService.amountunblockRequest inValue = new NipService.amountunblockRequest();
-            inValue.amountunblockRequest1 = amountunblockRequest1;
-            return ((NipService.NibssPort)(this)).amountunblockAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> NipService.NibssPort.financialinstitutionlistAsync(NipService.financialinstitutionlistRequest request)
-        {
-            return base.Channel.financialinstitutionlistAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> financialinstitutionlistAsync(string financialinstitutionlistRequest1)
-        {
-            NipService.financialinstitutionlistRequest inValue = new NipService.financialinstitutionlistRequest();
-            inValue.financialinstitutionlistRequest1 = financialinstitutionlistRequest1;
-            return ((NipService.NibssPort)(this)).financialinstitutionlistAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.balanceenquiryResponse> NipService.NibssPort.balanceenquiryAsync(NipService.balanceenquiryRequest request)
-        {
-            return base.Channel.balanceenquiryAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<NipService.balanceenquiryResponse> balanceenquiryAsync(string balanceenquiryRequest1)
-        {
-            NipService.balanceenquiryRequest inValue = new NipService.balanceenquiryRequest();
-            inValue.balanceenquiryRequest1 = balanceenquiryRequest1;
-            return ((NipService.NibssPort)(this)).balanceenquiryAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.nameenquirysingleitemResponse> NipService.NibssPort.nameenquirysingleitemAsync(NipService.nameenquirysingleitemRequest request)
+        System.Threading.Tasks.Task<NipService.nameenquirysingleitemResponse> NipService.NIPInterface.nameenquirysingleitemAsync(NipService.nameenquirysingleitemRequest request)
         {
             return base.Channel.nameenquirysingleitemAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NipService.nameenquirysingleitemResponse> nameenquirysingleitemAsync(string nameenquirysingleitemRequest1)
+        public System.Threading.Tasks.Task<NipService.nameenquirysingleitemResponse> nameenquirysingleitemAsync(string request)
         {
             NipService.nameenquirysingleitemRequest inValue = new NipService.nameenquirysingleitemRequest();
-            inValue.nameenquirysingleitemRequest1 = nameenquirysingleitemRequest1;
-            return ((NipService.NibssPort)(this)).nameenquirysingleitemAsync(inValue);
+            inValue.Body = new NipService.nameenquirysingleitemRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).nameenquirysingleitemAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.amountblockResponse> NipService.NibssPort.amountblockAsync(NipService.amountblockRequest request)
+        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> NipService.NIPInterface.fundtransfersingleitem_dcAsync(NipService.fundtransfersingleitem_dcRequest request)
+        {
+            return base.Channel.fundtransfersingleitem_dcAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.fundtransfersingleitem_dcResponse> fundtransfersingleitem_dcAsync(string request)
+        {
+            NipService.fundtransfersingleitem_dcRequest inValue = new NipService.fundtransfersingleitem_dcRequest();
+            inValue.Body = new NipService.fundtransfersingleitem_dcRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).fundtransfersingleitem_dcAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> NipService.NIPInterface.fundtransfersingleitem_ddAsync(NipService.fundtransfersingleitem_ddRequest request)
+        {
+            return base.Channel.fundtransfersingleitem_ddAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.fundtransfersingleitem_ddResponse> fundtransfersingleitem_ddAsync(string request)
+        {
+            NipService.fundtransfersingleitem_ddRequest inValue = new NipService.fundtransfersingleitem_ddRequest();
+            inValue.Body = new NipService.fundtransfersingleitem_ddRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).fundtransfersingleitem_ddAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.txnstatusquerysingleitemResponse> NipService.NIPInterface.txnstatusquerysingleitemAsync(NipService.txnstatusquerysingleitemRequest request)
+        {
+            return base.Channel.txnstatusquerysingleitemAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.txnstatusquerysingleitemResponse> txnstatusquerysingleitemAsync(string request)
+        {
+            NipService.txnstatusquerysingleitemRequest inValue = new NipService.txnstatusquerysingleitemRequest();
+            inValue.Body = new NipService.txnstatusquerysingleitemRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).txnstatusquerysingleitemAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.balanceenquiryResponse> NipService.NIPInterface.balanceenquiryAsync(NipService.balanceenquiryRequest request)
+        {
+            return base.Channel.balanceenquiryAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.balanceenquiryResponse> balanceenquiryAsync(string request)
+        {
+            NipService.balanceenquiryRequest inValue = new NipService.balanceenquiryRequest();
+            inValue.Body = new NipService.balanceenquiryRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).balanceenquiryAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.amountblockResponse> NipService.NIPInterface.amountblockAsync(NipService.amountblockRequest request)
         {
             return base.Channel.amountblockAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NipService.amountblockResponse> amountblockAsync(string amountblockRequest1)
+        public System.Threading.Tasks.Task<NipService.amountblockResponse> amountblockAsync(string request)
         {
             NipService.amountblockRequest inValue = new NipService.amountblockRequest();
-            inValue.amountblockRequest1 = amountblockRequest1;
-            return ((NipService.NibssPort)(this)).amountblockAsync(inValue);
+            inValue.Body = new NipService.amountblockRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).amountblockAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NipService.accountblockResponse> NipService.NibssPort.accountblockAsync(NipService.accountblockRequest request)
+        System.Threading.Tasks.Task<NipService.amountunblockResponse> NipService.NIPInterface.amountunblockAsync(NipService.amountunblockRequest request)
+        {
+            return base.Channel.amountunblockAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.amountunblockResponse> amountunblockAsync(string request)
+        {
+            NipService.amountunblockRequest inValue = new NipService.amountunblockRequest();
+            inValue.Body = new NipService.amountunblockRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).amountunblockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.accountblockResponse> NipService.NIPInterface.accountblockAsync(NipService.accountblockRequest request)
         {
             return base.Channel.accountblockAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NipService.accountblockResponse> accountblockAsync(string accountblockRequest1)
+        public System.Threading.Tasks.Task<NipService.accountblockResponse> accountblockAsync(string request)
         {
             NipService.accountblockRequest inValue = new NipService.accountblockRequest();
-            inValue.accountblockRequest1 = accountblockRequest1;
-            return ((NipService.NibssPort)(this)).accountblockAsync(inValue);
+            inValue.Body = new NipService.accountblockRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).accountblockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.accountunblockResponse> NipService.NIPInterface.accountunblockAsync(NipService.accountunblockRequest request)
+        {
+            return base.Channel.accountunblockAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.accountunblockResponse> accountunblockAsync(string request)
+        {
+            NipService.accountunblockRequest inValue = new NipService.accountunblockRequest();
+            inValue.Body = new NipService.accountunblockRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).accountunblockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.adjustNIPSettingsResponse> NipService.NIPInterface.adjustNIPSettingsAsync(NipService.adjustNIPSettingsRequest request)
+        {
+            return base.Channel.adjustNIPSettingsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.adjustNIPSettingsResponse> adjustNIPSettingsAsync(string request)
+        {
+            NipService.adjustNIPSettingsRequest inValue = new NipService.adjustNIPSettingsRequest();
+            inValue.Body = new NipService.adjustNIPSettingsRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).adjustNIPSettingsAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.mandateadviceResponse> NipService.NIPInterface.mandateadviceAsync(NipService.mandateadviceRequest request)
+        {
+            return base.Channel.mandateadviceAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.mandateadviceResponse> mandateadviceAsync(string request)
+        {
+            NipService.mandateadviceRequest inValue = new NipService.mandateadviceRequest();
+            inValue.Body = new NipService.mandateadviceRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).mandateadviceAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> NipService.NIPInterface.financialinstitutionlistAsync(NipService.financialinstitutionlistRequest request)
+        {
+            return base.Channel.financialinstitutionlistAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.financialinstitutionlistResponse> financialinstitutionlistAsync(string request)
+        {
+            NipService.financialinstitutionlistRequest inValue = new NipService.financialinstitutionlistRequest();
+            inValue.Body = new NipService.financialinstitutionlistRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).financialinstitutionlistAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> NipService.NIPInterface.fundtransferAdvice_dcAsync(NipService.fundtransferAdvice_dcRequest request)
+        {
+            return base.Channel.fundtransferAdvice_dcAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.fundtransferAdvice_dcResponse> fundtransferAdvice_dcAsync(string request)
+        {
+            NipService.fundtransferAdvice_dcRequest inValue = new NipService.fundtransferAdvice_dcRequest();
+            inValue.Body = new NipService.fundtransferAdvice_dcRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).fundtransferAdvice_dcAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> NipService.NIPInterface.fundtransferAdvice_ddAsync(NipService.fundtransferAdvice_ddRequest request)
+        {
+            return base.Channel.fundtransferAdvice_ddAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.fundtransferAdvice_ddResponse> fundtransferAdvice_ddAsync(string request)
+        {
+            NipService.fundtransferAdvice_ddRequest inValue = new NipService.fundtransferAdvice_ddRequest();
+            inValue.Body = new NipService.fundtransferAdvice_ddRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).fundtransferAdvice_ddAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.privateAdjustmentOfSettingsResponse> NipService.NIPInterface.privateAdjustmentOfSettingsAsync(NipService.privateAdjustmentOfSettingsRequest request)
+        {
+            return base.Channel.privateAdjustmentOfSettingsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.privateAdjustmentOfSettingsResponse> privateAdjustmentOfSettingsAsync(string request)
+        {
+            NipService.privateAdjustmentOfSettingsRequest inValue = new NipService.privateAdjustmentOfSettingsRequest();
+            inValue.Body = new NipService.privateAdjustmentOfSettingsRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).privateAdjustmentOfSettingsAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<NipService.ftackcreditrequestResponse> NipService.NIPInterface.ftackcreditrequestAsync(NipService.ftackcreditrequestRequest request)
+        {
+            return base.Channel.ftackcreditrequestAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<NipService.ftackcreditrequestResponse> ftackcreditrequestAsync(string request)
+        {
+            NipService.ftackcreditrequestRequest inValue = new NipService.ftackcreditrequestRequest();
+            inValue.Body = new NipService.ftackcreditrequestRequestBody();
+            inValue.Body.request = request;
+            return ((NipService.NIPInterface)(this)).ftackcreditrequestAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
@@ -758,7 +1626,7 @@ namespace NipService
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.NibssPortSoap11))
+            if ((endpointConfiguration == EndpointConfiguration.NIPInterfacePort))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -772,7 +1640,7 @@ namespace NipService
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.NibssPortSoap11))
+            if ((endpointConfiguration == EndpointConfiguration.NIPInterfacePort))
             {
                 return new System.ServiceModel.EndpointAddress("http://196.6.103.10:86/NIPWS/NIPInterface");
             }
@@ -781,18 +1649,18 @@ namespace NipService
         
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
-            return NibssPortClient.GetBindingForEndpoint(EndpointConfiguration.NibssPortSoap11);
+            return NIPInterfaceClient.GetBindingForEndpoint(EndpointConfiguration.NIPInterfacePort);
         }
         
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
-            return NibssPortClient.GetEndpointAddress(EndpointConfiguration.NibssPortSoap11);
+            return NIPInterfaceClient.GetEndpointAddress(EndpointConfiguration.NIPInterfacePort);
         }
         
         public enum EndpointConfiguration
         {
             
-            NibssPortSoap11,
+            NIPInterfacePort,
         }
     }
 }
