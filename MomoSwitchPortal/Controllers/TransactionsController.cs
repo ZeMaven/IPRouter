@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
 using Momo.Common.Models.Tables;
+using MomoSwitchPortal.Actions;
 using MomoSwitchPortal.Models.Database;
 using MomoSwitchPortal.Models.Internals;
 using MomoSwitchPortal.Models.ViewModels.Transaction;
 using OfficeOpenXml;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MomoSwitchPortal.Controllers
@@ -29,31 +32,145 @@ namespace MomoSwitchPortal.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int page)
         {
             try
             {
+                int pageSize = 5;
+                int pageNumber = (page == 0 ? 1 : page);
+
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
 
-                var db = new MomoSwitchDbContext();
-                var transactions = await db.TransactionTb.OrderByDescending(x => x.Date).Select(x => new TransactionTableViewModel
-                {
-                    Amount = x.Amount,
-                    BenefBankCode = x.BenefBankCode,
-                    Date = x.Date.ToString("MM/dd/yyyy"),
-                    Id = x.Id,
-                    ResponseCode = x.ResponseCode,
-                    Processor = x.Processor,
-                    ResponseMessage = x.ResponseMessage,
-                    SourceBankCode = x.SourceBankCode,
-                    TransactionId = x.TransactionId
-                }).ToListAsync();
+                var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
 
-                var viewModel = new TransactionViewModel
+                var db = new MomoSwitchDbContext();
+
+                var loggedInUser = HttpContext.GetLoggedInUser();
+
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+
+                if (loggedInUserInDatabase == null)
                 {
-                    Transactions = transactions
-                };
-                return View(viewModel);
+                    Log.Write("TransactionsController:Index", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("TransactionsController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
+                {
+                    Log.Write("TransactionsController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
+                    return RedirectToAction("Index", "Home");//or unauthorzed
+                }
+
+                if (page != 0 && TempData["TransactionFilterRequest"]?.ToString() != null)
+                {
+                    //  List<TransactionItem> Trans1 = JsonSerializer.Deserialize<List<TransactionItem>>(TempData["Tran"].ToString());
+
+                    var FilterRequest = JsonSerializer.Deserialize<TransactionViewModel>(TempData["TransactionFilterRequest"].ToString());
+
+                    var Data = await db.TransactionTb.OrderByDescending(x => x.Date).ToListAsync();
+                    if (!string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId))
+                    {
+                        Data = Data.Where(x => x.TransactionId == FilterRequest.FilterRequest.TransactionId.Trim()).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor))
+                    {
+                        Data = Data.Where(x => x.Processor.ToLower().Contains(FilterRequest.FilterRequest.Processor.Trim().ToLower())).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode))
+                    {
+                        Data = Data.Where(x => x.ResponseCode == FilterRequest.FilterRequest.ResponseCode).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) && FilterRequest.FilterRequest.TranType == "INCOMING")
+                    {
+                        Data = Data.Where(x => x.BenefBankCode == institutionCode).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) && FilterRequest.FilterRequest.TranType == "OUTGOING")
+                    {
+                        Data = Data.Where(x => x.SourceBankCode == institutionCode).ToList();
+                    }
+
+                    if (FilterRequest.FilterRequest.StartDate != null)
+                    {
+                        var Date1 = DateTime.Parse(FilterRequest.FilterRequest.StartDate.ToString()).ToString("yyyy-MM-dd") + " 00:00:00";
+                        var startDate = DateTime.Parse(Date1);
+                        Data = Data.Where(x => x.Date >= Convert.ToDateTime(startDate)).ToList();
+                    }
+
+                    if (FilterRequest.FilterRequest.EndDate != null)
+                    {
+                        var Date2 = DateTime.Parse(FilterRequest.FilterRequest.EndDate.ToString()).ToString("yyyy-MM-dd") + " 23:59:59";
+                        var endDate = DateTime.Parse(Date2);
+
+                        Data = Data.Where(x => x.Date <= endDate).ToList();
+                    }
+
+
+                    int Count = Data.Count;
+                    Data = Data
+                   .Skip((pageNumber - 1) * pageSize)
+                   .Take(pageSize)
+                   .ToList();
+                   
+
+                    TempData.Keep();
+
+                    FilterRequest.Transactions = Data.Select(x => new TransactionTableViewModel
+                    {
+                        Amount = x.Amount,
+                        BenefBankCode = x.BenefBankCode,
+                        Date = x.Date.ToString("MM/dd/yyyy"),
+                        Id = x.Id,
+                        ResponseCode = x.ResponseCode,
+                        Processor = x.Processor,
+                        ResponseMessage = x.ResponseMessage,
+                        SourceBankCode = x.SourceBankCode,
+                        TransactionId = x.TransactionId
+                    }).ToList();
+                    FilterRequest.PaginationMetaData = new(Count, pageNumber, pageSize);
+
+                    return View(FilterRequest);
+                }
+
+
+                TransactionViewModel Trans = new();
+                await Task.Run((() =>
+                {
+                    Trans = new TransactionViewModel()
+                    {
+                        Transactions = db.TransactionTb.OrderByDescending(x => x.Date).Select(x => new TransactionTableViewModel
+                        {
+                            Amount = x.Amount,
+                            BenefBankCode = x.BenefBankCode,
+                            Date = x.Date.ToString("MM/dd/yyyy"),
+                            Id = x.Id,
+                            ResponseCode = x.ResponseCode,
+                            Processor = x.Processor,
+                            ResponseMessage = x.ResponseMessage,
+                            SourceBankCode = x.SourceBankCode,
+                            TransactionId = x.TransactionId
+                        }).ToList()
+                    };
+                }));
+
+                int Count2 = Trans.Transactions.Count;
+                Trans.Transactions = Trans.Transactions
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+               .ToList();
+
+                Trans.PaginationMetaData = new(Count2, pageNumber, pageSize);
+                return View(Trans);               
             }
             catch (Exception ex)
             {
@@ -64,56 +181,93 @@ namespace MomoSwitchPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(TransactionViewModel model, int? page)
+        public async Task<IActionResult> Index(TransactionViewModel model)
         {
             try
             {
+
+                TempData["TransactionFilterRequest"] = null;
+                int pageSize = 5;
+                int pageNumber = 1;
+           
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
 
                 var db = new MomoSwitchDbContext();
                 var Data = await db.TransactionTb.OrderByDescending(x => x.Date).ToListAsync();
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
 
-                if (!string.IsNullOrEmpty(model.TransactionId))
+                var filterRequest = new TransactionViewModel
                 {
-                    Data = Data.Where(x => x.TransactionId == model.TransactionId).ToList();
+                    FilterRequest = new TransactionFilterRequest
+                    {
+                        ResponseCode = model.FilterRequest.ResponseCode,
+                        Amount = model.FilterRequest.Amount,
+                        BenefBankCode = model.FilterRequest.BenefBankCode,
+                        EndDate = model.FilterRequest.EndDate,
+                        Processor = model.FilterRequest.Processor,
+                        SourceBankCode = model.FilterRequest.SourceBankCode,
+                        StartDate = model.FilterRequest.StartDate,
+                        TransactionId = model.FilterRequest.TransactionId,
+                        TranType = model.FilterRequest.TranType
+                    }
+                };
+
+
+
+                if (!string.IsNullOrEmpty(model.FilterRequest.TransactionId))
+                {
+                    Data = Data.Where(x => x.TransactionId == model.FilterRequest.TransactionId.Trim()).ToList();
                 }
                 
-                if (!string.IsNullOrEmpty(model.Processor))
+                if (!string.IsNullOrEmpty(model.FilterRequest.Processor))
                 {
-                    Data = Data.Where(x => x.Processor.Contains(model.Processor)).ToList();
+                    Data = Data.Where(x => x.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())).ToList();
                 }
                 
-                if (!string.IsNullOrEmpty(model.ResponseCode))
+                if (!string.IsNullOrEmpty(model.FilterRequest.ResponseCode))
                 {
-                    Data = Data.Where(x => x.ResponseCode == model.ResponseCode).ToList();
+                    Data = Data.Where(x => x.ResponseCode == model.FilterRequest.ResponseCode).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(model.TranType) && model.TranType == "INCOMING")
+                if (!string.IsNullOrEmpty(model.FilterRequest.TranType) && model.FilterRequest.TranType == "INCOMING")
                 {
                     Data = Data.Where(x => x.BenefBankCode == institutionCode).ToList();
                 }
                 
-                if (!string.IsNullOrEmpty(model.TranType) && model.TranType == "OUTGOING")
+                if (!string.IsNullOrEmpty(model.FilterRequest.TranType) && model.FilterRequest.TranType == "OUTGOING")
                 {
                     Data = Data.Where(x => x.SourceBankCode == institutionCode).ToList();
                 }
                
-                if (model.StartDate != null)
+                if (model.FilterRequest.StartDate != null)
                 {
-                    var Date1 = DateTime.Parse(model.StartDate.ToString()).ToString("yyyy-MM-dd") + " 00:00:00";
+                    var Date1 = DateTime.Parse(model.FilterRequest.StartDate.ToString()).ToString("yyyy-MM-dd") + " 00:00:00";
                     var startDate = DateTime.Parse(Date1);
                     Data = Data.Where(x => x.Date >= Convert.ToDateTime(startDate)).ToList();
                 }
 
-                if (model.EndDate != null)
+                if (model.FilterRequest.EndDate != null)
                 {
-                    var Date2 = DateTime.Parse(model.EndDate.ToString()).ToString("yyyy-MM-dd") + " 23:59:59";
+                    var Date2 = DateTime.Parse(model.FilterRequest.EndDate.ToString()).ToString("yyyy-MM-dd") + " 23:59:59";
                     var endDate = DateTime.Parse(Date2);
 
                     Data = Data.Where(x => x.Date <= endDate).ToList();
                 }
 
+                TempData["TransactionFilterRequest"] = JsonSerializer.Serialize(filterRequest);
+                TempData.Keep();
+
+              
+
+
+
+                int Count = Data.Count;
+                Data = Data
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+               .ToList();
+               
+                
                 model.Transactions = Data.Select(x => new TransactionTableViewModel
                 {
                     Amount = x.Amount,
@@ -126,6 +280,9 @@ namespace MomoSwitchPortal.Controllers
                     SourceBankCode = x.SourceBankCode,
                     TransactionId = x.TransactionId
                 }).ToList();
+
+
+                model.PaginationMetaData = new(Count, pageNumber, pageSize);
 
                 return View(model);
             }
@@ -199,27 +356,27 @@ namespace MomoSwitchPortal.Controllers
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
 
 
-                if (!string.IsNullOrEmpty(model.TransactionId))
+                if (!string.IsNullOrEmpty(model.FilterRequest.TransactionId))
                 {
-                    Data = Data.Where(x => x.TransactionId == model.TransactionId).ToList();
+                    Data = Data.Where(x => x.TransactionId == model.FilterRequest.TransactionId).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(model.Processor))
+                if (!string.IsNullOrEmpty(model.FilterRequest.Processor))
                 {
-                    Data = Data.Where(x => x.Processor.Contains(model.Processor)).ToList();
+                    Data = Data.Where(x => x.Processor.Contains(model.FilterRequest.Processor)).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(model.ResponseCode))
+                if (!string.IsNullOrEmpty(model.FilterRequest.ResponseCode))
                 {
-                    Data = Data.Where(x => x.ResponseCode == model.ResponseCode).ToList();
+                    Data = Data.Where(x => x.ResponseCode == model.FilterRequest.ResponseCode).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(model.TranType) && model.TranType == "INCOMING")
+                if (!string.IsNullOrEmpty(model.FilterRequest.TranType) && model.FilterRequest.TranType == "INCOMING")
                 {
                     Data = Data.Where(x => x.BenefBankCode == institutionCode).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(model.TranType) && model.TranType == "OUTGOING")
+                if (!string.IsNullOrEmpty(model.FilterRequest.TranType) && model.FilterRequest.TranType == "OUTGOING")
                 {
                     Data = Data.Where(x => x.SourceBankCode == institutionCode).ToList();
                 }

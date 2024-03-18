@@ -8,10 +8,7 @@
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
-                    <h6 class="text-white text-capitalize ps-3">Transaction List</h6>
-                    <a href="" class="text-decoration-none">
-                       
-
+                    <h6 class="text-white text-capitalize ps-3">Transaction List</h6>                   
                             @if (Model != null)
                             {
                                 if (Model.Transactions.Count > 0)
@@ -19,63 +16,70 @@
                                 using (Html.BeginForm("DownloadTransactionsReport", "Transactions", FormMethod.Post))
                                     {
                                         <form>
-                                            @Html.HiddenFor(z => z.TransactionId)
-                                            @Html.HiddenFor(z => z.Processor)
-                                            @Html.HiddenFor(z => z.ResponseCode)                                            
-                                            @Html.HiddenFor(z => z.TranType)
-                                            @Html.HiddenFor(z => z.StartDate)
-                                            @Html.HiddenFor(z => z.EndDate)
+                                            @Html.HiddenFor(z => z.FilterRequest.TransactionId)
+                                            @Html.HiddenFor(z => z.FilterRequest.Processor)
+                                            @Html.HiddenFor(z => z.FilterRequest.ResponseCode)
+                                            @Html.HiddenFor(z => z.FilterRequest.TranType)
+                                            @Html.HiddenFor(z => z.FilterRequest.StartDate)
+                                            @Html.HiddenFor(z => z.FilterRequest.EndDate)
                                             <button type class="btn btn-dark btn-sm me-3 my-0">Download</button>
 
                                         </form>
                                     }
                                 }
                             }
-                        </button>
-                    </a>
+                        </button>                
                 </div>
             </div>
             <div class="card-body px-0 pb-2">
                 <div class="container pb-3" style="margin-left: 20px;">
-                    <form action="~/transactions" method="post">
-                        @Html.AntiForgeryToken()
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="startDate" class="form-label">Start Date:</label>
-                                <input value="@Model?.StartDate" type="date" class="form-control border p-2" id="StartDate" name="StartDate">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="endDate" class="form-label">End Date:</label>
-                                <input type="date" value="@Model?.EndDate" class="form-control border p-2" id="EndDate" name="EndDate">
-                            </div>
-                          
-                            <div class="col-md-3">
-                                <label for="transactionId" class="form-label">Transaction ID:</label>
-                                <input type="text" value="@Model?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="TransactionId">
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label for="Processor" class="form-label">Processor:</label>
-                                <input type="text" value="@Model?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="Processor">
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label for="ResponseCode" class="form-label">Response Code:</label>
-                                <input type="text" value="@Model?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="ResponseCode">
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label for="TranType" class="form-label">Tran Type:</label>
-                                @Html.DropDownListFor(x => x.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
-                            </div>
-                            <div class="col-md-3 align-self-end pt-4">
-                                <button type="submit" class="btn btn-dark mt-2 ">Search</button>
-                            </div>
+                    
 
-                        </div>
-                       
-                    </form>
+                    @if (Model != null)
+                    {                       
+                            <form action="~/transactions" method="post">
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="startDate" class="form-label">Start Date:</label>
+                                        <input value="@Model.FilterRequest.StartDate" type="date" class="form-control border p-2" id="StartDate" name="FilterRequest.StartDate">                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="endDate" class="form-label">End Date:</label>
+                                        <input type="date" value="@Model?.FilterRequest.EndDate" class="form-control border p-2" id="EndDate" name="FilterRequest.EndDate">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="transactionId" class="form-label">Transaction ID:</label>
+                                        <input type="text" value="@Model?.FilterRequest?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="FilterRequest.TransactionId">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="Processor" class="form-label">Processor:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="FilterRequest.Processor">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="ResponseCode" class="form-label">Response Code:</label>
+                                        <input type="text" value="@Model?.FilterRequest?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="FilterRequest.ResponseCode">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="TranType" class="form-label">Tran Type:</label>
+                                        @Html.DropDownListFor(x => x.FilterRequest.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
+                                    </div>
+                                    <div class="col-md-3 align-self-end pt-4">
+                                        <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        
+                    }
+                  
                 </div>
                 <div class="table-responsive p-0">
                     <table class="table align-items-center justify-content-center mb-0">
@@ -141,6 +145,57 @@
                             }                                                         
                         </tbody>
                     </table>
+                </div>
+                <div class="container">
+
+                    @{
+                        if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
+                        {
+                            <p class="pagination justify-content-end"> Page @Model.PaginationMetaData.CurrentPage of @Model.PaginationMetaData.TotalPages</p>
+                        }
+
+
+                        <ul class="pagination justify-content-end">
+
+
+                            @if (Model.PaginationMetaData.TotalCount > 0)
+                            {
+
+
+
+                                if (Model.PaginationMetaData.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Transactions" asp-action="Index" asp-route-page=1>&#10094; &#10094;  </a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Transactions" asp-action="Index" asp-route-page="@(Model.PaginationMetaData.CurrentPage-1)">  &#10094;</a>
+                                    </li>
+
+                                }
+
+                                @for (var i = Model.PaginationMetaData.StartPage; i <= Model.PaginationMetaData.EndPage; i++)
+                                {
+                                    <li class="page-item @(i== Model.PaginationMetaData.CurrentPage? "active":"")">
+                                        <a class="page-link" asp-controller="Transactions" action="Index" asp-route-page=@i> @i </a>
+                                    </li>
+                                }
+
+                                if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Transactions" asp-action="Index" asp-route-page="@(Model.PaginationMetaData.CurrentPage+1)">  &#10095;</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Transactions" asp-action="Index" asp-route-page=@Model.PaginationMetaData.EndPage>&#10095; &#10095; </a>
+                                    </li>
+                                }
+
+                            }
+
+                        </ul>
+                    }
                 </div>
             </div>
         </div>

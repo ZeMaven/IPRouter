@@ -1,5 +1,4 @@
 ﻿@model MomoSwitchPortal.Models.ViewModels.User.UserListViewModel
-@using X.PagedList.Mvc.Core
 
 @{
     ViewData["Title"] = "AmountBased Rule page";
@@ -21,18 +20,24 @@
             <div class="card-body px-0 pb-2">
                 <div class="container pb-3" style="margin-left: 20px;">
                    
-                    <form action="~/users" method="post">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="Username" class="form-label">Username:</label>
-                                <input type="text" class="form-control border p-2" placeholder="Username" id="Username" value="@Model.Username" name="Username">
-                            </div>
+                    @if (Model != null)
+                    {
+                        <form action="~/users" method="post">
+                            @Html.AntiForgeryToken()
 
-                            <div class="col-md-3 align-self-end pt-4">
-                                <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="Username" class="form-label">Username:</label>
+                                    <input type="text" class="form-control border p-2" placeholder="Username" id="Username" value="@Model.UserFilterRequest?.Username" name="Username">
+                                </div>
+
+                                <div class="col-md-3 align-self-end pt-4">
+                                    <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>                   
+                        </form>
+                    }
+                  
                 </div>
                 <div class="table-responsive p-0">
                     <table class="table align-items-center justify-content-center mb-0">
@@ -85,19 +90,62 @@
                             }                                
                         </tbody>
                     </table>
+                      
+                </div>
+                <div class="container">
+
                     @{
-                        if (Model != null)
+                        if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
                         {
-                            if (Model.UserList?.Count > 0)
-                            {
-                                @*@Model.ReportPagedList.PageCount < Model.ReportPagedList.PageNumber ? 0 : Model.ReportPagedList.PageNumber of @Model.ReportPagedList.PageCount*@
-                                @Html.PagedListPager(Model.UserList, page => Url.Action("Index", new { page }))
-                            }
+                            <p class="pagination justify-content-end"> Page @Model.PaginationMetaData.CurrentPage of @Model.PaginationMetaData.TotalPages</p>
                         }
+
+
+                        <ul class="pagination justify-content-end">
+
+
+                            @if (Model.PaginationMetaData.TotalCount > 0)
+                            {
+
+
+
+                                if (Model.PaginationMetaData.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Users" asp-action="Index" asp-route-page=1>&#10094; &#10094;  </a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Users" asp-action="Index" asp-route-page="@(Model.PaginationMetaData.CurrentPage-1)">  &#10094;</a>
+                                    </li>
+
+                                }
+
+                                @for (var i = Model.PaginationMetaData.StartPage; i <= Model.PaginationMetaData.EndPage; i++)
+                                {
+                                    <li class="page-item @(i== Model.PaginationMetaData.CurrentPage? "active":"")">
+                                        <a class="page-link" asp-controller="Users" action="Index" asp-route-page=@i> @i </a>
+                                    </li>
+                                }
+
+                                if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Users" asp-action="Index" asp-route-page="@(Model.PaginationMetaData.CurrentPage+1)">  &#10095;</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Users" asp-action="Index" asp-route-page=@Model.PaginationMetaData.EndPage>&#10095; &#10095; </a>
+                                    </li>
+                                }
+
+                            }
+
+                        </ul>
                     }
                 </div>
-            </div>
+            </div>           
         </div>
+
     </div>
 </div>
 

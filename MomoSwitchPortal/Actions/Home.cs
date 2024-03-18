@@ -25,7 +25,7 @@ namespace MomoSwitchPortal.Actions
             {
 
                 var successfulOutgoingTransactions = outgoingTransactions.Where(x => x.ResponseCode == "00").ToList();
-                var failedOutgoingTransactions = outgoingTransactions.Where(x => x.ResponseCode == "01").ToList();
+                var failedOutgoingTransactions = outgoingTransactions.Where(x => x.ResponseCode != "00" && x.ResponseCode != "09").ToList();
                 var thisWeekTransactions = GetThisWeekSuccessfulTransactions(successfulOutgoingTransactions);
 
                 //successful half year 
@@ -52,10 +52,10 @@ namespace MomoSwitchPortal.Actions
                         TotalOutGoing = outgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
                         TotalIncomingCount = incomingTransactions.Count,
                         TotalOutGoingCount = outgoingTransactions.Count,
-                        TotalFailed = outgoingTransactions.Where(x => x.ResponseCode == "01").Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalFailedCount = outgoingTransactions.Where(x => x.ResponseCode == "01").ToList().Count,
-                        TotalSuccessful = outgoingTransactions.Where(x => x.ResponseCode == "00").Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalSuccessfulCount = outgoingTransactions.Where(x => x.ResponseCode == "00").ToList().Count,
+                        TotalFailed = failedOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalFailedCount = failedOutgoingTransactions.Count,
+                        TotalSuccessful = successfulOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalSuccessfulCount = successfulOutgoingTransactions.Count,
                         WeeklyTrend = new WeeklyTrendViewModel
                         {
                             Monday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Monday).ToList().Count,

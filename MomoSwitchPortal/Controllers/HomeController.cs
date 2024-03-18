@@ -31,8 +31,8 @@ namespace MomoSwitchPortal.Controllers
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
                 var db = new MomoSwitchDbContext();
 
-                var incomingTransactions = await db.TransactionTb.Where(x => x.BenefBankCode == institutionCode).ToListAsync();
-                var outgoingTransactions = await db.TransactionTb.Where(x => x.SourceBankCode == institutionCode).ToListAsync();
+                var incomingTransactions = await db.TransactionTb.Where(x => x.BenefBankCode == institutionCode && x.ResponseCode != "09").ToListAsync();
+                var outgoingTransactions = await db.TransactionTb.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToListAsync();
                
 
                 var result = homeManager.GetDashboardData(incomingTransactions, outgoingTransactions);

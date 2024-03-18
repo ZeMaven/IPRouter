@@ -230,7 +230,7 @@ namespace MomoSwitchPortal.Actions
                 var userList = new List<UserDetailsViewModel>();
                 if (!string.IsNullOrWhiteSpace(username))
                 {
-                    userList = await db.PortalUserTb.Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.Id != loggedInUser.Id).Select(x => new UserDetailsViewModel
+                    userList = await db.PortalUserTb.Where(x => x.Username.ToLower().Contains(username.Trim().ToLower()) && x.Id != loggedInUser.Id).Select(x => new UserDetailsViewModel
                     {
                         EntryDate = x.EntryDate,
                         FirstName = x.FirstName,
@@ -264,7 +264,7 @@ namespace MomoSwitchPortal.Actions
                         ResponseCode = "00",
                         ResponseMessage = "Success"
                     },
-                    UserList = userList.ToPagedList(pageNumber, pageSize)
+                    UserList = userList
                 };
             }
             catch (Exception ex)
