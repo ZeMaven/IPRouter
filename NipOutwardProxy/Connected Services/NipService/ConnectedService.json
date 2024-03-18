@@ -1,7 +1,7 @@
 {
   "ExtendedData": {
     "inputs": [
-      "../../../../../../Downloads/nibss.wsdl"
+      "http://196.6.103.10:86/NIPWS/NIPInterface?wsdl"
     ],
     "collectionTypes": [
       "System.Array",
