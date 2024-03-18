@@ -15,6 +15,5 @@ namespace MomoSwitchPortal.Models.ViewModels.User
         public PaginationMetaData PaginationMetaData { get; set; }
 
 
-
     }
 }
