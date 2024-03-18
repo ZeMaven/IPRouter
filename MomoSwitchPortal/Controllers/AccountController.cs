@@ -12,6 +12,7 @@ using MomoSwitchPortal.Actions;
 using MomoSwitchPortal.Models.Database;
 using MomoSwitchPortal.Models.Internals;
 using MomoSwitchPortal.Models.ViewModels.Account;
+using Newtonsoft.Json.Linq;
 
 namespace MomoSwitchPortal.Controllers
 {
@@ -358,12 +359,20 @@ namespace MomoSwitchPortal.Controllers
 
                 var result = await Email.SendEmail(new MailRequest
                 {
-                    Subject = "Reset your Momo Switch portal password",
-                    Body = $"Dear {userInDatabase.FirstName}, \n \n To reset your password click the link below: \n {currentUrl}/account/forgotpassword?key={key} \n \n Yours truly,\nThe ETG Team",
                     FromName = "Coralpay",
                     From = "Corlpay",
                     To = userInDatabase.Username,
-                    ToName = "Momo Switch Portal User"
+                    ToName = "Momo Switch Portal User",
+                    Subject = "Reset your Momo Switch portal password",
+                    Body = $"Dear {userInDatabase.FirstName}, \n\n" +
+                    $"To reset your password click the link below: \n" +
+                    $"{currentUrl}/account/forgotpassword?key={key} \n " +
+                    $"" +
+                    $"Yours truly,\n" +
+                    $"The ETG Team \n"
+                   
+
+                    
                 });
 
                 if (result.ResponseCode != "00")
