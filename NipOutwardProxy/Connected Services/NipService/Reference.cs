@@ -774,7 +774,7 @@ namespace NipService
         {
             if ((endpointConfiguration == EndpointConfiguration.NibssPortSoap11))
             {
-                return new System.ServiceModel.EndpointAddress("http://41.220.77.13/nibss/ws");
+                return new System.ServiceModel.EndpointAddress("http://196.6.103.10:86/NIPWS/NIPInterface");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
