@@ -60,7 +60,7 @@ namespace NipOutwardProxy.Actions
                 var NipResp = await Nip.nameenquirysingleitemAsync(EncRequest);
                 var NibssResponseEnc = NipResp.Body.ToString();
 
-                Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss enc: {EncRequest}");
+                Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss enc: {NibssResponseEnc}");
 
                 var NibssResponseXml = Pgp.Decryption(NibssResponseEnc);
                 Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss Xml: {NibssResponseXml}");
@@ -124,7 +124,7 @@ namespace NipOutwardProxy.Actions
                 var NipResp = await Nip.balanceenquiryAsync(EncRequest);
                 var NibssResponseEnc = NipResp.Body.ToString();
                 //
-                Log.Write("NibssOutward.TranQuery", $"Response from Nibss enc: {EncRequest}");
+                Log.Write("NibssOutward.TranQuery", $"Response from Nibss enc: {NibssResponseEnc}");
 
                 var NibssResponseXml = Pgp.Decryption(NibssResponseEnc);
                 Log.Write("NibssOutward.TranQuery", $"Response from Nibss Xml: {NibssResponseXml}");
@@ -198,7 +198,7 @@ namespace NipOutwardProxy.Actions
                 var NipResp = await Nip.fundtransfersingleitem_dcAsync(EncRequest);
                 var NibssResponseEnc = NipResp.Body.ToString();
 
-                Log.Write("NibssOutward.Transfer", $"Response from Nibss enc: {EncRequest}");
+                Log.Write("NibssOutward.Transfer", $"Response from Nibss enc: {NibssResponseEnc}");
 
                 var NibssResponseXml = Pgp.Decryption(NibssResponseEnc);
                 Log.Write("NibssOutward.Transfer", $"Response from Nibss Xml: {NibssResponseXml}");
