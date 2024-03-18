@@ -9,9 +9,9 @@
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
                     <h6 class="text-white text-capitalize ps-3">Priority Rule</h6>
-                    <a href="~/priorityrule/create" class="text-decoration-none">
+                   @*  <a href="~/priorityrule/create" class="text-decoration-none">
                         <button type="submit" class="btn btn-dark btn-sm me-3 my-0">+ Create</button>
-                    </a>
+                    </a> *@
                 </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -54,15 +54,9 @@
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Rule</p>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        <button class="btn btn-link text-secondary mb-0 " type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="material-icons text-md">more_vert</i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                                            <li><a class="dropdown-item" href="~/priorityrule/edit/@Item.Id">Edit</a></li>
-                                                            <li><a class="dropdown-item confirmation" href="~/priorityrule/delete/@Item.Id">Delete</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    <a href="~/priorityrule/edit/@Item.Id">
+                                                        <i class="material-icons text-md text-secondary" data-bs-toggle="tooltip" title="Edit">edit</i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         }

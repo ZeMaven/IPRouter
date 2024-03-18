@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
@@ -13,10 +14,15 @@ namespace MomoSwitchPortal.Controllers
     {
         private ILog Log;
         private readonly IAmountRule amountManager;
-        public AmountRuleController(ILog log, IAmountRule amountManager)
+        private readonly INotyfService ToastNotification;
+        private readonly ISwitch switchManager;
+
+        public AmountRuleController(ILog log, IAmountRule amountManager, INotyfService toastNotification, ISwitch switchManager)
         {
             Log = log;
             this.amountManager = amountManager;
+            ToastNotification = toastNotification;
+            this.switchManager = switchManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -44,7 +50,8 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseHeader.ResponseCode != "00")
                 {
-                    return View("Error");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 return View(result);
@@ -84,7 +91,10 @@ namespace MomoSwitchPortal.Controllers
                 var result = amountManager.Get();
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
 
                 if (!string.IsNullOrWhiteSpace(processor))
                 {
@@ -107,7 +117,10 @@ namespace MomoSwitchPortal.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var switches = switchManager.Get();
+
             ViewBag.status = new SelectList(new[] { true, false });
+            ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
 
             return View();
         }
@@ -118,7 +131,11 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                var switches = switchManager.Get();
+
                 ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -131,15 +148,25 @@ namespace MomoSwitchPortal.Controllers
 
                 if (loggedInUserInDatabase == null)
                 {
-                    Log.Write("AmountRuleController:Index", $"eRR: Logged in user not gotten");
+                    Log.Write("AmountRuleController:Create", $"eRR: Logged in user not gotten");
                     return RedirectToAction("Logout", "Account");
                 }
 
                 if (!loggedInUserInDatabase.IsActive)
                 {
-                    Log.Write("AmountRuleController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    Log.Write("AmountRuleController:Create", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
                     return RedirectToAction("Logout", "Account");
                 }
+
+                var switchExists = await db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == model.Processor.ToLower());
+
+                if (switchExists == null)
+                {
+                    Log.Write("AmountRuleController.Create", $"Switch named {model.Processor} doesn't exist");
+                    ModelState.AddModelError("", "System Challenge");
+                    return View(model);
+                }
+
                 bool overlapsExisting = await db.AmountRuleTb.AnyAsync(ad => (model.AmountA <= ad.AmountZ && model.AmountA >= ad.AmountA) || (model.AmountZ >= ad.AmountA && model.AmountZ <= ad.AmountZ));
 
                 if (!overlapsExisting)
@@ -159,6 +186,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Amount rule created successfully");
                 return RedirectToAction("Index");
 
             }
@@ -175,7 +203,10 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                var switches = switchManager.Get();
+
                 ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
 
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
@@ -225,7 +256,11 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                var switches = switchManager.Get();
+
                 ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -247,6 +282,17 @@ namespace MomoSwitchPortal.Controllers
                     Log.Write("AmountRuleController:Edit", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
                     return RedirectToAction("Logout", "Account");
                 }
+
+                var switchExists = await db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == model.Processor.ToLower());
+
+                if (switchExists == null)
+                {
+                    Log.Write("AmountRuleController.Edit", $"Switch named {model.Processor} doesn't exist");
+                    ModelState.AddModelError("", "System Challenge");
+                    return View(model);
+                }
+
+
                 bool overlapsExisting = await db.AmountRuleTb.AnyAsync(ad => (model.AmountA <= ad.AmountZ && model.AmountA >= ad.AmountA) || (model.AmountZ >= ad.AmountA && model.AmountZ <= ad.AmountZ));
 
                 if (!overlapsExisting)
@@ -271,6 +317,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Amount rule edited successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -314,9 +361,11 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseCode != "00")
                 {
+                    ToastNotification.Error("System Challenge");
                     return RedirectToAction("Index");
                 }
 
+                ToastNotification.Success("Amount rule deleted successfully");
                 return RedirectToAction("Index");
 
             }

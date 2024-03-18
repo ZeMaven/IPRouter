@@ -60,11 +60,13 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Index", "Home");//or unauthorzed
                 }
                 var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase);
-                
+
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
-               
-				return View(result);	
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
+                return View(result);	
 			}
 			catch (Exception ex)
 			{
@@ -107,7 +109,10 @@ namespace MomoSwitchPortal.Controllers
                 var result = await userManager.UserList(pageNumber, pageSize, loggedInUserInDatabase, username);
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
 
                 result.Username = username;//just to initialize the username search
                 return View(result);

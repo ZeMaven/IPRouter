@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
@@ -15,10 +16,13 @@ namespace MomoSwitchPortal.Controllers
     {
         private ILog Log;
         private readonly IPriority priorityManager;
-        public PriorityRuleController(ILog log, IPriority priorityManager)
+        private readonly INotyfService ToastNotification;
+
+        public PriorityRuleController(ILog log, IPriority priorityManager, INotyfService toastNotification)
         {
             Log = log;
             this.priorityManager = priorityManager;
+            ToastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -47,7 +51,8 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseHeader.ResponseCode != "00")
                 {
-                    return View("Error");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 return View(result);
@@ -87,7 +92,10 @@ namespace MomoSwitchPortal.Controllers
                 var result = priorityManager.Get();
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
 
                 if (!string.IsNullOrWhiteSpace(rule))
                 {
@@ -107,76 +115,77 @@ namespace MomoSwitchPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            ViewBag.status = new SelectList(new[] { true, false });
+        //[HttpGet]
+        //public async Task<IActionResult> Create()
+        //{
+        //    ViewBag.status = new SelectList(new[] { true, false });
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreatePriorityRuleViewModel model)
-        {
-            try
-            {
-                ViewBag.status = new SelectList(new[] { true, false });
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(CreatePriorityRuleViewModel model)
+        //{
+        //    try
+        //    {
+        //        ViewBag.status = new SelectList(new[] { true, false });
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View(model);
+        //        }
 
-                Log.Write($"PriorityRuleController:Create", $"Request: {model.Rule}");
-                var db = new MomoSwitchDbContext();
-                var loggedInUser = HttpContext.GetLoggedInUser();
-                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+        //        Log.Write($"PriorityRuleController:Create", $"Request: {model.Rule}");
+        //        var db = new MomoSwitchDbContext();
+        //        var loggedInUser = HttpContext.GetLoggedInUser();
+        //        var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
 
-                if (loggedInUserInDatabase == null)
-                {
-                    Log.Write("PriorityRuleController:Index", $"eRR: Logged in user not gotten");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (loggedInUserInDatabase == null)
+        //        {
+        //            Log.Write("PriorityRuleController:Index", $"eRR: Logged in user not gotten");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                if (!loggedInUserInDatabase.IsActive)
-                {    
-                    Log.Write("PriorityRuleController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (!loggedInUserInDatabase.IsActive)
+        //        {    
+        //            Log.Write("PriorityRuleController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                var existingPriority = db.PriorityTb.FirstOrDefault(x => x.Priority == model.Priority || x.Rule == model.Rule);
+        //        var existingPriority = db.PriorityTb.FirstOrDefault(x => x.Priority == model.Priority || x.Rule == model.Rule);
 
-                if (existingPriority != null)
-                {
-                    ModelState.AddModelError("", "Priority or Rule already exists.");
-                    return View(model);
-                }
-                else
-                {
-                    var request = new PriorityDetails
-                    {
-                        Priority = model.Priority,
-                        Rule = model.Rule
-                    };
+        //        if (existingPriority != null)
+        //        {
+        //            ModelState.AddModelError("", "Priority or Rule already exists.");
+        //            return View(model);
+        //        }
+        //        else
+        //        {
+        //            var request = new PriorityDetails
+        //            {
+        //                Priority = model.Priority,
+        //                Rule = model.Rule
+        //            };
 
-                    var result = await priorityManager.Create(request);
+        //            var result = await priorityManager.Create(request);
 
-                    if (result.ResponseCode != "00")
-                    {
-                        ModelState.AddModelError("", result.ResponseMessage);
-                        return View(model);
-                    }
-                    return RedirectToAction("Index");
-                }
+        //            if (result.ResponseCode != "00")
+        //            {
+        //                ModelState.AddModelError("", result.ResponseMessage);
+        //                return View(model);
+        //            }
+                    
+        //            return RedirectToAction("Index");
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                Log.Write("PiorityRuleController:Create", $"eRR: {ex.Message}");
-                ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View();
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Write("PiorityRuleController:Create", $"eRR: {ex.Message}");
+        //        ModelState.AddModelError("", "Something went wrong. Please try again later");
+        //        return View();
+        //    }
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] int id)
@@ -184,6 +193,8 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 ViewBag.status = new SelectList(new[] { true, false });
+                ViewBag.priorities = new SelectList(new string[] {"1", "2", "3"});
+
 
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
@@ -233,16 +244,21 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+
+                ViewBag.priorities = new SelectList(new string[] {"1", "2", "3"});
                 ViewBag.status = new SelectList(new[] { true, false });
+                
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
 
+                var priorities = (priorityManager.Get()).PriorityDetails.Count;
+
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
                 var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
-                var existingUser = await db.PriorityTb.SingleOrDefaultAsync(x => x.Id == model.Id);
+                var priority = await db.PriorityTb.SingleOrDefaultAsync(x => x.Id == model.Id);
                 if (loggedInUserInDatabase == null)
                 {
                     Log.Write("PriorityRuleController:Edit", $"eRR: Logged in user not gotten");
@@ -256,24 +272,32 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Logout", "Account");
                 }
 
-                if (existingUser == null)
+                if (priority == null)
                 {
-                    Log.Write("UserController:EditUser", $"eRR: User doesn't exist");
+                    Log.Write("UserController:EditUser", $"eRR: Priority doesn't exist");
                     //return View("NotFound");
+                    ToastNotification.Error("System Challenge");
                     return RedirectToAction("Index"); //or error
                 }
 
+                if(model.Priority > priorities || model.Priority < 1)
+                {
+                    Log.Write("UserController:EditUser", $"eRR: Priority is invalid");
+                    //return View("NotFound");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index"); //or error
+                }
                 var existingPriority = await db.PriorityTb.SingleOrDefaultAsync( x => x.Priority == model.Priority);
                 if (existingPriority.Id != model.Id)
                 {
-                    existingPriority.Priority = existingUser.Priority;
-                    existingUser.Priority = model.Priority;
+                    existingPriority.Priority = priority.Priority;
+                    priority.Priority = model.Priority;
 
                     db.SaveChanges();
                 }
                 else
                 {
-                   var priorityDetails = new PriorityDetails
+                    var priorityDetails = new PriorityDetails
                     {
                         Id = model.Id,
                         Priority = model.Priority,
@@ -286,7 +310,8 @@ namespace MomoSwitchPortal.Controllers
                         return View(model);
                     }
                 }
-               
+
+                ToastNotification.Success("Priority Modified Successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -296,51 +321,51 @@ namespace MomoSwitchPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                var db = new MomoSwitchDbContext();
-                var loggedInUser = HttpContext.GetLoggedInUser();
-                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
-                var existingPriority = await db.PriorityTb.SingleOrDefaultAsync(x => x.Id == id);
+        //[HttpGet]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var db = new MomoSwitchDbContext();
+        //        var loggedInUser = HttpContext.GetLoggedInUser();
+        //        var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+        //        var existingPriority = await db.PriorityTb.SingleOrDefaultAsync(x => x.Id == id);
 
-                if (loggedInUserInDatabase == null)
-                {
-                    Log.Write("PriorityRuleController:Delete", $"eRR: Logged in user not gotten");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (loggedInUserInDatabase == null)
+        //        {
+        //            Log.Write("PriorityRuleController:Delete", $"eRR: Logged in user not gotten");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                if (!loggedInUserInDatabase.IsActive)
-                {
-                    //should they be logged out?
-                    Log.Write("PriorityRuleController:Delete", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
-                    return RedirectToAction("Logout", "Account");
-                }
+        //        if (!loggedInUserInDatabase.IsActive)
+        //        {
+        //            //should they be logged out?
+        //            Log.Write("PriorityRuleController:Delete", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+        //            return RedirectToAction("Logout", "Account");
+        //        }
 
-                if (existingPriority == null)
-                {
-                    Log.Write("UserController:Delete", $"eRR: Priority doesn't exist");
-                    //return View("NotFound");
-                    return RedirectToAction("Index"); //or error
-                }
+        //        if (existingPriority == null)
+        //        {
+        //            Log.Write("UserController:Delete", $"eRR: Priority doesn't exist");
+        //            //return View("NotFound");
+        //            return RedirectToAction("Index"); //or error
+        //        }
 
-                var result = await priorityManager.Delete(id);
+        //        var result = await priorityManager.Delete(id);
 
-                if (result.ResponseCode != "00")
-                {
-                    return RedirectToAction("Index");
-                }
+        //        if (result.ResponseCode != "00")
+        //        {
+        //            return RedirectToAction("Index");
+        //        }
 
-                return RedirectToAction("Index");
+        //        return RedirectToAction("Index");
 
-            }
-            catch (Exception ex)
-            {
-                Log.Write("PriorityRuleController:Delete", $"eRR: {ex.Message}");
-                return RedirectToAction("Index");
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Write("PriorityRuleController:Delete", $"eRR: {ex.Message}");
+        //        return RedirectToAction("Index");
+        //    }
+        //}
     }
 }

@@ -21,10 +21,10 @@ namespace MomoSwitchPortal.Models.ViewModels.Home
         public WeeklyTrendViewModel WeeklyTrend { get; set; }
         public MonthlyTrendViewModel SuccessfulHalfYearTrend { get; set; }
         public MonthlyTrendViewModel FailedHalfYearTrend { get; set; }
-        public List<TransactionTb> RecentTransactions { get; set; }
-        public List<PortalUserTb> RecentUsers { get; set; }
+        public List<TransactionTb> RecentTransactions { get; set; }        
         public int TotalUsers { get; set; }
         public int TotalSwitches { get; set; }
+        public int TotalTransactions { get; set; }
     }
     public class WeeklyTrendViewModel
     {

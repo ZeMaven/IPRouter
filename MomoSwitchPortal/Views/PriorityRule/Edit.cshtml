@@ -22,7 +22,8 @@
             </div>
             <div class="col-6 mb-3">
                 <label for="Priority" class="form-label font-weight-bold">Priority</label>
-                <input type="number" name="Priority" value="@Model?.Priority" class="form-control border px-3" id="Priority" placeholder="Priority" required>
+                @Html.DropDownListFor(x => x.Priority, ViewBag.priorities as SelectList, "Select Priority", new { @Class = "form-control border px-3", @title = " Select Priority", @required = true })
+
             </div>
         </div>
 

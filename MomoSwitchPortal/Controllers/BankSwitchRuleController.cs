@@ -54,7 +54,8 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseHeader.ResponseCode != "00")
                 {
-                    return View("Error");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 return View(result);
@@ -94,7 +95,10 @@ namespace MomoSwitchPortal.Controllers
                 var result = bankSwitchManager.Get();
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
 
                 var filteredList = new List<BankSwitchDetails>();
                 if (!string.IsNullOrWhiteSpace(model.Processor))

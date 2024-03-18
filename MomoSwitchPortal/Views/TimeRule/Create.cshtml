@@ -27,7 +27,7 @@
         </div>
         <div class="col-6 mb-3">
             <label for="processor" class="form-label font-weight-bold">Processor</label>
-            <input type="text" name="Processor" value="@Model?.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
+            @Html.DropDownListFor(x => x.Processor, ViewBag.switches as SelectList, "Select Processor", new { @Class = "form-control border px-3", @title = " Select Processor", @required = true })
         </div>
 
         <button type="submit" class="btn btn-dark">Submit</button>

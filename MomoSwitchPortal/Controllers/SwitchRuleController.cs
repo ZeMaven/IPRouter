@@ -52,7 +52,8 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseHeader.ResponseCode != "00")
                 {
-                    return View("Error");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
                 }
 
 
@@ -92,7 +93,11 @@ namespace MomoSwitchPortal.Controllers
                 var result = switchManager.Get();
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
+
 
                 if (!string.IsNullOrWhiteSpace(processor))
                 {

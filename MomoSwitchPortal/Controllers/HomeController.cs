@@ -42,10 +42,11 @@ namespace MomoSwitchPortal.Controllers
                     return View("Error");
                 }
 
-                result.DashboardData.RecentTransactions = db.TransactionTb.OrderByDescending(x => x.Date).Take(15).ToList();
-                result.DashboardData.RecentUsers = db.PortalUserTb.OrderByDescending(x => x.EntryDate).Take(10).ToList();
-                result.DashboardData.TotalUsers = db.PortalUserTb.ToList().Count;
-                result.DashboardData.TotalSwitches = db.SwitchTb.ToList().Count;
+                result.DashboardData.RecentTransactions = db.TransactionTb.OrderByDescending(x => x.Date).Take(15).ToList();                
+                result.DashboardData.TotalUsers = db.PortalUserTb.Count();
+                result.DashboardData.TotalSwitches = db.SwitchTb.Count();
+                result.DashboardData.TotalTransactions = db.TransactionTb.Count();
+
                 return View(result.DashboardData);
             }
             catch (Exception ex)

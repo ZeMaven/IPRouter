@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Momo.Common.Actions;
@@ -13,10 +14,16 @@ namespace MomoSwitchPortal.Controllers
     {
         private ILog Log;
         private readonly ITimeRule timeManager;
-        public TimeRuleController(ILog log, ITimeRule timeManager)
+        private readonly INotyfService ToastNotification;
+        private readonly ISwitch switchManager;
+
+
+        public TimeRuleController(ILog log, ITimeRule timeManager, INotyfService toastNotification, ISwitch switchManager)
         {
             Log = log;
             this.timeManager = timeManager;
+            ToastNotification = toastNotification;
+            this.switchManager = switchManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -44,7 +51,8 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseHeader.ResponseCode != "00")
                 {
-                    return View("Error");
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 return View(result);
@@ -84,7 +92,10 @@ namespace MomoSwitchPortal.Controllers
                 var result = timeManager.Get();
 
                 if (result.ResponseHeader.ResponseCode != "00")
-                    return View("Error");
+                {
+                    ToastNotification.Error("System Challenge");
+                    return RedirectToAction("Index", "Home");
+                }
 
                 if (!string.IsNullOrWhiteSpace(processor))
                 {
@@ -107,7 +118,10 @@ namespace MomoSwitchPortal.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var switches = switchManager.Get();
+
             ViewBag.status = new SelectList(new[] { true, false });
+            ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
 
             return View();
         }
@@ -118,12 +132,16 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
-                ViewBag.status = new SelectList(new[] { true, false });
+                var switches = switchManager.Get();
+
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
+                ViewBag.status = new SelectList(new[] { true, false });              
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
-
+                
                 Log.Write($"TimeRuleController:Create", $"Request: {model.Processor}");
                 var db = new MomoSwitchDbContext();
                 var loggedInUser = HttpContext.GetLoggedInUser();
@@ -131,14 +149,23 @@ namespace MomoSwitchPortal.Controllers
 
                 if (loggedInUserInDatabase == null)
                 {
-                    Log.Write("TimeRuleController:Index", $"eRR: Logged in user not gotten");
+                    Log.Write("TimeRuleController:Create", $"eRR: Logged in user not gotten");
                     return RedirectToAction("Logout", "Account");
                 }
 
                 if (!loggedInUserInDatabase.IsActive)
                 {
-                    Log.Write("TimeRuleController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    Log.Write("TimeRuleController:Create", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
                     return RedirectToAction("Logout", "Account");
+                }
+                
+                var switchExists = await db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == model.Processor.ToLower());
+
+                if (switchExists == null)
+                {
+                    Log.Write("TimeRuleController.Create", $"Switch named {model.Processor} doesn't exist");
+                    ModelState.AddModelError("", "System Challenge");
+                    return View(model);
                 }
 
                 DateTime timeA = DateTime.Parse(model.TimeA);
@@ -165,6 +192,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Time rule created successfully");
                 return RedirectToAction("Index");
 
             }
@@ -181,6 +209,9 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                var switches = switchManager.Get();
+
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
                 ViewBag.status = new SelectList(new[] { true, false });
 
                 var db = new MomoSwitchDbContext();
@@ -231,6 +262,10 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
+                var switches = switchManager.Get();
+
+                ViewBag.switches = new SelectList(switches.SwitchDetails.Select(x => x.Processor).ToList());
+
                 ViewBag.status = new SelectList(new[] { true, false });
                 if (!ModelState.IsValid)
                 {
@@ -253,6 +288,16 @@ namespace MomoSwitchPortal.Controllers
                     Log.Write("TimeRuleController:Edit", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
                     return RedirectToAction("Logout", "Account");
                 }
+
+                var switchExists = await db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == model.Processor.ToLower());
+
+                if (switchExists == null)
+                {
+                    Log.Write("TimeRuleController.Edit", $"Switch named {model.Processor} doesn't exist");
+                    ModelState.AddModelError("", "System Challenge");
+                    return View(model);
+                }
+
                 DateTime timeA = DateTime.Parse(model.TimeA);
                 DateTime timeZ = DateTime.Parse(model.TimeZ);
                 var existingRules = await db.TimeRuleTb.ToListAsync();
@@ -280,6 +325,7 @@ namespace MomoSwitchPortal.Controllers
                     return View(model);
                 }
 
+                ToastNotification.Success("Time rule modified successfully");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -323,9 +369,11 @@ namespace MomoSwitchPortal.Controllers
 
                 if (result.ResponseCode != "00")
                 {
+                    ToastNotification.Error("System Challenge");
                     return RedirectToAction("Index");
                 }
 
+                ToastNotification.Success("Time rule deleted successfully");
                 return RedirectToAction("Index");
 
             }
