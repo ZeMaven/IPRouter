@@ -125,7 +125,7 @@ namespace NipOutwardProxy.Actions
                 var EncRequest = Pgp.Ecryption(XmlRequest);
                 Log.Write("NibssOutward.TranQuery", $"Request to Nibss enc: {EncRequest}");
                 //incorrect
-                var NipResp = await Nip.txnstatusquerysingleitemAsync(EncRequest);
+                var NipResp = await NipTSQ.txnstatusquerysingleitemAsync(EncRequest);
                 var NibssResponseEnc = NipResp.Body.@return;
                 //
                 Log.Write("NibssOutward.TranQuery", $"Response from Nibss enc: {NibssResponseEnc}");
