@@ -93,7 +93,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Users = new UserListViewModel()
                     {
-                        UserList = db.PortalUserTb.OrderByDescending(x => x.EntryDate).Select(x => new UserDetailsViewModel
+                        UserList = db.PortalUserTb.Where(x => x.Id != loggedInUserInDatabase.Id).OrderByDescending(x => x.EntryDate).Select(x => new UserDetailsViewModel
                         {
                             EntryDate = x.EntryDate,
                             FirstName = x.FirstName,

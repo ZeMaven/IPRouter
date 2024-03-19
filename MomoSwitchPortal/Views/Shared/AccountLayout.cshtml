@@ -48,10 +48,13 @@
 
         </div>
     </main>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--   Core JS Files   -->  
+    <script src="../lib/jquery/dist/jquery.min.js"></script>   
+    <script src="../lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="../lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

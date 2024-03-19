@@ -17,7 +17,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MomoSwitchPortal.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class TransactionsController : Controller
     {
         private ILog Log;
@@ -37,7 +37,7 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 int pageSize = 5;
-                int pageNumber = (page == 0 ? 1 : page);
+                int pageNumber = (page == 0 ? 1 : page);                
 
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
 
@@ -62,12 +62,7 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Logout", "Account");
                 }
 
-                if (loggedInUserInDatabase.Role != Role.Administrator.ToString())
-                {
-                    Log.Write("TransactionsController:Index", $"eRR: User with username: {loggedInUserInDatabase.Username} is unauthorized to complete action");
-                    return RedirectToAction("Index", "Home");//or unauthorzed
-                }
-
+              
                 if (page != 0 && TempData["TransactionFilterRequest"]?.ToString() != null)
                 {
                     //  List<TransactionItem> Trans1 = JsonSerializer.Deserialize<List<TransactionItem>>(TempData["Tran"].ToString());
@@ -123,9 +118,9 @@ namespace MomoSwitchPortal.Controllers
                    .ToList();
                    
 
-                    TempData.Keep();
 
-                    FilterRequest.Transactions = Data.Select(x => new TransactionTableViewModel
+                    var viewModel = new TransactionViewModel();
+                    viewModel.Transactions = Data.Select(x => new TransactionTableViewModel
                     {
                         Amount = x.Amount,
                         BenefBankCode = x.BenefBankCode,
@@ -137,11 +132,23 @@ namespace MomoSwitchPortal.Controllers
                         SourceBankCode = x.SourceBankCode,
                         TransactionId = x.TransactionId
                     }).ToList();
-                    FilterRequest.PaginationMetaData = new(Count, pageNumber, pageSize);
+                    viewModel.PaginationMetaData = new(Count, pageNumber, pageSize);
+                    viewModel.FilterRequest = new TransactionFilterRequest
+                    {
+                        StartDate = FilterRequest.FilterRequest.StartDate,
+                        EndDate = FilterRequest.FilterRequest.EndDate,
+                        TransactionId = FilterRequest.FilterRequest.TransactionId,
+                        TranType = FilterRequest.FilterRequest.TranType,
+                        ResponseCode = FilterRequest.FilterRequest.ResponseCode,
+                        Processor = FilterRequest.FilterRequest.Processor
+                    };
 
-                    return View(FilterRequest);
+                    TempData.Keep();
+
+                    return View(viewModel);
                 }
 
+                TempData["TransactionFilterRequest"] = null;
 
                 TransactionViewModel Trans = new();
                 await Task.Run((() =>
@@ -358,12 +365,12 @@ namespace MomoSwitchPortal.Controllers
 
                 if (!string.IsNullOrEmpty(model.FilterRequest.TransactionId))
                 {
-                    Data = Data.Where(x => x.TransactionId == model.FilterRequest.TransactionId).ToList();
+                    Data = Data.Where(x => x.TransactionId == model.FilterRequest.TransactionId.Trim()).ToList();
                 }
 
                 if (!string.IsNullOrEmpty(model.FilterRequest.Processor))
                 {
-                    Data = Data.Where(x => x.Processor.Contains(model.FilterRequest.Processor)).ToList();
+                    Data = Data.Where(x => x.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())).ToList();
                 }
 
                 if (!string.IsNullOrEmpty(model.FilterRequest.ResponseCode))
@@ -379,6 +386,21 @@ namespace MomoSwitchPortal.Controllers
                 if (!string.IsNullOrEmpty(model.FilterRequest.TranType) && model.FilterRequest.TranType == "OUTGOING")
                 {
                     Data = Data.Where(x => x.SourceBankCode == institutionCode).ToList();
+                }
+
+                if (model.FilterRequest.StartDate != null)
+                {
+                    var Date1 = DateTime.Parse(model.FilterRequest.StartDate.ToString()).ToString("yyyy-MM-dd") + " 00:00:00";
+                    var startDate = DateTime.Parse(Date1);
+                    Data = Data.Where(x => x.Date >= Convert.ToDateTime(startDate)).ToList();
+                }
+
+                if (model.FilterRequest.EndDate != null)
+                {
+                    var Date2 = DateTime.Parse(model.FilterRequest.EndDate.ToString()).ToString("yyyy-MM-dd") + " 23:59:59";
+                    var endDate = DateTime.Parse(Date2);
+
+                    Data = Data.Where(x => x.Date <= endDate).ToList();
                 }
 
                 var report = Data.Select(x => new TransactionReport

@@ -1,4 +1,5 @@
-﻿@model MomoSwitchPortal.Models.ViewModels.Transaction.TransactionViewModel
+﻿@using System.Globalization
+@model MomoSwitchPortal.Models.ViewModels.Transaction.TransactionViewModel
 @{
     ViewData["Title"] = "Transaction List page";
     ViewData["Transaction"] = "active bg-gradient-warning";
@@ -32,52 +33,53 @@
                 </div>
             </div>
             <div class="card-body px-0 pb-2">
-                <div class="container pb-3" style="margin-left: 20px;">
+                <div class="container pb-3 px-4">
 
                     
 
                     @if (Model != null)
-                    {                       
-                            <form action="~/transactions" method="post">
-                                @Html.AntiForgeryToken()
+                    {
+                        @using (Html.BeginForm("Index", "Transactions", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
 
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="startDate" class="form-label">Start Date:</label>
-                                        <input value="@Model.FilterRequest.StartDate" type="date" class="form-control border p-2" id="StartDate" name="FilterRequest.StartDate">                                        
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="endDate" class="form-label">End Date:</label>
-                                        <input type="date" value="@Model?.FilterRequest.EndDate" class="form-control border p-2" id="EndDate" name="FilterRequest.EndDate">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="transactionId" class="form-label">Transaction ID:</label>
-                                        <input type="text" value="@Model?.FilterRequest?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="FilterRequest.TransactionId">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="Processor" class="form-label">Processor:</label>
-                                    <input type="text" value="@Model?.FilterRequest?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="FilterRequest.Processor">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="ResponseCode" class="form-label">Response Code:</label>
-                                        <input type="text" value="@Model?.FilterRequest?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="FilterRequest.ResponseCode">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="TranType" class="form-label">Tran Type:</label>
-                                        @Html.DropDownListFor(x => x.FilterRequest.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
-                                    </div>
-                                    <div class="col-md-3 align-self-end pt-4">
-                                        <button type="submit" class="btn btn-dark mt-2 ">Search</button>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    @Html.TextBoxFor(model => model.FilterRequest.StartDate, new { @class = "form-control border p-2", type = "date" })
 
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="endDate" class="form-label">End Date:</label>
+                                    @Html.TextBoxFor(model => model.FilterRequest.EndDate, new { @class = "form-control border p-2", type = "date" })
+                                </div>
 
-                            </form>
-                        
+                                <div class="col-md-3">
+                                    <label for="transactionId" class="form-label">Transaction ID:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="FilterRequest.TransactionId">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="Processor" class="form-label">Processor:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="FilterRequest.Processor">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="ResponseCode" class="form-label">Response Code:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="FilterRequest.ResponseCode">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="TranType" class="form-label">Tran Type:</label>
+                                    @Html.DropDownListFor(x => x.FilterRequest.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
+                                </div>
+                                <div class="col-md-3 align-self-end pt-4">
+                                    <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                                </div>
+
+                            </div>
+                        }
+                       
                     }
                   
                 </div>
@@ -112,7 +114,7 @@
                                                     <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.TransactionId</p>
                                                 </td>
                                                 <td class="text-center">
-                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Amount</p>
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Amount.ToString("N", CultureInfo.InvariantCulture)</p>
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Processor</p>
