@@ -37,7 +37,7 @@ namespace MomoSwitchPortal.Controllers
         {
 			try
 			{
-                int pageSize = 1;
+                int pageSize = 15;
                 int pageNumber = (page == 0 ? 1 : page);
 
                 var db = new MomoSwitchDbContext();
@@ -130,7 +130,7 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 TempData["UserFilterRequest"] = null;
-                int pageSize = 1;
+                int pageSize = 15;
                 int pageNumber = 1;
 
                 var db = new MomoSwitchDbContext();

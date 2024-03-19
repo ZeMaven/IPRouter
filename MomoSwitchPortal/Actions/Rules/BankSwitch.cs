@@ -187,6 +187,17 @@ namespace MomoSwitchPortal.Actions.Rules
                     };
                 }
 
+                var switchExists = await Db.SwitchTb.SingleOrDefaultAsync(x => x.Processor == Request.Processor);
+
+                if (switchExists == null)
+                {
+                    Log.Write("BankSwitch.Create", $"Switch named {Request.Processor} doesn't exist");
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "System Challenge"
+                    };
+                }
                 var bankSwitchExists = await Db.BankSwitchTb.SingleOrDefaultAsync(x => x.BankCode == Request.BankCode && x.Processor == Request.Processor && x.Id != Request.Id);
 
                 if( bankSwitchExists != null)

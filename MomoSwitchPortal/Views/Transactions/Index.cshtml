@@ -108,7 +108,9 @@
                                         {
                                             <tr>
                                                 <td class="text-center">
-                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Model.StartSerialNumber</p>
+                                                    <a href="~/transactions/@Item.Id">
+                                                        <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Model.StartSerialNumber</p>
+                                                    </a>
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.TransactionId</p>

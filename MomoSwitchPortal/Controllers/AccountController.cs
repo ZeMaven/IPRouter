@@ -24,14 +24,16 @@ namespace MomoSwitchPortal.Controllers
         private readonly ICommonUtilities commonUtilities;
         private readonly IEmail Email;
         private readonly INotyfService ToastNotification;
+        private readonly IConfiguration configuration;
 
-        public AccountController(ILog log, IAccount account, IEmail email, ICommonUtilities commonUtilities, INotyfService toastNotification)
+        public AccountController(ILog log, IAccount account, IEmail email, ICommonUtilities commonUtilities, INotyfService toastNotification, IConfiguration configuration)
         {
             Log = log;
             accountManager = account;
             Email = email;
             this.commonUtilities = commonUtilities;
             ToastNotification = toastNotification;
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -234,7 +236,7 @@ namespace MomoSwitchPortal.Controllers
                 Log.Write("AccountController:ForgotPassword", $"eRR: {ex.Message}. Key: {key}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
                 var viewModel = new ForgotPasswordUsernameViewModel();
-                return View("EnterEmail", viewModel);
+                return View("Error");
             }
         }
 
@@ -298,8 +300,7 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("AccountController:ResetPassword", $"eRR: {ex.Message}. User:{model.Username}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View("ForgotPassword", model);
-
+                return View("Error");
             }
         }
 
@@ -357,6 +358,15 @@ namespace MomoSwitchPortal.Controllers
                 userInDatabase.UserKey = key;
                 await _context.SaveChangesAsync();
 
+              
+                string templatePath = configuration.GetValue<string>("Email:ForgotPasswordEmailTemplatePath");
+                string emailTemplate = System.IO.File.ReadAllText(templatePath);
+                string link = $"{currentUrl}/account/forgotpassword?key={key}";
+
+                emailTemplate = emailTemplate.Replace("#Firstname#", userInDatabase.FirstName);                
+                emailTemplate = emailTemplate.Replace("#Link#", link);
+                
+
                 var result = await Email.SendEmail(new MailRequest
                 {
                     FromName = "Coralpay",
@@ -364,22 +374,14 @@ namespace MomoSwitchPortal.Controllers
                     To = userInDatabase.Username,
                     ToName = "Momo Switch Portal User",
                     Subject = "Reset your Momo Switch portal password",
-                    Body = $"Dear {userInDatabase.FirstName}, \n\n" +
-                    $"To reset your password click the link below: \n" +
-                    $"{currentUrl}/account/forgotpassword?key={key} \n " +
-                    $"" +
-                    $"Yours truly,\n" +
-                    $"The ETG Team \n"
-                   
-
-                    
+                    Body = emailTemplate                
                 });
 
                 if (result.ResponseCode != "00")
                 {
                     Log.Write("AccountController:ForgotPassword", $"Email failure: {result.ResponseMessage}. User:{model.Username}");
                     ModelState.AddModelError("", "Something went wrong. Please try again later");
-                    return View(model);
+                    return View("EnterEmail", model);
                 }
 
                 Log.Write($"AccountController:ForgotPassword", $"ForgotPassword email sent to user:{model.Username}");
@@ -397,7 +399,7 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("AccountController:ForgotPassword", $"eRR: {ex.Message}. User:{model.Username}");
                 ModelState.AddModelError("", "Something went wrong. Please try again later");
-                return View("EnterEmail", model);
+                return View("Error");
             }
         }
 

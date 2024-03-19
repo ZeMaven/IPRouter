@@ -23,13 +23,16 @@ namespace MomoSwitchPortal.Actions
         private readonly ILog Log;
         private readonly IEmail Email;
         private readonly ICommonUtilities CommonUtilities;
+        private readonly IConfiguration configuration;
 
-        public User(IHttpContextAccessor contextAccessor, IEmail email, ILog log, ICommonUtilities commonUtilities)
+
+        public User(IHttpContextAccessor contextAccessor, IEmail email, ILog log, ICommonUtilities commonUtilities, IConfiguration configuration)
         {
             _contextAccessor = contextAccessor;
             Email = email;
             Log = log;
             CommonUtilities = commonUtilities;
+            this.configuration = configuration;
         }
 
         public async Task<ResponseHeader> CreateUser(CreateUserViewModel model)
@@ -106,10 +109,19 @@ namespace MomoSwitchPortal.Actions
                 await db.PortalUserTb.AddAsync(newUser);
                 await db.SaveChangesAsync();
 
+                string templatePath = configuration.GetValue<string>("Email:ActivateAccountEmailTemplatePath");
+
+                string emailTemplate = System.IO.File.ReadAllText(templatePath);
+                string link = $"{currentUrl}/account/activateaccount?key={key}";
+
+                emailTemplate = emailTemplate.Replace("#Firstname#", newUser.FirstName);               
+                emailTemplate = emailTemplate.Replace("#Link#", link);
+
+
                 var result = await Email.SendEmail(new MailRequest
                 {
-                    Subject = "Welcome to Momo Router Portal",
-                    Body = $"Welcome to Momo Router Portal, \n \n Click here to finish setting up your account: \n {currentUrl}/account/activateaccount?key={key} \n \n Yours truly,\nThe ETG Team",
+                    Subject = "Welcome to Momo Switch Portal",
+                    Body = emailTemplate,
                     FromName = "Coralpay",
                     From = "Corlpay",
                     To = newUser.Username,
