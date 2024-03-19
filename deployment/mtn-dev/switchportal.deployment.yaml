@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: switchportal-api-deployment
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: switchportal-api
+  template:
+    metadata:
+      labels:
+        app: switchportal-api
+    spec:
+      containers:
+      - name: switchportal-api
+        image: dockub.coralpay.com/switchportal:#{image-tag}#
+        resources:
+          limits:
+            memory: "228Mi"
+            cpu: "200m"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+            - name: switchportal
+              mountPath: /app/switchportal
+        envFrom:
+        - secretRef:
+            name: switchportal
+        - configMapRef:
+            name: switchportal
+      imagePullSecrets:
+        - name: docker-cred
+      volumes:
+        - name: switchportal
+          configMap:
+            name: switchportal
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: switchportal-api-service
+  namespace: dev
+spec:
+  type: ClusterIP
+  selector:
+    app: switchportal-api
+  ports:
+  - port: 8080
+    targetPort: 8080
