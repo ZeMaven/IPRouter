@@ -9,6 +9,7 @@ namespace MomoSwitch.Actions
     public interface IUtilities
     {
         Settings GetSettings();
+        void RefreshCache();
     }
 
     public class Utilities : IUtilities
@@ -23,6 +24,10 @@ namespace MomoSwitch.Actions
             Log = log;
         }
 
+
+        public void RefreshCache()=>
+            SettingsCache.Set($"SettingsCache", string.Empty, TimeSpan.FromDays(7));
+        
 
         public Settings GetSettings()
         {

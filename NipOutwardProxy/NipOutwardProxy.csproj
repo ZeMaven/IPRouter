@@ -10,6 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Connected Services\NipService\**" />
+    <Content Remove="Connected Services\NipService\**" />
+    <EmbeddedResource Remove="Connected Services\NipService\**" />
+    <None Remove="Connected Services\NipService\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Connected Services\NipService\Reference.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Connected Services\NipService\ConnectedService.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CoralPay" Version="1.9.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="[1.19.6-Preview.1, 1.19.6]" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

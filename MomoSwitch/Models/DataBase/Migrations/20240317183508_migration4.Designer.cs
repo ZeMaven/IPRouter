@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MomoSwitch.Models.DataBase;
 
@@ -11,9 +12,11 @@ using MomoSwitch.Models.DataBase;
 namespace MomoSwitch.models.database.Migrations
 {
     [DbContext(typeof(MomoSwitchDbContext))]
-    partial class MomoSwitchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317183508_migration4")]
+    partial class migration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,20 +143,20 @@ namespace MomoSwitch.models.database.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("NameEnquiryUrl")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Processor")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TranQueryUrl")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TransferUrl")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -197,8 +200,8 @@ namespace MomoSwitch.models.database.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BenefAccountName")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BenefAccountNumber")
                         .HasMaxLength(50)
@@ -231,35 +234,33 @@ namespace MomoSwitch.models.database.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NameEnquiryRef")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Narration")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentReference")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Processor")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ResponseCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResponseMessage")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SessionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("SourceAccountName")
                         .HasMaxLength(50)
@@ -282,8 +283,8 @@ namespace MomoSwitch.models.database.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TransactionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("ValidateDate")
                         .HasColumnType("datetime2");

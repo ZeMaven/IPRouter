@@ -23,6 +23,9 @@ namespace MomoSwitch.Actions
             Log = log;
         }
 
+
+    
+
         public RuleMatchResponse Route(RouterRequest Request)
         {
             try
@@ -188,6 +191,11 @@ namespace MomoSwitch.Actions
                     {
                         var TargetSwitch = Settings.SwitchSettingList.Where(x => x.Switch == Time.Switch).FirstOrDefault();
 
+                        if (TargetSwitch==null)
+                        {
+                            Log.Write("Router.MatchTimeRule", $"{TargetSwitch.Switch} is not found, defaults to Default");
+                            break;
+                        }
                         if (TargetSwitch.IsActive)
                         {
                             Resp = new RuleMatchResponse
@@ -263,7 +271,11 @@ namespace MomoSwitch.Actions
                     if ((Amount >= AmtRule.AmountA) && (Amount <= AmtRule.AmountZ))
                     {
                         var TargetSwitch = Settings.SwitchSettingList.Where(x => x.Switch == AmtRule.Switch).FirstOrDefault();
-
+                        if (TargetSwitch == null)
+                        {
+                            Log.Write("Router.MatchAmountRule", $"{TargetSwitch.Switch} is not found, defaults to Default");
+                            break;
+                        }
                         if (TargetSwitch.IsActive)
                         {
                             Resp = new RuleMatchResponse
@@ -336,7 +348,10 @@ namespace MomoSwitch.Actions
                 if (One2One != null)
                 {
                     var TargetSwitch = Settings.SwitchSettingList.Where(x => x.Switch == One2One.Switch).FirstOrDefault();
-
+                    if (TargetSwitch == null)
+                    {
+                        Log.Write("Router.MatchAmountRule", $"{TargetSwitch.Switch} is not found, defaults to Default");                        
+                    }
                     if (TargetSwitch.IsActive)
                     {
                         Resp = new RuleMatchResponse
