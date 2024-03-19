@@ -71,7 +71,7 @@
                         <li>
                             <a class="dropdown-item d-flex" href="~/bankswitchrule">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                    <i class="material-icons opacity-10">toggle_off</i>
+                                  <i class="material-icons opacity-10">power</i>
                                 </div>
                                 <span class="nav-link-text ms-1">Bank-Switches</span>
                             </a>
@@ -213,6 +213,7 @@
 
     @await Component.InvokeAsync("Notyf")
     <script>
+
     document.getElementById('togglePassword').addEventListener('click', function () {
         var passwordField = document.getElementById('passwordField');
         var eyeIcon = document.getElementById('eyeIcon');
