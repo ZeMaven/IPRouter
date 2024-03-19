@@ -156,7 +156,7 @@ namespace MomoSwitchPortal.Controllers
                     loggedInUserInDatabase.ModifyDate = DateTime.Now;
                     await db.SaveChangesAsync();
 
-                    ToastNotification.Success("Password changed successfully23");
+                    ToastNotification.Success("Password changed successfully");
                     return RedirectToAction("Logout","Account");
                 }
                 await db.SaveChangesAsync();
