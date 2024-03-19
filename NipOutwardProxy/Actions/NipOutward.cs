@@ -2,7 +2,8 @@
 using Momo.Common.Models;
 using NipOutwardProxy.Models.Nibss;
 using System.Text.Json;
-using NipService; 
+using NipService;
+using NipServiceTsq;
 
 namespace NipOutwardProxy.Actions
 {
@@ -23,6 +24,7 @@ namespace NipOutwardProxy.Actions
         private readonly IPgp Pgp;
         private readonly IXmlConverter XmlConverter;
         private NIPInterfaceClient Nip;
+        private NIPTSQInterfaceClient NipTSQ;
 
         public NipOutward(IConfiguration config, ILog log, ICommonUtilities utilities, IHttpService httpService, IPgp pgp, IXmlConverter xmlConverter)
         {
@@ -33,6 +35,7 @@ namespace NipOutwardProxy.Actions
             Pgp = pgp;
             XmlConverter = xmlConverter;
             Nip = new NIPInterfaceClient();
+            NipTSQ =new NIPTSQInterfaceClient();
         }
 
         public async Task<NameEnquiryPxResponse> NameEnquiry(NameEnquiryPxRequest Request)
@@ -122,7 +125,7 @@ namespace NipOutwardProxy.Actions
                 var EncRequest = Pgp.Ecryption(XmlRequest);
                 Log.Write("NibssOutward.TranQuery", $"Request to Nibss enc: {EncRequest}");
                 //incorrect
-                var NipResp = await Nip.balanceenquiryAsync(EncRequest);
+                var NipResp = await NipTSQ.txnstatusquerysingleitemAsync(EncRequest);
                 var NibssResponseEnc = NipResp.Body.@return;
                 //
                 Log.Write("NibssOutward.TranQuery", $"Response from Nibss enc: {NibssResponseEnc}");

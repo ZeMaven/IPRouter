@@ -11,7 +11,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
-   // [Authorize]
+   [Authorize]
     public class NameEnquiryController : ControllerBase
     {
         private readonly IOutward Outward;
