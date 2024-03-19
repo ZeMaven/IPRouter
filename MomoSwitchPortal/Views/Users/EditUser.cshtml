@@ -1,0 +1,54 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.User.EditUserViewModel
+@{
+    ViewData["Title"] = "New User page";
+    ViewData["CreateUser"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit User</h2>
+        <a href="~/users">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/edituser" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x => x.Id)
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="username" class="form-label font-weight-bold">Username</label>
+                <input type="email" class="form-control border px-3" name="username" id="username" value="@Model.Username" placeholder="Username" readonly>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="EntryDate" class="form-label font-weight-bold">Date of creation</label>
+                <input type="text" class="form-control border px-3" name="EntryDate" id="EntryDate" value="@Model.EntryDate" placeholder="Entry Date" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="FirstName" class="form-label font-weight-bold">First Name</label>
+                <input type="text" class="form-control border px-3" name="FirstName" value="@Model.FirstName" id="FirstName" placeholder="First name">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="LastName" class="form-label font-weight-bold">Last Name</label>
+                <input type="text" class="form-control border px-3" name="LastName" id="LastName" value="@Model.LastName" placeholder="Last Name">
+            </div>
+        </div>
+       
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="Role" class="form-label font-weight-bold">User Type</label>
+                @Html.DropDownListFor(x => x.Role, ViewBag.roles as SelectList, "Select User Type", new { @Class = "form-control border px-3", @title = " User Type", @required = true })
+            </div>
+            <div class="col-6 mb-3">
+                <label for="IsActive" class="form-label font-weight-bold">Is-Active</label>
+                @Html.DropDownListFor(x => x.IsActive, ViewBag.status as SelectList, "User is-Active", new { @Class = "form-control border px-3", @title = " Is-Active", @required = true })
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Update User</button>
+
+    </form>
+
+</div>

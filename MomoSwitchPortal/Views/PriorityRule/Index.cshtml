@@ -1,0 +1,80 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Priority.PriorityResponse
+@{
+    ViewData["Title"] = "Priority Rule page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                    <h6 class="text-white text-capitalize ps-3">Priority Rule</h6>
+                   @*  <a href="~/priorityrule/create" class="text-decoration-none">
+                        <button type="submit" class="btn btn-dark btn-sm me-3 my-0">+ Create</button>
+                    </a> *@
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="container pb-3 px-4" >
+                    <form action="~/priorityrule" method="post">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4 col-lg-3">
+                                <label for="rule" class="form-label">Rule:</label>
+                                <input type="text" value="@Model.Rule" class="form-control border p-2" placeholder="Rule" id="rule" name="rule">
+                            </div>
+
+                            <div class="col-md-3 align-self-end pt-4">
+                                <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder ">Priority</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Rule</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    if (Model.PriorityDetails.Count > 0)
+                                    {
+                                        foreach (var Item in Model.PriorityDetails)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-4 ">@Item.Priority</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Rule</p>
+                                                </td>
+                                                <td>
+                                                    <a href="~/priorityrule/edit/@Item.Id">
+                                                        <i class="material-icons text-md text-secondary" data-bs-toggle="tooltip" title="Edit">edit</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('.confirmation').on('click', function () {
+            return confirm('Are you sure you want to delete this item?');
+        });
+    </script>
+}

@@ -1,5 +1,11 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authentication.JwtBearer;
+@attribute [Authorize(Roles = "Administrator, Ordinary")]
+@using SwitchPortal.Actions
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization;
+@using SwitchPortal.Components.Shared
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -9,3 +15,5 @@
 @using SwitchPortal
 @using SwitchPortal.Client
 @using SwitchPortal.Components
+@using SwitchPortal.Models.ViewModels.Account
+

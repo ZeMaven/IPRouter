@@ -1,0 +1,233 @@
+﻿@using MomoSwitchPortal.Models.Internals
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MomoSwitchPortal</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="~/assets/img/Momologo.png">
+    <link rel="stylesheet" href="~/assets/css/nucleo-icons.css" asp-append-version="true" />  
+    <link rel="stylesheet" href="~/assets/css/nucleo-svg.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" asp-append-version="true">
+    <link id="pagestyle" href="~/assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" asp-append-version="true" />
+    <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+</head>
+<body class="g-sidenav-show  bg-gray-200">
+    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="~/" target="_blank">
+                <img src="~/assets/img/logo.png" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 font-weight-bold text-white">Momo Portal</span>
+            </a>
+        </div>
+        <hr class="horizontal light mt-0 mb-2">
+        <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="@ViewData["Dashboard"] nav-link text-white " href="~/">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">dashboard</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="@ViewData["Transaction"]  nav-link text-white " href="~/transactions">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">swap_horiz</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Transactions</span>
+                    </a>
+                </li>
+            
+                  @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.Administrator.ToString())
+                    {
+                         <li class="nav-item dropdown">
+                    <a class="@ViewData["RouterSetup"]   nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">router</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Router Setup</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/Switchrule">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">toggle_off</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Switches</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/bankswitchrule">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                  <i class="material-icons opacity-10">power</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Bank-Switches</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/Timerule">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">schedule</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Time Rule</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/PriorityRule">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">priority_high</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Piority Rule</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/AmountRule">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">attach_money</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Amount Rule</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                    }
+                }
+               
+
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="@ViewData["Profile"] nav-link text-white" href="~/profile">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Profile</span>
+                    </a>
+                </li
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if(User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.Administrator.ToString())
+                    {
+                         <li class="nav-item">
+                            <a class="@ViewData["CreateUser"] nav-link text-white " href="~/users">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons text-lg position-relative">people</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Users</span>
+                            </a>
+                         </li>
+                    }
+                   
+                }
+              
+           
+            </ul>
+        </div>
+
+        <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+            <div class="mx-3 d-xl-none">
+                <a class="btn bg-gradient-warning w-100" href="~/account/logout" type="button">LogOut</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+            <div class="container-fluid py-1 px-3">
+                @*         <nav aria-label="breadcrumb">
+                <h4 class="font-weight-bolder mb-0">Dashboard</h4>
+                </nav> *@
+                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4  justify-content-end" id="navbar">
+                    <ul class="navbar-nav  justify-content-end">
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                            <a class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item p-0 mt-3 d-none d-xl-block">
+                            <a href="~/account/logout" class="btn btn-outline-dark text-body font-weight-bold pt-2 pl-1 pr-1 pb-2">
+                                <i class="material-icons opacity-10">logout</i>
+                                <span class="d-sm-inline d-none pl-2">LogOut</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+        <!-- End Navbar -->
+         <main>
+
+            <article class="content px-4 py-0" >
+            @RenderBody()
+            </article>
+         </main>
+    </main>
+
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--   Core JS Files   -->
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="~/assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="~/assets/js/plugins/chartjs.min.js"></script>
+    <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+    <script src="../lib/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <script src="../lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="../lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @await Component.InvokeAsync("Notyf")
+    <script>
+
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordField = document.getElementById('passwordField');
+        var eyeIcon = document.getElementById('eyeIcon');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+</script>
+</body>
+</html>

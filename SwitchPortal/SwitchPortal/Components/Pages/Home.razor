@@ -1,7 +1,39 @@
 ﻿@page "/"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<button type="button" @onclick="() => LogOut()">
+    Logout
+</button>
+<h1>Hello, world! @username</h1>
 
 Welcome to your new app.
+
+@code{
+    private string username = "";
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            {
+                username = $"{user.FindFirst("username")} is authenticated.";
+            }
+        }
+    }
+
+    private async Task LogOut(){
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAnonymous();
+        NavigationManager.NavigateTo("/Login");
+
+    }
+}

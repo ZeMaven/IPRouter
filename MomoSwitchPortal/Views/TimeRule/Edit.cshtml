@@ -1,0 +1,39 @@
+﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Time.CreateTimeRuleViewModel
+@{
+    ViewData["Title"] = "Time Rule page";
+    ViewData["RouterSetup"] = "active bg-gradient-warning";
+}
+<div class="container">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Edit Time Rule</h2>
+        <a href="/timerule">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </a>
+    </div>
+    <form action="~/timerule/edit" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger font-weight-bold" })
+        @Html.HiddenFor(x => x.Id)
+
+        <div class="row">
+                <div class="col-6 mb-3">
+                <label for="timeA" class="form-label font-weight-bold">Start Time</label>
+                <input type="time" name="timeA" value="@Model?.TimeA" class="form-control border px-3" id="timeA" placeholder="" required>
+            </div>
+
+            <div class="col-6 mb-3">
+                <label for="timeZ" class="form-label font-weight-bold">End Time</label>
+                <input type="time" name="timeZ" value="@Model?.TimeZ" class="form-control border px-3" id="timeZ" placeholder="" required>
+            </div>
+        </div>
+        <div class="col-6 mb-3">
+            <label for="processor" class="form-label font-weight-bold">Processor</label>
+            @Html.DropDownListFor(x => x.Processor, ViewBag.switches as SelectList, "Select Processor", new { @Class = "form-control border px-3", @title = " Select Processor", @required = true })
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+
+    </form>
+
+</div>
+
