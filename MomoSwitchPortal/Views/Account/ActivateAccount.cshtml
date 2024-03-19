@@ -35,11 +35,17 @@
             <div class="input-group input-group-outline mb-3">
                 <input name="Username" value="@Model.Username" type="email" class="form-control" placeholder="Username" readonly>
             </div>
-            <div class="input-group input-group-outline mb-3">
-                <input id="Password" name="Password" value="@Model.Password" type="Password" class="form-control" placeholder="Password">
+            <div class="input-group input-group-outline mb-3 border rounded">
+                <input name="Password" value="@Model.Password" type="Password" class="form-control border-0" placeholder="Password" id="passwordField">
+                <button class="border rounded py-2 px-3" type="button" id="togglePassword">
+                    <i class="far fa-eye " id="eyeIcon"></i>
+                </button>
             </div>
-            <div class="input-group input-group-outline mb-3">
-                <input id="ConfirmPassword" name="ConfirmPassword" value="@Model.ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+            <div class="input-group input-group-outline mb-3  border rounded">
+                <input name="ConfirmPassword" value="@Model.ConfirmPassword" type="password" class="form-control border-0" placeholder="Confirm Password" id="cPasswordField">
+                <button class="border rounded py-2 px-3" type="button" id="cTogglePassword">
+                    <i class="far fa-eye " id="cEyeIcon"></i>
+                </button>
             </div>
 
             <div class="text-center">

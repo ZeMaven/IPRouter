@@ -14,28 +14,100 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-        <div class="mb-3">
-            <label for="FirstName" class="form-label font-weight-bold">First Name</label>
-            <input type="text" name="FirstName" value="@Model.FirstName" class="form-control border px-3" id="FirstName" placeholder="Enter First Name" required>
-        </div>
-        <div class="mb-3">
-            <label for="LastName" class="form-label font-weight-bold">Last Name</label>
-            <input type="text" name="LastName" value="@Model.LastName" class="form-control border px-3" id="LastName" placeholder="Enter Last Name" required>
-        </div>
-        <div class="mb-3">
-            <label for="OldPassword" class="form-label font-weight-bold">Old Password</label>
-            <input type="password" name="OldPassword" value="@Model.OldPassword" class="form-control border px-3" id="OldPassword" placeholder="Old Password" >
-        </div>
-        <div class="mb-3">
-            <label for="NewPassword" class="form-label font-weight-bold">New Password</label>
-            <input type="password" name="NewPassword" value="@Model.NewPassword" class="form-control border px-3" id="NewPassword" placeholder="New Password">
-        </div>
-        <div class="mb-3">
-            <label for="ConfirmPassword" class="form-label font-weight-bold">Confirm Password</label>
-            <input type="password" name="ConfirmPassword" value="@Model.ConfirmPassword" class="form-control border px-3" id="ConfirmPassword" placeholder="Confirm Password">
-        </div>
+       <div class="row">
+            <div class="col-6 mb-3">
+                <label for="FirstName" class="form-label font-weight-bold">First Name</label>
+                <input type="text" name="FirstName" value="@Model.FirstName" class="form-control border px-3" id="FirstName" placeholder="Enter First Name" required>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="LastName" class="form-label font-weight-bold">Last Name</label>
+                <input type="text" name="LastName" value="@Model.LastName" class="form-control border px-3" id="LastName" placeholder="Enter Last Name" required>
+            </div>
+           
+       </div>
+       <div class="row">
+            <div class="col-6 mb-3">
+                <label for="OldPassword" class="form-label font-weight-bold">Old Password</label>
+                <div class="input-group input-group-outline mb-2 border rounded">
+                    <input type="password" name="OldPassword" value="@Model.OldPassword" id="passwordFieldOld" class="form-control border-0 " placeholder="*******">
+
+                    <button class="border rounded py-2 px-3" type="button" id="togglePasswordOld">
+                        <i class="far fa-eye " id="eyeIconOld"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-6 mb-3">
+                <label for="NewPassword" class="form-label font-weight-bold">New Password</label>
+                <div class="input-group input-group-outline mb-2 border rounded">
+                    <input type="password" name="NewPassword" value="@Model.NewPassword" id="passwordFieldNew" class="form-control border-0 " placeholder="*******">
+
+                    <button class="border rounded py-2 px-3" type="button" id="togglePasswordNew">
+                        <i class="far fa-eye " id="eyeIconNew"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="ConfirmPassword" class="form-label font-weight-bold">Confirm Password</label>
+                <div class="input-group input-group-outline mb-2 border rounded">
+                    <input type="password" name="ConfirmPassword" value="@Model.ConfirmPassword" id="passwordFieldConfirm" class="form-control border-0 " placeholder="*******">
+
+                    <button class="border rounded py-2 px-3" type="button" id="togglePasswordConfirm">
+                        <i class="far fa-eye " id="eyeIconConfirm"></i>
+                    </button>
+                </div>
+            </div>
+       </div>
+        
+
         <button type="submit" class="btn btn-dark">Submit</button>
 
     </form>
 
 </div>
+<script>
+    document.getElementById('togglePasswordOld').addEventListener('click', function () {
+        var passwordField = document.getElementById('passwordFieldOld');
+        var eyeIcon = document.getElementById('eyeIconOld');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+    
+    document.getElementById('togglePasswordNew').addEventListener('click', function () {
+        var passwordField = document.getElementById('passwordFieldNew');
+        var eyeIcon = document.getElementById('eyeIconNew');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }); 
+    
+    document.getElementById('togglePasswordConfirm').addEventListener('click', function () {
+        var passwordField = document.getElementById('passwordFieldConfirm');
+        var eyeIcon = document.getElementById('eyeIconConfirm');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+</script>
