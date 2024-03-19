@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between mb-4">
         <h2>Transaction Details</h2>
         <a href="~/transactions">
-            <button type="submit" class="btn btn-secondary shadow-none">Back</button>
+            <button type="submit" class="btn btn-dark">Back</button>
         </a>
     </div>
     <form>
@@ -18,18 +18,33 @@
                 <label for="date" class="form-label font-weight-bold">Date</label>
                 <input type ="text" readonly value="@(Convert.ToDateTime(Model.Date).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="date" placeholder="Date" required>
             </div>
+          
             <div class="col-6 mb-3">
-                <label for="paymentdate" class="form-label font-weight-bold">Payment Date</label>
-                <input type="text" readonly value="@(Convert.ToDateTime(Model.PaymentDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="paymentdate" placeholder="paymentdate" required>
+                <label for="sessionId" class="form-label font-weight-bold">SessionId</label>
+                <input type="text" readonly value="@Model.SessionId" class="form-control border px-3" id="sessionId" placeholder="sessionId" required>
+            </div>
+        </div>
+
+        <div class="row">
+           
+            <div class="col-6 mb-3">
+                <label for="transactionId" class="form-label font-weight-bold">TransactionId</label>
+                <input type="text" readonly value="@Model.TransactionId" class="form-control border px-3" id="transactionId" placeholder="TransactionId" required>
+            </div>
+          
+            <div class="col-6 mb-3">
+                <label for="amount" class="form-label font-weight-bold">Amount</label>
+                <input type="text" readonly value="@Model.Amount.ToString("N", CultureInfo.InvariantCulture)" class="form-control border px-3" id="amount" placeholder="NGN" required>
             </div>
         </div>
 
         <div class="row">
             <div class="col-6 mb-3">
-                <label for="Validatedate" class="form-label font-weight-bold">Validate Date</label>
-                <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
+                <label for="fee" class="form-label font-weight-bold">Fee</label>
+                <input type="number" readonly value="@Model.Fee" class="form-control border px-3" id="fee" placeholder="fee" required>
             </div>
-            <div class="col-6 mb-3">
+
+             <div class="col-6 mb-3">
                 <label for="Processor" class="form-label font-weight-bold">Processor</label>
                 <input type="text" readonly value="@Model.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
             </div>
@@ -37,14 +52,14 @@
 
         <div class="row">
             <div class="col-6 mb-3">
-                <label for="transactionId" class="form-label font-weight-bold">TransactionId</label>
-                <input type="text" readonly value="@Model.TransactionId" class="form-control border px-3" id="transactionId" placeholder="TransactionId" required>
-            </div>
-            <div class="col-6 mb-3">
-                <label for="sessionId" class="form-label font-weight-bold">SessionId</label>
-                <input type="text" readonly value="@Model.SessionId" class="form-control border px-3" id="sessionId" placeholder="sessionId" required>
+                <label for="responseCode" class="form-label font-weight-bold">Response Code</label>
+                <input type="text" readonly value="@Model.ResponseCode" class="form-control border px-3" id="responseCode" placeholder="responseCode" required>
             </div>
 
+            <div class="col-6 mb-3">
+                <label for="responseMessage" class="form-label font-weight-bold">Response Message</label>
+                <input type="text" readonly value="@Model.ResponseMessage" class="form-control border px-3" id="responseMessage" placeholder="responseMessage" required>
+            </div>
         </div>
 
         <div class="row">
@@ -128,29 +143,24 @@
                 <label for="nameEnquiryRef" class="form-label font-weight-bold">Name Enquiry Ref</label>
                 <input type="text" readonly value="@Model.NameEnquiryRef" class="form-control border px-3" id="nameEnquiryRef" placeholder="nameEnquiryRef" required>
             </div>
+
             <div class="col-6 mb-3">
-                <label for="amount" class="form-label font-weight-bold">Amount</label>
-                <input type="text" readonly value="@Model.Amount.ToString("N", CultureInfo.InvariantCulture)" class="form-control border px-3" id="amount" placeholder="NGN" required>
+                <label for="Validatedate" class="form-label font-weight-bold">Validate Date</label>
+                <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
             </div>
         </div>
 
         <div class="row">
+
             <div class="col-6 mb-3">
-                <label for="fee" class="form-label font-weight-bold">Fee</label>
-                <input type="number" readonly value="@Model.Fee" class="form-control border px-3" id="fee" placeholder="fee" required>
+                <label for="paymentdate" class="form-label font-weight-bold">Payment Date</label>
+                <input type="text" readonly value="@(Convert.ToDateTime(Model.PaymentDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="paymentdate" placeholder="paymentdate" required>
             </div>
-            <div class="col-6 mb-3">
-                <label for="responseCode" class="form-label font-weight-bold">Response Code</label>
-                <input type="text" readonly value="@Model.ResponseCode" class="form-control border px-3" id="responseCode" placeholder="responseCode" required>
-            </div>
+
+           
         </div>
 
-        <div class="row">
-            <div class="col-6 mb-3">
-                <label for="responseMessage" class="form-label font-weight-bold">Response Message</label>
-                <input type="text" readonly value="@Model.ResponseMessage" class="form-control border px-3" id="responseMessage" placeholder="responseMessage" required>
-            </div>
-        </div>
+        
     </form>
 
 </div>

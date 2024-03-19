@@ -295,7 +295,7 @@ namespace MomoSwitchPortal.Controllers
                 }
 
 
-                bool overlapsExisting = await db.AmountRuleTb.AnyAsync(ad => (model.AmountA <= ad.AmountZ && model.AmountA >= ad.AmountA) || (model.AmountZ >= ad.AmountA && model.AmountZ <= ad.AmountZ));
+                bool overlapsExisting = await db.AmountRuleTb.AnyAsync(ad => (model.AmountA <= ad.AmountZ && model.AmountA >= ad.AmountA && ad.Id != model.Id) || (model.AmountZ >= ad.AmountA && model.AmountZ <= ad.AmountZ && ad.Id != model.Id));
 
                 if (!overlapsExisting)
                 {

@@ -303,7 +303,32 @@ namespace MomoSwitchPortal.Controllers
                 DateTime timeA = DateTime.Parse(model.TimeA);
                 DateTime timeZ = DateTime.Parse(model.TimeZ);
                 var existingRules = await db.TimeRuleTb.ToListAsync();
-                bool overlapsExisting = existingRules.Any(ad =>(timeA <= DateTime.Parse(ad.TimeZ) && timeA >= DateTime.Parse(ad.TimeA)) || (timeZ >= DateTime.Parse(ad.TimeA) && timeZ <= DateTime.Parse(ad.TimeZ)));
+                var overlapsExisting = existingRules.Any(ad =>(timeA <= DateTime.Parse(ad.TimeZ) && timeA >= DateTime.Parse(ad.TimeA) && ad.Id != model.Id) || (timeZ >= DateTime.Parse(ad.TimeA) && timeZ <= DateTime.Parse(ad.TimeZ) && ad.Id != model.Id));
+
+                //if(overlapsExisting != null && overlapsExisting.Id == model.Id)
+                //{
+                //    if(overlapsExisting.TimeA == model.TimeA && overlapsExisting.TimeZ == model.TimeZ)
+                //    {
+                //         return RedirectToAction("Index");
+                //    }
+
+                //    var timeDetails = new TimeDetails
+                //    {
+                //        Id = model.Id,
+                //        Processor = model.Processor,
+                //        TimeA = model.TimeA,
+                //        TimeZ = model.TimeZ,
+                //    };
+                //    var result = await timeManager.Edit(timeDetails);
+                //    if (result.ResponseCode != "00")
+                //    {
+                //        ModelState.AddModelError("", result.ResponseMessage);
+                //        return View(model);
+                //    }
+
+                //    ToastNotification.Success("Time rule modified successfully");
+                //    return RedirectToAction("Index");
+                //}
 
                 if (!overlapsExisting)
                 {

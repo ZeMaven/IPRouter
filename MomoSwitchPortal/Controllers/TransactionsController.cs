@@ -116,7 +116,8 @@ namespace MomoSwitchPortal.Controllers
                    .Skip((pageNumber - 1) * pageSize)
                    .Take(pageSize)
                    .ToList();
-                   
+
+                    var startSerialNumber = (pageNumber - 1) * pageSize + 1;
 
 
                     var viewModel = new TransactionViewModel();
@@ -133,6 +134,8 @@ namespace MomoSwitchPortal.Controllers
                         TransactionId = x.TransactionId
                     }).ToList();
                     viewModel.PaginationMetaData = new(Count, pageNumber, pageSize);
+                    viewModel.StartSerialNumber = startSerialNumber;
+
                     viewModel.FilterRequest = new TransactionFilterRequest
                     {
                         StartDate = FilterRequest.FilterRequest.StartDate,
@@ -176,7 +179,12 @@ namespace MomoSwitchPortal.Controllers
                .Take(pageSize)
                .ToList();
 
+               var startSerialNumber2 = (pageNumber - 1) * pageSize + 1;
+
+
                 Trans.PaginationMetaData = new(Count2, pageNumber, pageSize);
+                Trans.StartSerialNumber = startSerialNumber2;
+
                 return View(Trans);               
             }
             catch (Exception ex)
@@ -216,7 +224,7 @@ namespace MomoSwitchPortal.Controllers
                         StartDate = model.FilterRequest.StartDate,
                         TransactionId = model.FilterRequest.TransactionId,
                         TranType = model.FilterRequest.TranType
-                    }
+                    },
                 };
 
 
@@ -273,8 +281,9 @@ namespace MomoSwitchPortal.Controllers
                .Skip((pageNumber - 1) * pageSize)
                .Take(pageSize)
                .ToList();
-               
-                
+
+                var startSerialNumber = (pageNumber - 1) * pageSize + 1;
+
                 model.Transactions = Data.Select(x => new TransactionTableViewModel
                 {
                     Amount = x.Amount,
@@ -290,7 +299,7 @@ namespace MomoSwitchPortal.Controllers
 
 
                 model.PaginationMetaData = new(Count, pageNumber, pageSize);
-
+                model.StartSerialNumber = startSerialNumber;
                 return View(model);
             }
             catch (Exception ex)

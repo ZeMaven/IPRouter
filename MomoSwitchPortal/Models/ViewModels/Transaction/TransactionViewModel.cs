@@ -9,6 +9,7 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public List<TransactionTableViewModel> Transactions { get; set; }
         public TransactionFilterRequest FilterRequest { get; set; }
         public PaginationMetaData PaginationMetaData { get; set; }
+        public int StartSerialNumber { get; set; }
 
     }
 }
