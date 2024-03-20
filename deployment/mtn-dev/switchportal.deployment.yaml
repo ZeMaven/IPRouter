@@ -24,7 +24,7 @@ spec:
             memory: "200M"
             cpu: "100m"  
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
         volumeMounts:
             - name: switchportal
@@ -52,5 +52,5 @@ spec:
   selector:
     app: switchportal-api
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 8080
+    targetPort: 8080
