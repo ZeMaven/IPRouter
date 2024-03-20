@@ -1,4 +1,5 @@
-﻿using Momo.Common.Models;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Momo.Common.Models;
 using MomoSwitch.Models.Contracts.Momo;
 using MomoSwitch.Models.Contracts.Specials.Router;
 
@@ -18,6 +19,13 @@ namespace MomoSwitch.Actions
 
     public class Transposer : ITransposer
     {
+        private readonly IConfiguration Config;
+        public Transposer(IConfiguration config)
+        {
+
+            Config = config;
+
+        }
 
 
         #region ProxyToMomo
@@ -96,7 +104,9 @@ namespace MomoSwitch.Actions
             NameEnquiryRef = Request.nameEnquiryRef,
             SourceAccountName = Request.originatorAccountName,
             SourceAccountNumber = Request.originatorAccountNumber,
-            SourceBankCode = "MomoCode"//Put in config
+            ChannelCode = Request.channelCode,
+            BenefKycLevel = Request.beneficiaryKYCLevel,
+            SourceBankCode = Request.sourceInstitutionCode//  "MomoCode"//Put in config
         };
 
         public TranQueryPxRequest ToProxyTranQueryyRequest(TranQueryRequest Request) => new TranQueryPxRequest

@@ -7,7 +7,7 @@
         public string BenefAccountName { get; set; }
         public string BenefAccountNumber { get; set; }
         public string BenefBvn { get; set; }
-        public string BenefKycLevel { get; set; }
+        public int BenefKycLevel { get; set; }
         public string DestinationBankCode { get; set; }
         public string Narration { get; set; }
         public string SourceBankCode { get; set; }

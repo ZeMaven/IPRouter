@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Momo.Common.Actions;
 using SwitchPortal.Actions;
 using SwitchPortal.Client.Pages;
