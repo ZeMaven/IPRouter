@@ -14,7 +14,7 @@ namespace NipOutwardProxy.Models.Nibss
         public string BeneficiaryAccountName { get; set; }
         public string BeneficiaryAccountNumber { get; set; }
         public string BeneficiaryBankVerificationNumber { get; set; }
-        public string BeneficiaryKYCLevel { get; set; }
+        public int BeneficiaryKYCLevel { get; set; }
         public string OriginatorAccountName { get; set; }
         public string OriginatorAccountNumber { get; set; }
         public string OriginatorBankVerificationNumber { get; set; }
