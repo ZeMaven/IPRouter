@@ -20,7 +20,7 @@ namespace MomoSwitch.Controllers.Outward
         [HttpPost(Name = "Auth")]
         public AuthResponse Auth([FromForm] AuthRequest request)
         {
-            return Processor.Reset(request);
+            return Processor.Reset(request); 
         }
     }
 }

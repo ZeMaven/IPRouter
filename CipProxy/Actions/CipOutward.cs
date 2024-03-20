@@ -224,7 +224,7 @@ namespace CipProxy.Actions
                     narration = Request.Narration,
                     channel = "WEB",
                     group = "0",
-                    sector = "0",
+                    sector = "0", 
                 };
 
                 var JsonReq = JsonSerializer.Serialize(CipRequest);
