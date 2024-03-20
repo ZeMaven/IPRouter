@@ -7,7 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Configure NGINX
-COPY MomoSwitchPortal/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /app
 
@@ -29,6 +29,6 @@ RUN dotnet publish "./MomoSwitchPortal.csproj" -c $BUILD_CONFIGURATION -o /app/p
 
 FROM base AS final
 COPY --from=publish /app/publish .
-COPY MomoSwitchPortal/start.sh /start.sh
+COPY ./start.sh /start.sh
 RUN chmod +x /start.sh
 ENTRYPOINT ["/start.sh"]
