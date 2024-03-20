@@ -5,23 +5,27 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
     public class TransactionReport
     {        
         public string Date { get; set; }
+        [Display(Name = "Payment Date")]
+        public string PaymentDate { get; set; }
+        [Display(Name = "Validation Date")]
+        public string ValidateDate { get; set; }
         [Display(Name = "Session Id")]
         public string SessionId { get; set; }
         [Display(Name = "Transaction Id")]
         public string TransactionId { get; set; }
+        [Display(Name = "NameEnquiry Ref")]
+        public string NameEnquiryRef { get; set; }
+        [Display(Name = "Payment Reference")]
+        public string PaymentReference { get; set; }       
+        [Display(Name = "Manadate Ref")]
+        public string ManadateRef { get; set; }
         public decimal Amount { get; set; }
         public decimal Fee { get; set; }
         public string Processor { get; set; }
         [Display(Name = "Response Code")]
         public string ResponseCode { get; set; }
         [Display(Name = "Response Message")]
-        public string ResponseMessage { get; set; }
-        [Display(Name = "Payment Date")]
-        public DateTime? PaymentDate { get; set; }
-        [Display(Name = "Payment Date")]
-        public DateTime? ValidateDate { get; set; }
-        [Display(Name = "Payment Reference")]
-        public string PaymentReference { get; set; }
+        public string ResponseMessage { get; set; }             
         [Display(Name = "Source Bank Code")]
         public string SourceBankCode { get; set; }
         [Display(Name = "Source Account Name")]
@@ -45,10 +49,8 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public string Narration { get; set; }
         [Display(Name = "Channel Code")]
         public string ChannelCode { get; set; }
-        [Display(Name = "Manadate Ref")]
-        public string ManadateRef { get; set; }
-        [Display(Name = "NameEnquiry Ref")]
-        public string NameEnquiryRef { get; set; }
+       
+       
 
 
 
