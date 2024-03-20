@@ -125,7 +125,7 @@ namespace MomoSwitchPortal.Controllers
                     {
                         Amount = x.Amount,
                         BenefBankCode = x.BenefBankCode,
-                        Date = x.Date.ToString("MM/dd/yyyy"),
+                        Date = x.Date.ToString("dd/MM/yyyy"),
                         Id = x.Id,
                         ResponseCode = x.ResponseCode,
                         Processor = x.Processor,
@@ -162,7 +162,7 @@ namespace MomoSwitchPortal.Controllers
                         {
                             Amount = x.Amount,
                             BenefBankCode = x.BenefBankCode,
-                            Date = x.Date.ToString("MM/dd/yyyy"),
+                            Date = x.Date.ToString("dd/MM/yyyy"),
                             Id = x.Id,
                             ResponseCode = x.ResponseCode,
                             Processor = x.Processor,
@@ -288,7 +288,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Amount = x.Amount,
                     BenefBankCode = x.BenefBankCode,
-                    Date = x.Date.ToString("MM/dd/yyyy"),
+                    Date = x.Date.ToString("dd/MM/yyyy"),
                     Id = x.Id,
                     ResponseCode = x.ResponseCode,
                     Processor = x.Processor,
@@ -418,7 +418,7 @@ namespace MomoSwitchPortal.Controllers
                     TransactionId = x.TransactionId,
                     ResponseCode = x.ResponseCode,
                     Processor = x.Processor,
-                    ValidateDate = x.ValidateDate,
+                    ValidateDate = Convert.ToDateTime(x.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
                     BenefAccountName = x.BenefAccountName,
                     BenefAccountNumber  = x.BenefAccountNumber,
                     BenefBankCode   = x.BenefBankCode,
@@ -429,7 +429,7 @@ namespace MomoSwitchPortal.Controllers
                     ManadateRef = x.ManadateRef,
                     NameEnquiryRef = x.NameEnquiryRef,
                     Narration = x.Narration,
-                    PaymentDate = x.PaymentDate,
+                    PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
                     PaymentReference = x.PaymentReference,
                     ResponseMessage = x.ResponseMessage,    
                     SourceAccountName = x.SourceAccountName,
@@ -437,7 +437,7 @@ namespace MomoSwitchPortal.Controllers
                     SourceBankCode      = x.SourceBankCode,
                     SourceBvn = x.SourceBvn,
                     SourceKycLevel = x.SourceKycLevel    ,                                                     
-                    Date = x.Date.ToString("MM/dd/yyyy HH:mm"),
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
                     Amount = x.Amount
                 }).ToList();
 

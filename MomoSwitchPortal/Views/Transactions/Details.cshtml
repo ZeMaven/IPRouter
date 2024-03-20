@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-6 mb-3">
                 <label for="date" class="form-label font-weight-bold">Date</label>
-                <input type ="text" readonly value="@(Convert.ToDateTime(Model.Date).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="date" placeholder="Date" required>
+                <input type="text" readonly value="@(Convert.ToDateTime(Model.Date).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="date" placeholder="Date" required>
             </div>
           
             <div class="col-6 mb-3">
@@ -146,7 +146,7 @@
 
             <div class="col-6 mb-3">
                 <label for="Validatedate" class="form-label font-weight-bold">Validate Date</label>
-                <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
+                <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
             </div>
         </div>
 
@@ -154,7 +154,7 @@
 
             <div class="col-6 mb-3">
                 <label for="paymentdate" class="form-label font-weight-bold">Payment Date</label>
-                <input type="text" readonly value="@(Convert.ToDateTime(Model.PaymentDate).ToString("MM/dd/yyyy"))" class="form-control border px-3" id="paymentdate" placeholder="paymentdate" required>
+                <input type="text" readonly value="@(Convert.ToDateTime(Model.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="paymentdate" placeholder="paymentdate" required>
             </div>
 
            
