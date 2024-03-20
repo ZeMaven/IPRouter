@@ -437,7 +437,7 @@ namespace MomoSwitchPortal.Controllers
                     SourceBankCode      = x.SourceBankCode,
                     SourceBvn = x.SourceBvn,
                     SourceKycLevel = x.SourceKycLevel    ,                                                     
-                    Date = x.Date,
+                    Date = x.Date.ToString("MM/dd/yyyy HH:mm"),
                     Amount = x.Amount
                 }).ToList();
 
