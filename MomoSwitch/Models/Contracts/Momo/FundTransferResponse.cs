@@ -15,8 +15,8 @@
         public string beneficiaryAccountName { get; set; }
         public string beneficiaryAccountNumber { get; set; }
         public string beneficiaryBankVerificationNumber { get; set; }
-        public object beneficiaryKYCLevel { get; set; }
-        public object transactionLocation { get; set; }
+        public int beneficiaryKYCLevel { get; set; }
+        public string transactionLocation { get; set; }
         public string narration { get; set; }
         public string paymentReference { get; set; }
         public string mandateReferenceNumber { get; set; }

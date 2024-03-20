@@ -65,7 +65,7 @@ namespace MomoSwitch.Actions
             originatorBankVerificationNumber = null,
             originatorKYCLevel = 0,
             transactionFee = 0,
-            transactionLocation = 0,
+            transactionLocation = "0",
         };
 
         public TranQueryResponse ToMomoTranQueryResponse(TranQueryPxResponse proxyName) => new TranQueryResponse
