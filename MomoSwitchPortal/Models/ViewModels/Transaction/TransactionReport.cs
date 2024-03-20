@@ -4,7 +4,7 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
 {
     public class TransactionReport
     {        
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         [Display(Name = "Session Id")]
         public string SessionId { get; set; }
         [Display(Name = "Transaction Id")]
