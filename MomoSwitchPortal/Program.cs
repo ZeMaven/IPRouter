@@ -25,9 +25,9 @@ builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
     {
-        option.LoginPath = "/msrportal/account/signin";
+        option.LoginPath = "/account/signin";
         option.ExpireTimeSpan = TimeSpan.FromHours(3);
-        option.AccessDeniedPath = "/msrportal/AccessDenied";        
+        option.AccessDeniedPath = "/AccessDenied";        
     });
 
 
@@ -54,7 +54,7 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-app.UsePathBase("/msrportal");
+// app.UsePathBase("/msrportal");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
