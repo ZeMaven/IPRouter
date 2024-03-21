@@ -138,6 +138,9 @@ namespace MomoSwitch.Actions
                         narration = Req.originatorNarration,
                         paymentReference = Req.paymentReference,
                         transactionId = Req.transactionId,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber= Req.originatorBankVerificationNumber,
                     };
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
@@ -160,7 +163,7 @@ namespace MomoSwitch.Actions
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
 
-                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
+                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp);
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.Transfer", $"Response: {JsonStr}");
                 }
@@ -186,9 +189,12 @@ namespace MomoSwitch.Actions
                         narration = Req.originatorNarration,
                         paymentReference = Req.paymentReference,
                         transactionId = Req.transactionId,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                         //sessionID = Req.transactionId,
                     };
-                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
+                    UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp);
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.Transfer", $"Response: {JsonStr}");
 
@@ -217,13 +223,14 @@ namespace MomoSwitch.Actions
                     narration = Req.originatorNarration,
                     paymentReference = Req.paymentReference,
                     transactionId = Req.transactionId,
+                    originatorAccountName = Req.originatorAccountName,
+                    originatorAccountNumber = Req.originatorAccountNumber,
+                    originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                     // sessionID = Req.transactionId,
                 };
             }
-
-
-
         }
+
         public async Task<TranQueryResponse> GetTransaction(string TranId)
         {
             try
@@ -450,7 +457,7 @@ namespace MomoSwitch.Actions
                 };
             }
         }
-        private ResponseHeader UpdateTransaction(string TranId, string SessionId, string ResponseCode)
+        private ResponseHeader UpdateTransaction(string TranId, string SessionId, FundTransferResponse Response)
         {
             try
             {
@@ -460,7 +467,7 @@ namespace MomoSwitch.Actions
                 {
                     Tran.SessionId = SessionId;
                     Tran.PaymentDate = DateTime.Now;
-                    Tran.ResponseCode = ResponseCode == "00" ? "16" : ResponseCode;
+                    Tran.ResponseCode = Response.responseCode;
                     Tran.ResponseMessage = "";
                     Db.SaveChanges();
                     return new ResponseHeader
