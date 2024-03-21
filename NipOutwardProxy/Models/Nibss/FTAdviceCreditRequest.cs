@@ -28,6 +28,12 @@ namespace NipOutwardProxy.Models.Nibss
 
         public string MandateReferenceNumber { get; set; }
 
+        public string initiatorBankVerificationNumber { get; set; }
+
+        public string initiatorKYCLevel { get; set; }
+
+
+
 
     }
 }

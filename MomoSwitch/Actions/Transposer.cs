@@ -106,7 +106,10 @@ namespace MomoSwitch.Actions
             SourceAccountNumber = Request.initiatorAccountNumber,
             ChannelCode = Request.channelCode,
             BenefKycLevel = Request.beneficiaryKYCLevel,
-            SourceBankCode = Request.sourceInstitutionCode//  "MomoCode"//Put in config
+            SourceBankCode = Request.sourceInstitutionCode,//  "MomoCode"//Put in config
+            InitiatorBankVerificationNumber = Request.initiatorBankVerificationNumber,
+            InitiatorKYCLevel = Request.InitiatorKYCLevel,
+            TransactionLocation = Request.transactionLocation
         };
 
         public TranQueryPxRequest ToProxyTranQueryyRequest(TranQueryRequest Request) => new TranQueryPxRequest

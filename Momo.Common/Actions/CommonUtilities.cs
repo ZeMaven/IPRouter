@@ -45,5 +45,15 @@ namespace Momo.Common.Actions
             return hashedValue.ToString();
         }
 
+
+        public string ResponseCodeTranslate(string ResponseCode, string Processor)
+        {
+
+            return null;
+        }
+
+
+
+
     }
 }
