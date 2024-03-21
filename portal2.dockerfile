@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
 # Install NGINX
 RUN apt-get update && \
-    apt-get install -y nginx && \
+    apt-get install -y nginx nano curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
