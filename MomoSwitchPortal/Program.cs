@@ -54,8 +54,6 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// app.UsePathBase("/msrportal");
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
