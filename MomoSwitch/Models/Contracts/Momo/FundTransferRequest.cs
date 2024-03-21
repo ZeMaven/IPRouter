@@ -16,7 +16,7 @@
         public string initiatorAccountName { get; set; }
         public string initiatorAccountNumber { get; set; }
         public string initiatorBankVerificationNumber { get; set; }
-        public string InitiatorKYCLevel { get; set; }        
+        public int InitiatorKYCLevel { get; set; }        
         public int originatorKYCLevel { get; set; }
         public string originatorNarration { get; set; }
         public string paymentReference { get; set; }
