@@ -21,11 +21,12 @@ namespace Momo.Common.Actions
         /// <returns></returns>
         public string CreateTransactionId()
         {
-            var Rnd2 = new Random().Next(1, 9).ToString();
+            var Rnd2 = new Random().Next(10, 99).ToString();
             string TimeStamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString();
-            var Date = DateTime.Now.ToString("ddMMyyhhmm");
+            //var Date = DateTime.Now.ToString("ddMMyyhhmm");
+            var Date = DateTime.Now.ToString("yyMMddHHmmss");
             var Rnd1 = new Random().Next(100, 999).ToString();
-            var TranId = $"{Date}{TimeStamp}{Rnd1}{Rnd2}";
+            var TranId = $"{Date}{TimeStamp}{Rnd2}";
             return TranId;
         }
 
