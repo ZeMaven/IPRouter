@@ -30,7 +30,7 @@ namespace NipOutwardProxy.Models.Nibss
 
         public string initiatorBankVerificationNumber { get; set; }
 
-        public string initiatorKYCLevel { get; set; }
+        public int initiatorKYCLevel { get; set; }
 
 
 
