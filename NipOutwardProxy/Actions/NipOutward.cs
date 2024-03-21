@@ -188,14 +188,12 @@ namespace NipOutwardProxy.Actions
                     Narration = Request.Narration,
                     OriginatorAccountName = Request.SourceAccountName,
                     OriginatorAccountNumber = Request.SourceAccountNumber,
-                    OriginatorBankVerificationNumber = "",
-                    OriginatorKYCLevel = "",
+                    OriginatorBankVerificationNumber = Request.InitiatorBankVerificationNumber,
+                    OriginatorKYCLevel = Request.InitiatorKYCLevel,
                     PaymentReference = Request.TransactionId,
                     SessionID = SessionId,
                     TransactionFee = 0,
-                    TransactionLocation = Request.TransactionLocation,
-                    initiatorBankVerificationNumber = Request.InitiatorBankVerificationNumber,
-                    initiatorKYCLevel = Request.InitiatorKYCLevel
+                    TransactionLocation = Request.TransactionLocation,                 
                 };
                 var XmlRequest = XmlConverter.Serialize(NibssRequest);
                 Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: {XmlRequest}");
