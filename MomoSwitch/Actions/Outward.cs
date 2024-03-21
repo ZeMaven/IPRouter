@@ -162,7 +162,9 @@ namespace MomoSwitch.Actions
                     Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
-
+                    Resp.originatorAccountName= Req.originatorAccountName;
+                    Resp.originatorAccountNumber = Req.originatorAccountNumber;
+                    Resp.originatorBankVerificationNumber= Req.originatorBankVerificationNumber;
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp);
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.Transfer", $"Response: {JsonStr}");
