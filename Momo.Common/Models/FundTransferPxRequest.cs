@@ -15,5 +15,9 @@
         public string SourceAccountNumber { get; set; }
         public string NameEnquiryRef { get; set; }
         public int ChannelCode { get; set; }
+
+        public string InitiatorKYCLevel { get; set; }
+        public string InitiatorBankVerificationNumber { get; set; }
+        public string TransactionLocation { get; set; }
     }
 }

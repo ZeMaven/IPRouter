@@ -35,7 +35,7 @@ namespace NipOutwardProxy.Actions
             Pgp = pgp;
             XmlConverter = xmlConverter;
             Nip = new NIPInterfaceClient();
-            NipTSQ =new NIPTSQInterfaceClient();
+            NipTSQ = new NIPTSQInterfaceClient();
         }
 
         public async Task<NameEnquiryPxResponse> NameEnquiry(NameEnquiryPxRequest Request)
@@ -60,9 +60,9 @@ namespace NipOutwardProxy.Actions
                 Log.Write("NibssOutward.NameEnquiry", $"Request to Nibss xml: {XmlRequest}");
                 var EncRequest = Pgp.Ecryption(XmlRequest);
                 Log.Write("NibssOutward.NameEnquiry", $"Request to Nibss enc: {EncRequest}");
-                var NipResp = await Nip.nameenquirysingleitemAsync(EncRequest);               
+                var NipResp = await Nip.nameenquirysingleitemAsync(EncRequest);
                 Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss: {JsonSerializer.Serialize(NipResp)}");
-                var NibssResponseEnc = NipResp.Body.@return; 
+                var NibssResponseEnc = NipResp.Body.@return;
 
                 Log.Write("NibssOutward.NameEnquiry", $"Response from Nibss enc: {NibssResponseEnc}");
 
@@ -193,7 +193,9 @@ namespace NipOutwardProxy.Actions
                     PaymentReference = Request.TransactionId,
                     SessionID = SessionId,
                     TransactionFee = 0,
-                    TransactionLocation = ""
+                    TransactionLocation = Request.TransactionLocation,
+                    initiatorBankVerificationNumber = Request.InitiatorBankVerificationNumber,
+                    initiatorKYCLevel = Request.InitiatorKYCLevel
                 };
                 var XmlRequest = XmlConverter.Serialize(NibssRequest);
                 Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: {XmlRequest}");
@@ -230,7 +232,7 @@ namespace NipOutwardProxy.Actions
                     ResponseMessage = ResponseObj.ResponseCode == "00" ? "Successful" : null,
                     SessionId = ResponseObj.SessionID,
                     TransactionId = Request.TransactionId,
-                    SourceBankCode = Request.SourceBankCode,
+                    SourceBankCode = Request.SourceBankCode, 
                 };
 
                 Log.Write("NibssOutward.Transfer", $"Response to Router: {JsonSerializer.Serialize(RouterResponse)}");
