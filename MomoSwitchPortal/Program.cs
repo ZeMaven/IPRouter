@@ -25,9 +25,9 @@ builder.Services.AddScoped<ICommonUtilities, CommonUtilities>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
     {
-        option.LoginPath = "/account/signin";
+        option.LoginPath = "~/account/signin";
         option.ExpireTimeSpan = TimeSpan.FromHours(3);
-        option.AccessDeniedPath = "/AccessDenied";        
+        option.AccessDeniedPath = "~/AccessDenied";        
     });
 
 
