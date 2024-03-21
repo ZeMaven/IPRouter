@@ -18,7 +18,7 @@ namespace NipOutwardProxy.Models.Nibss
         public string OriginatorAccountName { get; set; }
         public string OriginatorAccountNumber { get; set; }
         public string OriginatorBankVerificationNumber { get; set; }
-        public string OriginatorKYCLevel { get; set; }
+        public int OriginatorKYCLevel { get; set; }
         public string TransactionLocation { get; set; }
         public string Narration { get; set; }
         public string PaymentReference { get; set; }
@@ -26,14 +26,6 @@ namespace NipOutwardProxy.Models.Nibss
 
         public decimal TransactionFee { get; set; }
 
-        public string MandateReferenceNumber { get; set; }
-
-        public string initiatorBankVerificationNumber { get; set; }
-
-        public int initiatorKYCLevel { get; set; }
-
-
-
-
+        public string MandateReferenceNumber { get; set; }     
     }
 }
