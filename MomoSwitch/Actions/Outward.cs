@@ -138,6 +138,9 @@ namespace MomoSwitch.Actions
                         narration = Req.originatorNarration,
                         paymentReference = Req.paymentReference,
                         transactionId = Req.transactionId,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber= Req.originatorBankVerificationNumber,
                     };
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
@@ -186,6 +189,9 @@ namespace MomoSwitch.Actions
                         narration = Req.originatorNarration,
                         paymentReference = Req.paymentReference,
                         transactionId = Req.transactionId,
+                        originatorAccountName = Req.originatorAccountName,
+                        originatorAccountNumber = Req.originatorAccountNumber,
+                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                         //sessionID = Req.transactionId,
                     };
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp.responseCode);
@@ -217,6 +223,9 @@ namespace MomoSwitch.Actions
                     narration = Req.originatorNarration,
                     paymentReference = Req.paymentReference,
                     transactionId = Req.transactionId,
+                    originatorAccountName = Req.originatorAccountName,
+                    originatorAccountNumber = Req.originatorAccountNumber,
+                    originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                     // sessionID = Req.transactionId,
                 };
             }
