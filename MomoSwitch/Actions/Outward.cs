@@ -128,9 +128,9 @@ namespace MomoSwitch.Actions
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                         beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
-                        originatorAccountName = Req.originatorAccountName,
-                        originatorAccountNumber = Req.originatorAccountNumber,
-                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        initiatorAccountName = Req.initiatorAccountName,
+                        initiatorAccountNumber = Req.initiatorAccountNumber,
+                        initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
                         originatorKYCLevel = Req.originatorKYCLevel,
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
@@ -156,7 +156,7 @@ namespace MomoSwitch.Actions
                     Resp.channelCode = Req.channelCode;
                     Resp.transactionLocation = Req.transactionLocation;
                     Resp.beneficiaryKYCLevel = Req.beneficiaryKYCLevel;
-                    Resp.originatorBankVerificationNumber = Req.originatorBankVerificationNumber;
+                    Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
 
@@ -175,9 +175,9 @@ namespace MomoSwitch.Actions
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                         beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
-                        originatorAccountName = Req.originatorAccountName,
-                        originatorAccountNumber = Req.originatorAccountNumber,
-                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                        initiatorAccountName = Req.initiatorAccountName,
+                        initiatorAccountNumber = Req.initiatorAccountNumber,
+                        initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
                         originatorKYCLevel = Req.originatorKYCLevel,
 
                         destinationInstitutionCode = Req.destinationInstitutionCode,
@@ -207,9 +207,9 @@ namespace MomoSwitch.Actions
                     beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
                     beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
                     channelCode = Req.channelCode,
-                    originatorAccountName = Req.originatorAccountName,
-                    originatorAccountNumber = Req.originatorAccountNumber,
-                    originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
+                    initiatorAccountName = Req.initiatorAccountName,
+                    initiatorAccountNumber = Req.initiatorAccountNumber,
+                    initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
                     originatorKYCLevel = Req.originatorKYCLevel,
                     destinationInstitutionCode = Req.destinationInstitutionCode,
                     mandateReferenceNumber = Req.mandateReferenceNumber,
@@ -403,10 +403,10 @@ namespace MomoSwitch.Actions
                     ResponseCode = "09",
                     ResponseMessage = "Pending",
                     //SessionId = Request.transactionId,
-                    SourceAccountName = Request.originatorAccountName,
-                    SourceAccountNumber = Request.originatorAccountNumber,
+                    SourceAccountName = Request.initiatorAccountName,
+                    SourceAccountNumber = Request.initiatorAccountNumber,
                     SourceBankCode = Request.sourceInstitutionCode,
-                    SourceBvn = Request.originatorBankVerificationNumber,
+                    SourceBvn = Request.initiatorBankVerificationNumber,
                     SourceKycLevel = Request.originatorKYCLevel.ToString(),
                     TransactionId = Request.transactionId,
                     NameEnquiryRef = Request.nameEnquiryRef,

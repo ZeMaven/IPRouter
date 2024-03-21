@@ -13,14 +13,19 @@
         public string destinationInstitutionCode { get; set; }
         public string mandateReferenceNumber { get; set; }
         public string nameEnquiryRef { get; set; }
-        public string originatorAccountName { get; set; }
-        public string originatorAccountNumber { get; set; }
-        public string originatorBankVerificationNumber { get; set; }
+        public string initiatorAccountName { get; set; }
+        public string initiatorAccountNumber { get; set; }
+        public string initiatorBankVerificationNumber { get; set; }
         public int originatorKYCLevel { get; set; }
         public string originatorNarration { get; set; }
         public string paymentReference { get; set; }
         public string sourceInstitutionCode { get; set; }
         public string transactionId { get; set; }
         public string transactionLocation { get; set; }
-    }
+
+
+        public string originatorAccountName { get; set; }
+        public string originatorAccountNumber { get; set; }
+        public string originatorBankVerificationNumber { get; set; }
+    }     
 }
