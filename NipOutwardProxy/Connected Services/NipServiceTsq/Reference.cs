@@ -187,7 +187,8 @@ namespace NipServiceTsq
         {
             if ((endpointConfiguration == EndpointConfiguration.NIPTQSInterfacePort))
             {
-                return new System.ServiceModel.EndpointAddress("http://196.6.103.10:88/NIPWS/NIPTSQInterface");
+                IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();               
+                return new System.ServiceModel.EndpointAddress(configuration.GetSection("NipTranQUrl").Value);
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
