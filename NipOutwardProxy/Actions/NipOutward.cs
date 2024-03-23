@@ -111,7 +111,7 @@ namespace NipOutwardProxy.Actions
                 string SourceBank = string.Empty;
                 var TranId = Utilities.CreateTransactionId();
                 SourceBank = Config.GetSection("SourceBank").Value;
-                SessionId = $"{SourceBank}{TranId}";
+                SessionId = Request.TransactionId;
 
                 Log.Write("NibssOutward.TranQuery", $"Request from Router: {JsonSerializer.Serialize(Request)}");
                 var NibssRequest = new TSQuerySingleRequest
