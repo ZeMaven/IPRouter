@@ -85,7 +85,7 @@ namespace MomoSwitch.Actions
                 //Return to Proxy
 
 
-                return new TranQueryPxResponse { TransactionId = request.TransactionId };
+                return new TranQueryPxResponse { TransactionId = request.SessionId };
 
 
             }
@@ -93,7 +93,7 @@ namespace MomoSwitch.Actions
             {
 
                 Log.Write("Inward.TransactionQuery", $"Err: {Ex.Message}");
-                return new TranQueryPxResponse { TransactionId = request.TransactionId };
+                return new TranQueryPxResponse { TransactionId = request.SessionId };
 
             }
 

@@ -250,6 +250,9 @@ namespace MomoSwitch.Actions
                         //UpdateDb
                         Tran.ResponseCode = QueryTran.responseCode;
                         Tran.ResponseMessage = QueryTran.responseMessage;
+
+                        //Tran.SessionId = QueryTran.sessionID;
+
                         Tran.ValidateDate = DateTime.Now;
                         Db.SaveChanges();
 
@@ -261,7 +264,7 @@ namespace MomoSwitch.Actions
                             message = Tran.ResponseMessage,
                             responseMessage = Tran.ResponseMessage,
                             sessionID = Tran.SessionId,
-                            transactionId = Tran.SessionId,
+                            transactionId = Tran.TransactionId,
                             responseCode = QueryTran.responseCode,
                         };
 

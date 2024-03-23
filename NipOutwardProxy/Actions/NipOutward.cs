@@ -111,7 +111,7 @@ namespace NipOutwardProxy.Actions
                 string SourceBank = string.Empty;
                 var TranId = Utilities.CreateTransactionId();
                 SourceBank = Config.GetSection("SourceBank").Value;
-                SessionId = Request.TransactionId;
+                SessionId = Request.SessionId;
 
                 Log.Write("NibssOutward.TranQuery", $"Request from Router: {JsonSerializer.Serialize(Request)}");
                 var NibssRequest = new TSQuerySingleRequest
@@ -141,7 +141,7 @@ namespace NipOutwardProxy.Actions
                     ResponseCode = ResponseObj.ResponseCode,
                     ResponseMessage = ResponseObj.ResponseCode == "00" ? "Successful" : null,
                     SessionId = ResponseObj.SessionID,
-                    TransactionId = Request.TransactionId,
+                    TransactionId = Request.SessionId,
                     SourceBankCode = SourceBank
                 };
 
@@ -155,7 +155,7 @@ namespace NipOutwardProxy.Actions
                 {
                     ResponseCode = "01",
                     ResponseMessage = "Failed",
-                    TransactionId = Request.TransactionId,
+                    TransactionId = Request.SessionId,
                 };
             }
         }
