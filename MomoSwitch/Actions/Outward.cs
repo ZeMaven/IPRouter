@@ -140,7 +140,7 @@ namespace MomoSwitch.Actions
                         transactionId = Req.transactionId,
                         originatorAccountName = Req.originatorAccountName,
                         originatorAccountNumber = Req.originatorAccountNumber,
-                        originatorBankVerificationNumber= Req.originatorBankVerificationNumber,
+                        originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                     };
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
@@ -162,9 +162,9 @@ namespace MomoSwitch.Actions
                     Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
-                    Resp.originatorAccountName= Req.originatorAccountName;
+                    Resp.originatorAccountName = Req.originatorAccountName;
                     Resp.originatorAccountNumber = Req.originatorAccountNumber;
-                    Resp.originatorBankVerificationNumber= Req.originatorBankVerificationNumber;
+                    Resp.originatorBankVerificationNumber = Req.originatorBankVerificationNumber;
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp);
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.Transfer", $"Response: {JsonStr}");
@@ -237,9 +237,11 @@ namespace MomoSwitch.Actions
         {
             try
             {
-
+                Log.Write("Outward.GetTransaction", $"TranId: {TranId}");
                 var Db = new MomoSwitchDbContext();
                 var Tran = Db.TransactionTb.SingleOrDefault(x => x.TransactionId == TranId);
+
+                TranQueryResponse Resp;
                 if (Tran != null)
                 {
                     if (Tran.ResponseCode != "00")
@@ -251,13 +253,11 @@ namespace MomoSwitch.Actions
                         Tran.ResponseCode = QueryTran.responseCode;
                         Tran.ResponseMessage = QueryTran.responseMessage;
 
-                        //Tran.SessionId = QueryTran.sessionID;
-
                         Tran.ValidateDate = DateTime.Now;
                         Db.SaveChanges();
 
 
-                        return new TranQueryResponse
+                        Resp = new TranQueryResponse
                         {
                             code = QueryTran.responseCode,
                             sourceInstitutionCode = Tran.SourceBankCode,
@@ -271,7 +271,7 @@ namespace MomoSwitch.Actions
                     }
                     else
                     {
-                        return new TranQueryResponse
+                        Resp = new TranQueryResponse
                         {
                             code = Tran.ResponseCode,
                             sourceInstitutionCode = Tran.SourceBankCode,
@@ -280,26 +280,25 @@ namespace MomoSwitch.Actions
                             sessionID = Tran.SessionId,
                             transactionId = Tran.TransactionId,
                             responseCode = Tran.ResponseCode,
-
                         };
-
                     }
                 }
                 else
                 {
-                    Log.Write("DataExpress.UpdateTransaction", $"Critical Issue. Transaction not found TranId:{TranId}");
-                    return new TranQueryResponse
+                    Log.Write("Outward.GetTransaction", $"Critical Issue. Transaction not found TranId:{TranId}");
+                    Resp = new TranQueryResponse
                     {
-
                         sessionID = null,
                         transactionId = TranId,
                         responseCode = "25"
                     };
                 }
+                Log.Write("Outward.GetTransaction", $"Response: {JsonSerializer.Serialize(Resp)}");
+                return Resp;
             }
             catch (Exception Ex)
             {
-                Log.Write("DataExpress.GetTransaction", $"Err {Ex.Message} TranId:{TranId}");
+                Log.Write("Outward.GetTransaction", $"Err {Ex.Message} TranId:{TranId}");
                 return new TranQueryResponse
                 {
                     sessionID = null,
@@ -508,7 +507,7 @@ namespace MomoSwitch.Actions
             try
             {
                 string JsonStr = JsonSerializer.Serialize(Req);
-                Log.Write("Outward.TranQuery", $"Request: {JsonStr}");
+                //  Log.Write("Outward.TranQuery", $"Request: {JsonStr}");
 
 
                 var RouterDetail = SwitchRouter.Route(new Models.RouterRequest
@@ -516,7 +515,6 @@ namespace MomoSwitch.Actions
                     Processor = Processor// Pass processor
                 });
                 var ProcessorRequest = Transposer.ToProxyTranQueryyRequest(Req);
-
 
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
