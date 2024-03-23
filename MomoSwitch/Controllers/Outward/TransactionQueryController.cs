@@ -10,7 +10,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TransactionQueryController : ControllerBase
     {
         private readonly IOutward Processor;
