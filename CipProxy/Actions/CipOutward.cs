@@ -132,7 +132,7 @@ namespace CipProxy.Actions
 
                 var CipRequest = new TranQueryRequest
                 {
-                    sessionId = Request.TransactionId,
+                    sessionId = Request.SessionId,
                 };
 
                 var JsonReq = JsonSerializer.Serialize(CipRequest);
@@ -148,8 +148,8 @@ namespace CipProxy.Actions
                 {
                     return new TranQueryPxResponse
                     {
-                        SessionId = SessionId,
-                        TransactionId = Request.TransactionId,
+                        SessionId = Request.SessionId,
+                        //TransactionId = Request.SessionId,
                         SourceBankCode = SourceBank,
                         ResponseCode = "09",
 
@@ -163,8 +163,8 @@ namespace CipProxy.Actions
 
                 TranQueryPxResponse Resp = new()
                 {
-                    SessionId = SessionId,
-                    TransactionId = Request.TransactionId,
+                    SessionId = Request.SessionId,
+                    TransactionId = Request.SessionId,
                     ResponseCode = CipRespObj.responseCode,
                     ResponseMessage = CipRespObj.responseMessage,
                     SourceBankCode = SourceBank,
@@ -188,7 +188,7 @@ namespace CipProxy.Actions
                 return new TranQueryPxResponse
                 {
                     SessionId = SessionId,
-                    TransactionId = Request.TransactionId,
+                    TransactionId = Request.SessionId,
                     SourceBankCode = SourceBank,
                     ResponseCode = "09",
                 };

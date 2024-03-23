@@ -114,7 +114,7 @@ namespace MomoSwitch.Actions
 
         public TranQueryPxRequest ToProxyTranQueryyRequest(TranQueryRequest Request) => new TranQueryPxRequest
         {
-            TransactionId = Request.transactionId,
+            SessionId = Request.transactionId,
         };
 
         #endregion

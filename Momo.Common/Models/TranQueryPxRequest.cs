@@ -2,6 +2,6 @@
 {
     public class TranQueryPxRequest
     {
-        public string TransactionId { get; set; }
+        public string SessionId { get; set; }
     }
 }

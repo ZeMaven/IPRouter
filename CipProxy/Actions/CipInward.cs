@@ -110,7 +110,7 @@ namespace CipProxy.Actions
 
                 TranQueryPxRequest MomoReq = new()
                 {
-                    TransactionId = ReqObj.sessionId,
+                    SessionId = ReqObj.sessionId,
                 };
 
                 var RouterResp = await HttpService.Call(Request, Operation.NameEnqury);
@@ -180,7 +180,7 @@ namespace CipProxy.Actions
 
                 TranQueryPxRequest MomoReq = new()
                 {
-                    TransactionId = ReqObj.sessionId,
+                    SessionId = ReqObj.sessionId,
                 };
 
                 var RouterResp = await HttpService.Call(Request, Operation.NameEnqury);
