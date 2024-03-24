@@ -369,15 +369,16 @@ namespace MomoSwitch.Actions
                 //Claims.Add(new Claim("Password", "9@ssm02dS"));
 
                 //Create Security Token object by giving required parameters    
+             var ExpDate=   DateTime.Now.AddMinutes(JwtSpanHours);
                 var token = new JwtSecurityToken(
                                 audience: audience,
                                 issuer: issuer,
                                 claims: Claims,
-                                expires: DateTime.Now.AddMinutes(JwtSpanHours),
+                                expires: ExpDate,
                                 signingCredentials: credentials);
                 var jwt_token = new JwtSecurityTokenHandler().WriteToken(token);
                 Log.Write($"AuthController", $"Auth: OK");
-                return new AuthResponse { access_token = jwt_token, token_type = "Bearer", status = "SUCCESS", expires_in = 10292929, ext_expires_in = 993939339 };
+                return new AuthResponse { access_token = jwt_token, token_type = "Bearer", status = "SUCCESS", expires_in = JwtSpanHours, ext_expires_in = JwtSpanHours };
 
             }
             catch (Exception Ex)
