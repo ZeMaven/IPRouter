@@ -543,7 +543,6 @@ namespace MomoSwitch.Actions
                     };
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.TranQuery", $"Response: {JsonStr}");
-
                 }
                 return Resp;
             }

@@ -19,5 +19,6 @@
         public int InitiatorKYCLevel { get; set; }
         public string InitiatorBankVerificationNumber { get; set; }
         public string TransactionLocation { get; set; }
+        public string PaymentRef { get; set; }
     }
 }

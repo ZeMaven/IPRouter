@@ -190,10 +190,10 @@ namespace NipOutwardProxy.Actions
                     OriginatorAccountNumber = Request.SourceAccountNumber,
                     OriginatorBankVerificationNumber = Request.InitiatorBankVerificationNumber,
                     OriginatorKYCLevel = Request.InitiatorKYCLevel,
-                    PaymentReference = Request.TransactionId,
+                    PaymentReference = Request.PaymentRef,
                     SessionID = SessionId,
                     TransactionFee = 0,
-                    TransactionLocation = Request.TransactionLocation,                 
+                    TransactionLocation = Request.TransactionLocation,
                 };
                 var XmlRequest = XmlConverter.Serialize(NibssRequest);
                 Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: {XmlRequest}");
@@ -230,7 +230,7 @@ namespace NipOutwardProxy.Actions
                     ResponseMessage = ResponseObj.ResponseCode == "00" ? "Successful" : null,
                     SessionId = ResponseObj.SessionID,
                     TransactionId = Request.TransactionId,
-                    SourceBankCode = Request.SourceBankCode, 
+                    SourceBankCode = Request.SourceBankCode,
                 };
 
                 Log.Write("NibssOutward.Transfer", $"Response to Router: {JsonSerializer.Serialize(RouterResponse)}");
