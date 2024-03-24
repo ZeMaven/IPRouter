@@ -348,7 +348,7 @@ namespace MomoSwitch.Actions
                     return new AuthResponse { access_token = "", status = "INVALID CLIENT SECRET" };
                 }
 
-
+                int JwtSpanHours = int.Parse(Config.GetSection("JwtSpanMinute").Value);
 
                 //   string key = "1824a0f8-0b89-4a02-a397-db0123000d26";
                 string key = Config["Jwt:Key"];
@@ -373,7 +373,7 @@ namespace MomoSwitch.Actions
                                 audience: audience,
                                 issuer: issuer,
                                 claims: Claims,
-                                expires: DateTime.Now.AddDays(365),
+                                expires: DateTime.Now.AddMinutes(JwtSpanHours),
                                 signingCredentials: credentials);
                 var jwt_token = new JwtSecurityTokenHandler().WriteToken(token);
                 Log.Write($"AuthController", $"Auth: OK");
@@ -543,7 +543,6 @@ namespace MomoSwitch.Actions
                     };
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.TranQuery", $"Response: {JsonStr}");
-
                 }
                 return Resp;
             }

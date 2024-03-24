@@ -1,4 +1,6 @@
-﻿namespace Momo.Common.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Momo.Common.Models
 {
     public class FundTransferPxRequest
     {
@@ -6,6 +8,7 @@
         public decimal Amount { get; set; }
         public string BenefAccountName { get; set; }
         public string BenefAccountNumber { get; set; }
+        [JsonIgnore]
         public string BenefBvn { get; set; }
         public int BenefKycLevel { get; set; }
         public string DestinationBankCode { get; set; }
@@ -17,7 +20,9 @@
         public int ChannelCode { get; set; }
 
         public int InitiatorKYCLevel { get; set; }
+        [JsonIgnore]
         public string InitiatorBankVerificationNumber { get; set; }
         public string TransactionLocation { get; set; }
+        public string PaymentRef { get; set; }
     }
 }

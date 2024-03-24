@@ -1,4 +1,6 @@
-﻿namespace MomoSwitch.Models.Contracts.Momo
+﻿using System.Text.Json.Serialization;
+
+namespace MomoSwitch.Models.Contracts.Momo
 {
     public class FundTransferResponse
     {
@@ -16,6 +18,7 @@
         public int originatorKYCLevel { get; set; }
         public string beneficiaryAccountName { get; set; }
         public string beneficiaryAccountNumber { get; set; }
+        [JsonIgnore]
         public string beneficiaryBankVerificationNumber { get; set; }
         public int beneficiaryKYCLevel { get; set; }
         public string transactionLocation { get; set; }
@@ -27,6 +30,7 @@
 
         public string originatorAccountName { get; set; }
         public string originatorAccountNumber { get; set; }
+        [JsonIgnore]
         public string originatorBankVerificationNumber { get; set; }
     }
 }
