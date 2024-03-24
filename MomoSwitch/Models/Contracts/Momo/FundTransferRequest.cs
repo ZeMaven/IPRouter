@@ -61,6 +61,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         [RegularExpression("^[0-9]*$", ErrorMessage = "originatorAccountNumber should be 10 number characters")]
 
         public string originatorAccountNumber { get; set; } //pull acc
+        [JsonIgnore]
         public string originatorBankVerificationNumber { get; set; }
     }     
 }

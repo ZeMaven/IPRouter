@@ -16,9 +16,8 @@ namespace MomoSwitch.Models.Contracts.Momo
         [RegularExpression("^[0-9]*$", ErrorMessage = "Bank code should be 6 characters")]
         public string destinationInstitutionCode { get; set; }
         [Required]    
-        [MinLength(30)]
-        [MaxLength(30)]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "TransactionId should be 30 characters")]
+     
+        [RegularExpression("^[0-9]*$", ErrorMessage = "TransactionId should be number characters")]
         public string transactionId { get; set; }
     }
 }
