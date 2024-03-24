@@ -18,7 +18,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         public int originatorKYCLevel { get; set; }
         public string beneficiaryAccountName { get; set; }
         public string beneficiaryAccountNumber { get; set; }
-        [JsonIgnore]
+        
         public string beneficiaryBankVerificationNumber { get; set; }
         public int beneficiaryKYCLevel { get; set; }
         public string transactionLocation { get; set; }
@@ -30,7 +30,7 @@ namespace MomoSwitch.Models.Contracts.Momo
 
         public string originatorAccountName { get; set; }
         public string originatorAccountNumber { get; set; }
-        [JsonIgnore]
+ 
         public string originatorBankVerificationNumber { get; set; }
     }
 }
