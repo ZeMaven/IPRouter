@@ -6,7 +6,7 @@ namespace MomoSwitch.Models.Contracts.Momo
     {
         public string accountName { get; set; }
         public string accountNumber { get; set; }
-        [JsonIgnore]
+       
         public string bankVerificationNumber { get; set; }
         public int channelCode { get; set; }
         public string destinationInstitutionCode { get; set; }
