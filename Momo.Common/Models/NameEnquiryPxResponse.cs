@@ -14,7 +14,7 @@ namespace Momo.Common.Models
         public string KycLevel { get; set; }
         public string ResponseCode { get; set; }
         public string ResponseMessage { get; set; }
-        [JsonIgnore]
+     
         public string Bvn { get; set; }
         public int ChannelCode { get; set; }
     }

@@ -12,7 +12,7 @@ namespace Momo.Common.Models
         
         public string BenefAccountNumber { get; set; }
         public string BenfBankCode { get; set; }
-        [JsonIgnore]
+    
         public string BenefBvn { get; set; }
         public int BenefKycLevel { get; set; }      
         public string Narration { get; set; }
