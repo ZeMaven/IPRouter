@@ -13,7 +13,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         [RegularExpression("^[0-9]*$", ErrorMessage = "beneficiaryAccountNumber should be 10 number characters")]
 
         public string beneficiaryAccountNumber { get; set; }
-        [JsonIgnore]
+      
         public string beneficiaryBankVerificationNumber { get; set; }
         public int beneficiaryKYCLevel { get; set; }
         public string beneficiaryNarration { get; set; }
@@ -35,7 +35,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         [RegularExpression("^[0-9]*$", ErrorMessage = "initiatorAccountNumber should be 10 number characters")]
 
         public string initiatorAccountNumber { get; set; } //cust acc
-        [JsonIgnore]
+        
         public string initiatorBankVerificationNumber { get; set; }
         public int InitiatorKYCLevel { get; set; }        
         public int originatorKYCLevel { get; set; }
@@ -61,7 +61,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         [RegularExpression("^[0-9]*$", ErrorMessage = "originatorAccountNumber should be 10 number characters")]
 
         public string originatorAccountNumber { get; set; } //pull acc
-        [JsonIgnore]
+      
         public string originatorBankVerificationNumber { get; set; }
     }     
 }
