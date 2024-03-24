@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Momo.Common.Models
 {
@@ -8,8 +9,10 @@ namespace Momo.Common.Models
         public string SessionId { get; set; }
         public decimal Amount { get; set; }
         public string BenefAccountName { get; set; }
+        
         public string BenefAccountNumber { get; set; }
         public string BenfBankCode { get; set; }
+        [JsonIgnore]
         public string BenefBvn { get; set; }
         public int BenefKycLevel { get; set; }      
         public string Narration { get; set; }
