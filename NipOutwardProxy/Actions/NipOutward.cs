@@ -248,7 +248,5 @@ namespace NipOutwardProxy.Actions
                 };
             }
         }
-
-
     }
 }
