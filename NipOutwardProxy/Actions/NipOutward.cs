@@ -193,7 +193,7 @@ namespace NipOutwardProxy.Actions
                     PaymentReference = Request.PaymentRef,
                     SessionID = SessionId,
                     TransactionFee = 0,
-                    //TransactionLocation = Request.TransactionLocation,
+                    TransactionLocation = ""// Request.TransactionLocation,
                 };
                 var XmlRequest = XmlConverter.Serialize(NibssRequest);
                 Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: {XmlRequest}");
@@ -248,7 +248,5 @@ namespace NipOutwardProxy.Actions
                 };
             }
         }
-
-
     }
 }
