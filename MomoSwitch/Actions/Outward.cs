@@ -155,7 +155,7 @@ namespace MomoSwitch.Actions
                 {
 
                     Resp = Transposer.ToMomoFundTransferResponse(ProcessorRespObj);
-                    Resp.paymentReference = Resp.transactionId;
+                    Resp.paymentReference = Resp.paymentReference;
                     Resp.channelCode = Req.channelCode;
                     Resp.transactionLocation = Req.transactionLocation;
                     Resp.beneficiaryKYCLevel = Req.beneficiaryKYCLevel;
