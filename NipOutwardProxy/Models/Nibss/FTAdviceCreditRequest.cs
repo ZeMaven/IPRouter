@@ -23,9 +23,7 @@ namespace NipOutwardProxy.Models.Nibss
         public string Narration { get; set; }
         public string PaymentReference { get; set; }
         public decimal Amount { get; set; }
-
         public decimal TransactionFee { get; set; }
-
         public string MandateReferenceNumber { get; set; }     
     }
 }

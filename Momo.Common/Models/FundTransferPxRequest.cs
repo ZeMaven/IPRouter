@@ -7,8 +7,7 @@ namespace Momo.Common.Models
         public string TransactionId { get; set; }
         public decimal Amount { get; set; }
         public string BenefAccountName { get; set; }
-        public string BenefAccountNumber { get; set; }
-       
+        public string BenefAccountNumber { get; set; }       
         public string BenefBvn { get; set; }
         public int BenefKycLevel { get; set; }
         public string DestinationBankCode { get; set; }
@@ -18,9 +17,7 @@ namespace Momo.Common.Models
         public string SourceAccountNumber { get; set; }
         public string NameEnquiryRef { get; set; }
         public int ChannelCode { get; set; }
-
-        public int InitiatorKYCLevel { get; set; }
-       
+        public int InitiatorKYCLevel { get; set; }       
         public string InitiatorBankVerificationNumber { get; set; }
         public string TransactionLocation { get; set; }
         public string PaymentRef { get; set; }
