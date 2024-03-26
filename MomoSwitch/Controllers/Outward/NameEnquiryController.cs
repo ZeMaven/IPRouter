@@ -11,7 +11,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
-   [Authorize]
+    [Authorize]
     public class NameEnquiryController : ControllerBase
     {
         private readonly IOutward Outward;
@@ -19,8 +19,6 @@ namespace MomoSwitch.Controllers.Outward
         {
             Outward = outward;
         }
-
-
 
         [HttpPost(Name = "OutNameEnquiry")]
         public async Task<NameEnquiryResponse> NameEnquiry(NameEnquiryRequest Req)

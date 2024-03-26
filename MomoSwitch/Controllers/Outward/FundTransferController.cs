@@ -10,7 +10,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/outward/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class FundTransferController : ControllerBase
     {
         private readonly IOutward Processor;
@@ -18,8 +18,6 @@ namespace MomoSwitch.Controllers.Outward
         {
             Processor = processor;
         }
-
-
 
         [HttpPost(Name = "OutFundTransfer")]
         public async Task<FundTransferResponse> FundTransfer(FundTransferRequest Req)
