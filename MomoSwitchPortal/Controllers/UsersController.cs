@@ -226,7 +226,7 @@ namespace MomoSwitchPortal.Controllers
 
                 var result = await userManager.CreateUser(model);
 
-                if (result.ResponseCode != "00")
+                if (result.ResponseCode == "01")
                 {
                     ModelState.AddModelError("", result.ResponseMessage);
                     return View(model);
@@ -234,7 +234,14 @@ namespace MomoSwitchPortal.Controllers
 
                 Log.Write($"UserController:CreateUser", $"User created successfully");
 
-                ToastNotification.Success("User created successfully");
+                if(result.ResponseCode == "07")
+                ToastNotification.Success("User created successfully, but email not sent");
+                
+                if(result.ResponseCode == "00")
+                ToastNotification.Success("User created successfully, email sent to user ");
+
+
+
                 return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)

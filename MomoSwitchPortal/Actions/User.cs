@@ -111,6 +111,16 @@ namespace MomoSwitchPortal.Actions
 
                 string templatePath = configuration.GetValue<string>("Email:ActivateAccountEmailTemplatePath");
 
+                if (string.IsNullOrWhiteSpace(templatePath))
+                {
+                    Log.Write("User:CreateUsser", $"Email path empty");
+                    return new ResponseHeader
+                    {
+                        ResponseCode = "07", //random code just to signify email failure
+                        ResponseMessage = "User created successfully, but activation email couldn't be sent."
+                    };
+                }
+                    
                 string emailTemplate = System.IO.File.ReadAllText(templatePath);
                 string link = $"{currentUrl}/account/activateaccount?key={key}";
 
@@ -133,15 +143,15 @@ namespace MomoSwitchPortal.Actions
                     Log.Write("User:CreateUsser", $"Email failure: {result.ResponseMessage}. User:{model.Username}");
                     return new ResponseHeader
                     {
-                        ResponseCode = "01",
-                        ResponseMessage = "Something went wrong. Please try again later"
+                        ResponseCode = "07", //random code just to signify email failure
+                        ResponseMessage = "User created successfully, but activation email couldn't be sent."
                     };
                 }
 
                 return new ResponseHeader
                 {
                     ResponseCode = "00",
-                    ResponseMessage = "User created successfully"
+                    ResponseMessage = "User created successfully, activation email sent to user"
                 };
             }
             catch (Exception ex)
