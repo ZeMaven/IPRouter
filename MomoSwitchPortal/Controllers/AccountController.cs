@@ -360,6 +360,13 @@ namespace MomoSwitchPortal.Controllers
 
               
                 string templatePath = configuration.GetValue<string>("Email:ForgotPasswordEmailTemplatePath");
+
+                if (string.IsNullOrWhiteSpace(templatePath))
+                {
+                    Log.Write("AccountController:ForgotPassword", $"Email path empty");
+                    ModelState.AddModelError("", "Email Failure");
+                    return View("EnterEmail", model);
+                }
                 string emailTemplate = System.IO.File.ReadAllText(templatePath);
                 string link = $"{currentUrl}/account/forgotpassword?key={key}";
 
@@ -380,7 +387,7 @@ namespace MomoSwitchPortal.Controllers
                 if (result.ResponseCode != "00")
                 {
                     Log.Write("AccountController:ForgotPassword", $"Email failure: {result.ResponseMessage}. User:{model.Username}");
-                    ModelState.AddModelError("", "Something went wrong. Please try again later");
+                    ModelState.AddModelError("", "Email Failure");
                     return View("EnterEmail", model);
                 }
 
