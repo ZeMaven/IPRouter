@@ -205,10 +205,10 @@ namespace NipOutwardProxy.Actions
 
                 var NibssResponseEnc = NipResp.Body.@return;
 
-                Log.Write("NibssOutward.Transfer", $"Response from Nibss enc: {NibssResponseEnc}");
+                Log.Write("NibssOutward.Transfer", $"Response from Nibss : SessionID:{SessionId} | ENC: {NibssResponseEnc}");
 
                 var NibssResponseXml = Pgp.Decryption(NibssResponseEnc);
-                Log.Write("NibssOutward.Transfer", $"Response from Nibss Xml: {NibssResponseXml}");
+                Log.Write("NibssOutward.Transfer", $"Response from Nibss Xml: SessionID:{SessionId} | {NibssResponseXml}");
 
                 FTSingleCreditResponse ResponseObj = (FTSingleCreditResponse)XmlConverter.DeSerialize(NibssResponseXml, new FTSingleCreditResponse());
 
