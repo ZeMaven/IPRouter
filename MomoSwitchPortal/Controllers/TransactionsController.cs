@@ -36,7 +36,7 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
-                int pageSize = 1;
+                int pageSize = 30;
                 int pageNumber = (page == 0 ? 1 : page);                
 
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
@@ -202,7 +202,7 @@ namespace MomoSwitchPortal.Controllers
             {
 
                 TempData["TransactionFilterRequest"] = null;
-                int pageSize = 1;
+                int pageSize = 30;
                 int pageNumber = 1;
            
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
