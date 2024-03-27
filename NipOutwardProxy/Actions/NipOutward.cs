@@ -188,7 +188,7 @@ namespace NipOutwardProxy.Actions
                     Narration = Request.Narration,
                     OriginatorAccountName = Request.SourceAccountName,
                     OriginatorAccountNumber = Request.SourceAccountNumber,
-                    OriginatorBankVerificationNumber = Request.InitiatorBankVerificationNumber,
+                    OriginatorBankVerificationNumber = Request.InitiatorBankVerificationNumber ?? "",
                     OriginatorKYCLevel = Request.InitiatorKYCLevel,
                     PaymentReference = Request.PaymentRef,
                     SessionID = SessionId,
