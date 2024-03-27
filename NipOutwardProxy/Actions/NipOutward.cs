@@ -196,16 +196,16 @@ namespace NipOutwardProxy.Actions
                     TransactionLocation = ""// Request.TransactionLocation,
                 };
                 var XmlRequest = XmlConverter.Serialize(NibssRequest);
-                Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: {XmlRequest}");
+                Log.Write("NibssOutward.Transfer", $"Request to Nibss xml: SessionID:{SessionId} | {XmlRequest}");
                 var EncRequest = Pgp.Ecryption(XmlRequest);
-                Log.Write("NibssOutward.Transfer", $"Request to Nibss enc: {EncRequest}");
+                Log.Write("NibssOutward.Transfer", $"Request to Nibss enc : SessionID:{SessionId} | ENC: {EncRequest}");
                 var NipResp = await Nip.fundtransfersingleitem_dcAsync(EncRequest);
 
 
 
                 var NibssResponseEnc = NipResp.Body.@return;
 
-                Log.Write("NibssOutward.Transfer", $"Response from Nibss : SessionID:{SessionId} | ENC: {NibssResponseEnc}");
+                Log.Write("NibssOutward.Transfer", $"Response from Nibss enc : SessionID:{SessionId} | ENC: {NibssResponseEnc}");
 
                 var NibssResponseXml = Pgp.Decryption(NibssResponseEnc);
                 Log.Write("NibssOutward.Transfer", $"Response from Nibss Xml: SessionID:{SessionId} | {NibssResponseXml}");
