@@ -179,7 +179,7 @@ namespace NipOutwardProxy.Actions
                     Amount = Request.Amount,
                     BeneficiaryAccountName = Request.BenefAccountName,
                     BeneficiaryAccountNumber = Request.BenefAccountNumber,
-                    BeneficiaryBankVerificationNumber = Request.BenefBvn,
+                    BeneficiaryBankVerificationNumber = Request.BenefBvn ?? "",
                     BeneficiaryKYCLevel = Request.BenefKycLevel,
                     ChannelCode = Request.ChannelCode,
                     DestinationInstitutionCode = Request.DestinationBankCode,
