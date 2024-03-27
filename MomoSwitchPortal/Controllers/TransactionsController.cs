@@ -36,7 +36,7 @@ namespace MomoSwitchPortal.Controllers
         {
             try
             {
-                int pageSize = 30;
+                int pageSize = 1;
                 int pageNumber = (page == 0 ? 1 : page);                
 
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
@@ -125,7 +125,7 @@ namespace MomoSwitchPortal.Controllers
                     {
                         Amount = x.Amount,
                         BenefBankCode = x.BenefBankCode,
-                        Date = x.Date.ToString("dd/MM/yyyy"),
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                         Id = x.Id,
                         ResponseCode = x.ResponseCode,
                         Processor = x.Processor,
@@ -162,7 +162,7 @@ namespace MomoSwitchPortal.Controllers
                         {
                             Amount = x.Amount,
                             BenefBankCode = x.BenefBankCode,
-                            Date = x.Date.ToString("dd/MM/yyyy"),
+                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                             Id = x.Id,
                             ResponseCode = x.ResponseCode,
                             Processor = x.Processor,
@@ -202,7 +202,7 @@ namespace MomoSwitchPortal.Controllers
             {
 
                 TempData["TransactionFilterRequest"] = null;
-                int pageSize = 30;
+                int pageSize = 1;
                 int pageNumber = 1;
            
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
@@ -288,7 +288,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Amount = x.Amount,
                     BenefBankCode = x.BenefBankCode,
-                    Date = x.Date.ToString("dd/MM/yyyy"),
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                     Id = x.Id,
                     ResponseCode = x.ResponseCode,
                     Processor = x.Processor,
