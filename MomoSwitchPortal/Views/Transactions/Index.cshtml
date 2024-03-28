@@ -45,13 +45,14 @@
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="startDate" class="form-label">Start Date:</label>
-                                    @Html.TextBoxFor(model => model.FilterRequest.StartDate, new { @class = "form-control border p-2", type = "date" })
-
+                                    <label for="FilterRequest.StartDate" class="form-label">Start Date:</label>
+                  
+                                    <input type="date" value="@(Model?.FilterRequest?.StartDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="Start Date" id="FilterRequest.StartDate" name="FilterRequest.StartDate">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="endDate" class="form-label">End Date:</label>
-                                    @Html.TextBoxFor(model => model.FilterRequest.EndDate, new { @class = "form-control border p-2", type = "date" })
+                              
+                                    <input type="date" value="@(Model?.FilterRequest?.EndDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="End Date" id="FilterRequest.EndDate" name="FilterRequest.EndDate">
                                 </div>
 
                                 <div class="col-md-3">
