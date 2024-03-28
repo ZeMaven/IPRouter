@@ -16,7 +16,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         public string beneficiaryAccountNumber { get; set; }
 
         public string beneficiaryBankVerificationNumber { get; set; }
-        public string beneficiaryKYCLevel { get; set; }
+        public object beneficiaryKYCLevel { get; set; }
         public string beneficiaryNarration { get; set; }
         public string billerId { get; set; }
         public int channelCode { get; set; }
@@ -38,8 +38,8 @@ namespace MomoSwitch.Models.Contracts.Momo
         public string initiatorAccountNumber { get; set; } //cust acc
 
         public string initiatorBankVerificationNumber { get; set; }
-        public int InitiatorKYCLevel { get; set; }
-        public int originatorKYCLevel { get; set; }
+        public object InitiatorKYCLevel { get; set; }
+        public object originatorKYCLevel { get; set; }
         public string originatorNarration { get; set; }
         [RegularExpression("^[0-9]*$", ErrorMessage = "paymentReference should be number characters")]
         public string paymentReference { get; set; }

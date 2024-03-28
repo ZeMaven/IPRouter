@@ -107,7 +107,10 @@ namespace MomoSwitch.Actions
         {
             FundTransferResponse Resp;
             int BenKyc;
-            var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel, out BenKyc) ? BenKyc : 0;
+            int OrgKyc;
+            //int IntKyc;
+            var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel.ToString(), out BenKyc) ? BenKyc : 0;
+            var originatorKYCLevel = int.TryParse(Req.originatorKYCLevel.ToString(), out OrgKyc) ? BenKyc : 0;
 
             try
             {
@@ -134,7 +137,7 @@ namespace MomoSwitch.Actions
                         initiatorAccountName = Req.initiatorAccountName,
                         initiatorAccountNumber = Req.initiatorAccountNumber,
                         initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
-                        originatorKYCLevel = Req.originatorKYCLevel,
+                        originatorKYCLevel = originatorKYCLevel,
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
                         nameEnquiryRef = Req.nameEnquiryRef,
@@ -163,7 +166,7 @@ namespace MomoSwitch.Actions
                     Resp.transactionLocation = Req.transactionLocation;
                     Resp.beneficiaryKYCLevel = beneficiaryKYCLevel;
                     Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
-                    Resp.originatorKYCLevel = Req.originatorKYCLevel;
+                    Resp.originatorKYCLevel = originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
                     Resp.originatorAccountName = Req.originatorAccountName;
                     Resp.originatorAccountNumber = Req.originatorAccountNumber;
@@ -186,7 +189,7 @@ namespace MomoSwitch.Actions
                         initiatorAccountName = Req.initiatorAccountName,
                         initiatorAccountNumber = Req.initiatorAccountNumber,
                         initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
-                        originatorKYCLevel = Req.originatorKYCLevel,
+                        originatorKYCLevel = originatorKYCLevel,
 
                         destinationInstitutionCode = Req.destinationInstitutionCode,
                         mandateReferenceNumber = Req.mandateReferenceNumber,
@@ -221,7 +224,7 @@ namespace MomoSwitch.Actions
                     initiatorAccountName = Req.initiatorAccountName,
                     initiatorAccountNumber = Req.initiatorAccountNumber,
                     initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber,
-                    originatorKYCLevel = Req.originatorKYCLevel,
+                    originatorKYCLevel = originatorKYCLevel,
                     destinationInstitutionCode = Req.destinationInstitutionCode,
                     mandateReferenceNumber = Req.mandateReferenceNumber,
                     nameEnquiryRef = Req.nameEnquiryRef,
