@@ -54,6 +54,7 @@ namespace MomoSwitch.Actions
             beneficiaryAccountNumber = proxyName.BenefAccountNumber,
             beneficiaryBankVerificationNumber = proxyName.BenefBvn,
             beneficiaryKYCLevel = proxyName.BenefKycLevel,
+
             channelCode = proxyName.ChannelCode,
             initiatorAccountName = proxyName.SourceAccountName,
             initiatorAccountNumber = proxyName.SourceAccountNumber,
@@ -107,10 +108,11 @@ namespace MomoSwitch.Actions
             SourceAccountName = Request.initiatorAccountName,
             SourceAccountNumber = Request.initiatorAccountNumber,
             ChannelCode = Request.channelCode,
-            BenefKycLevel = int.TryParse(Request.beneficiaryKYCLevel.ToString(), out BenKyc) ? BenKyc : 0,
+            BenefKycLevel = int.TryParse(Request.beneficiaryKYCLevel?.ToString(), out BenKyc) ? BenKyc : 0,
+            InitiatorKYCLevel = int.TryParse(Request.InitiatorKYCLevel?.ToString(), out IntKyc) ? IntKyc : 0,
             SourceBankCode = Request.sourceInstitutionCode,//  "MomoCode"//Put in config
             InitiatorBankVerificationNumber = Request.initiatorBankVerificationNumber,
-            InitiatorKYCLevel = int.TryParse(Request.InitiatorKYCLevel.ToString(), out BenKyc) ? IntKyc : 0,           
+                       
             TransactionLocation = Request.transactionLocation
         };
 
