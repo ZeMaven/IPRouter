@@ -106,6 +106,9 @@ namespace MomoSwitch.Actions
         public async Task<FundTransferResponse> Transfer(FundTransferRequest Req)
         {
             FundTransferResponse Resp;
+            int BenKyc;
+            var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel, out BenKyc) ? BenKyc : 0;
+
             try
             {
                 string JsonStr = JsonSerializer.Serialize(Req);
@@ -126,7 +129,7 @@ namespace MomoSwitch.Actions
                         beneficiaryAccountName = Req.beneficiaryAccountName,
                         beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
-                        beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                        beneficiaryKYCLevel = beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
                         initiatorAccountName = Req.initiatorAccountName,
                         initiatorAccountNumber = Req.initiatorAccountNumber,
@@ -158,7 +161,7 @@ namespace MomoSwitch.Actions
                     Resp.paymentReference = Req.paymentReference;
                     Resp.channelCode = Req.channelCode;
                     Resp.transactionLocation = Req.transactionLocation;
-                    Resp.beneficiaryKYCLevel = Req.beneficiaryKYCLevel;
+                    Resp.beneficiaryKYCLevel = beneficiaryKYCLevel;
                     Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
                     Resp.originatorKYCLevel = Req.originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
@@ -178,7 +181,7 @@ namespace MomoSwitch.Actions
                         beneficiaryAccountName = Req.beneficiaryAccountName,
                         beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
                         beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
-                        beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                        beneficiaryKYCLevel = beneficiaryKYCLevel,
                         channelCode = Req.channelCode,
                         initiatorAccountName = Req.initiatorAccountName,
                         initiatorAccountNumber = Req.initiatorAccountNumber,
@@ -213,7 +216,7 @@ namespace MomoSwitch.Actions
                     beneficiaryAccountName = Req.beneficiaryAccountName,
                     beneficiaryAccountNumber = Req.beneficiaryAccountNumber,
                     beneficiaryBankVerificationNumber = Req.beneficiaryBankVerificationNumber,
-                    beneficiaryKYCLevel = Req.beneficiaryKYCLevel,
+                    beneficiaryKYCLevel = beneficiaryKYCLevel,
                     channelCode = Req.channelCode,
                     initiatorAccountName = Req.initiatorAccountName,
                     initiatorAccountNumber = Req.initiatorAccountNumber,
@@ -369,7 +372,7 @@ namespace MomoSwitch.Actions
                 //Claims.Add(new Claim("Password", "9@ssm02dS"));
 
                 //Create Security Token object by giving required parameters    
-             var ExpDate=   DateTime.Now.AddMinutes(JwtSpanHours);
+                var ExpDate = DateTime.Now.AddMinutes(JwtSpanHours);
                 var token = new JwtSecurityToken(
                                 audience: audience,
                                 issuer: issuer,

@@ -91,7 +91,7 @@ namespace MomoSwitch.Actions
             ChannelCode = Request.channelCode,
         };
 
-
+        int BenKyc;
         public FundTransferPxRequest ToProxyFundTransferRequest(FundTransferRequest Request) => new FundTransferPxRequest
         {
             TransactionId = Request.transactionId,
@@ -106,7 +106,7 @@ namespace MomoSwitch.Actions
             SourceAccountName = Request.initiatorAccountName,
             SourceAccountNumber = Request.initiatorAccountNumber,
             ChannelCode = Request.channelCode,
-            BenefKycLevel = Request.beneficiaryKYCLevel,
+            BenefKycLevel = int.TryParse(Request.beneficiaryKYCLevel, out BenKyc) ? BenKyc : 0,
             SourceBankCode = Request.sourceInstitutionCode,//  "MomoCode"//Put in config
             InitiatorBankVerificationNumber = Request.initiatorBankVerificationNumber,
             InitiatorKYCLevel = Request.InitiatorKYCLevel,

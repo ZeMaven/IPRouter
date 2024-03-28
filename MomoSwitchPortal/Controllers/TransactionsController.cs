@@ -125,7 +125,7 @@ namespace MomoSwitchPortal.Controllers
                     {
                         Amount = x.Amount,
                         BenefBankCode = x.BenefBankCode,
-                        Date = x.Date.ToString("dd/MM/yyyy"),
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                         Id = x.Id,
                         ResponseCode = x.ResponseCode,
                         Processor = x.Processor,
@@ -162,7 +162,7 @@ namespace MomoSwitchPortal.Controllers
                         {
                             Amount = x.Amount,
                             BenefBankCode = x.BenefBankCode,
-                            Date = x.Date.ToString("dd/MM/yyyy"),
+                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                             Id = x.Id,
                             ResponseCode = x.ResponseCode,
                             Processor = x.Processor,
@@ -288,7 +288,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Amount = x.Amount,
                     BenefBankCode = x.BenefBankCode,
-                    Date = x.Date.ToString("dd/MM/yyyy"),
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
                     Id = x.Id,
                     ResponseCode = x.ResponseCode,
                     Processor = x.Processor,
