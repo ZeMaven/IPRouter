@@ -106,7 +106,7 @@ namespace MomoSwitch.Actions
             SourceAccountName = Request.initiatorAccountName,
             SourceAccountNumber = Request.initiatorAccountNumber,
             ChannelCode = Request.channelCode,
-            BenefKycLevel = int.TryParse(Request.beneficiaryKYCLevel, out BenKyc) ? BenKyc : 0,
+            BenefKycLevel = int.TryParse(Request.beneficiaryKYCLevel.ToString(), out BenKyc) ? BenKyc : 0,
             SourceBankCode = Request.sourceInstitutionCode,//  "MomoCode"//Put in config
             InitiatorBankVerificationNumber = Request.initiatorBankVerificationNumber,
             InitiatorKYCLevel = Request.InitiatorKYCLevel,

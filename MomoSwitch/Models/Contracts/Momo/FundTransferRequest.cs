@@ -16,7 +16,7 @@ namespace MomoSwitch.Models.Contracts.Momo
         public string beneficiaryAccountNumber { get; set; }
 
         public string beneficiaryBankVerificationNumber { get; set; }
-        public string beneficiaryKYCLevel { get; set; }
+        public object beneficiaryKYCLevel { get; set; }
         public string beneficiaryNarration { get; set; }
         public string billerId { get; set; }
         public int channelCode { get; set; }

@@ -107,7 +107,7 @@ namespace MomoSwitch.Actions
         {
             FundTransferResponse Resp;
             int BenKyc;
-            var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel, out BenKyc) ? BenKyc : 0;
+            var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel.ToString(), out BenKyc) ? BenKyc : 0;
 
             try
             {
