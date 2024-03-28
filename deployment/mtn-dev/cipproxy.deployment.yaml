@@ -32,6 +32,8 @@ spec:
         envFrom:
         - configMapRef:
             name: cipproxy
+        - configMapRef:
+            name: timezone
       imagePullSecrets:
         - name: docker-cred
       volumes:

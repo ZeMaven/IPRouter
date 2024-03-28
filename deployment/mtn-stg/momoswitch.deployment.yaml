@@ -29,6 +29,8 @@ spec:
         envFrom:
         - secretRef:
             name: momoswitch
+        - configMapRef:
+            name: timezone
       imagePullSecrets:
         - name: docker-cred
 ---
