@@ -131,7 +131,7 @@ namespace CipProxy.Actions
                 SessionId = $"{SourceBank}{TranId}";
 
                 var CipRequest = new TranQueryRequest
-                {
+                { 
                     sessionId = Request.SessionId,
                 };
 
