@@ -165,10 +165,11 @@ namespace NipOutwardProxy.Actions
 
         public async Task<FundTransferPxResponse> Transfer(FundTransferPxRequest Request)
         {
+            string SessionId = string.Empty;
+            string SourceBank = string.Empty;
             try
             {
-                string SessionId = string.Empty;
-                string SourceBank = string.Empty;
+
                 var TranId = Utilities.CreateTransactionId();
                 SourceBank = Config.GetSection("SourceBank").Value;
                 SessionId = $"{SourceBank}{TranId}";
@@ -245,6 +246,7 @@ namespace NipOutwardProxy.Actions
                     ResponseMessage = "Failed",
                     TransactionId = Request.TransactionId,
                     SourceBankCode = Request.SourceBankCode,
+                    SessionId = SessionId
                 };
             }
         }
