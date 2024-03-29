@@ -357,6 +357,7 @@ namespace MomoSwitchPortal.Controllers
 
                 else
                 {
+                    db.TransactionTb.Where(x => (true || x.TransactionId == ""));
 
                     Data = await db.TransactionTb
                                       .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
@@ -399,6 +400,8 @@ namespace MomoSwitchPortal.Controllers
                     Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
                     Amount = x.Amount
                 }).ToList();
+
+                Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {report.Count}");
 
                 var sheet = $"MomoSwitchTransactions-{DateTime.Now}";
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
