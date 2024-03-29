@@ -108,7 +108,7 @@ namespace MomoSwitch.Actions
             FundTransferResponse Resp;
             int BenKyc;
             int OrgKyc;
-           
+
             var beneficiaryKYCLevel = int.TryParse(Req.beneficiaryKYCLevel?.ToString(), out BenKyc) ? BenKyc : 0;
             var originatorKYCLevel = int.TryParse(Req.originatorKYCLevel?.ToString(), out OrgKyc) ? OrgKyc : 0;
 
@@ -154,7 +154,7 @@ namespace MomoSwitch.Actions
                     Method = Models.Internals.HttpService.Method.Post,
                     RequestObject = ProcessorRequest
                 });
-
+               
 
                 FundTransferPxResponse ProcessorRespObj = JsonSerializer.Deserialize<FundTransferPxResponse>(ProcessorResp.Object.ToString(), Options);
                 if (ProcessorResp.ResponseHeader.ResponseCode == Models.Internals.HttpService.HttpServiceStatus.Success)
@@ -164,14 +164,14 @@ namespace MomoSwitch.Actions
                     Resp.paymentReference = Req.paymentReference;
                     Resp.channelCode = Req.channelCode;
                     Resp.transactionLocation = Req.transactionLocation;
-                    Resp.beneficiaryKYCLevel = beneficiaryKYCLevel;                    
+                    Resp.beneficiaryKYCLevel = beneficiaryKYCLevel;
                     Resp.initiatorBankVerificationNumber = Req.initiatorBankVerificationNumber;
                     Resp.originatorKYCLevel = originatorKYCLevel;
                     Resp.mandateReferenceNumber = Req.mandateReferenceNumber;
                     Resp.originatorAccountName = Req.originatorAccountName;
                     Resp.originatorAccountNumber = Req.originatorAccountNumber;
                     Resp.originatorBankVerificationNumber = Req.originatorBankVerificationNumber;
-                    
+
                     UpdateTransaction(Req.transactionId, ProcessorRespObj.SessionId, Resp);
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.Transfer", $"Response: {JsonStr}");
@@ -413,7 +413,7 @@ namespace MomoSwitch.Actions
                     BenefAccountNumber = Request.beneficiaryAccountNumber,
                     BenefBankCode = Request.destinationInstitutionCode,
                     BenefBvn = Request.beneficiaryBankVerificationNumber,
-                    BenefKycLevel = Request.beneficiaryKYCLevel.ToString(),
+                    BenefKycLevel = Request.beneficiaryKYCLevel?.ToString() ?? "0",
                     ChannelCode = Request.channelCode.ToString(),
                     Fee = 0,
                     ManadateRef = Request.mandateReferenceNumber,
@@ -426,7 +426,7 @@ namespace MomoSwitch.Actions
                     SourceAccountNumber = Request.initiatorAccountNumber,
                     SourceBankCode = Request.sourceInstitutionCode,
                     SourceBvn = Request.initiatorBankVerificationNumber,
-                    SourceKycLevel = Request.originatorKYCLevel.ToString(),
+                    SourceKycLevel = Request.originatorKYCLevel?.ToString() ?? "0",
                     TransactionId = Request.transactionId,
                     NameEnquiryRef = Request.nameEnquiryRef,
                 });
