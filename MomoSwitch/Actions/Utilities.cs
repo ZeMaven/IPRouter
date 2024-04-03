@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Momo.Common.Actions;
+using Momo.Common.Models.Tables;
 using MomoSwitch.Models.DataBase;
 using MomoSwitch.Models.Internals;
 using System.Text.Json;
@@ -8,6 +9,7 @@ namespace MomoSwitch.Actions
 {
     public interface IUtilities
     {
+        string GetBankName(string BankCode);
         Settings GetSettings();
         void RefreshCache();
     }
@@ -28,6 +30,22 @@ namespace MomoSwitch.Actions
         public void RefreshCache()=>
             SettingsCache.Set($"SettingsCache", string.Empty, TimeSpan.FromDays(7));
         
+
+        public string GetBankName(string BankCode)
+        {
+            try
+            {
+                var Db = new MomoSwitchDbContext();
+                return Db.BanksTb.Where(x => x.BankCode == BankCode).FirstOrDefault()?.BankName;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Utilities.GetBanks", $"Err: Error getting BankName | {Ex.Message}");
+                return null;
+            }
+        }
+
+
 
         public Settings GetSettings()
         {

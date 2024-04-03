@@ -111,6 +111,7 @@ namespace CipProxy.Actions
                     TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
                     ResponseCode = "01",
+                    ProxySessionId= SessionId
                 };
             }
         }
