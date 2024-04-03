@@ -10,6 +10,7 @@ namespace Momo.Common.Models.Tables
         public string BankCode { get; set; }
         [StringLength(50)]
         public string Processor { get; set; }
-
+      
+     
     }
 }

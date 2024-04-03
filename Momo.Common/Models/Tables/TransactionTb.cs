@@ -26,6 +26,8 @@ namespace Momo.Common.Models.Tables
         public string PaymentReference { get; set; }
         [StringLength(50)]
         public string BenefBankCode { get; set; }
+        [StringLength(200)]
+        public string BenefBankName { get; set; }
         [StringLength(150)]
         public string BenefAccountName { get; set; }
         [StringLength(50)]
@@ -46,6 +48,8 @@ namespace Momo.Common.Models.Tables
         public string SourceKycLevel { get; set; }
         [StringLength(50)]
         public string SourceBankCode { get; set; }
+        [StringLength(50)]
+        public string SourceBankName { get; set; }
         [StringLength(50)]
         public string ChannelCode { get; set; }
         [StringLength(50)]

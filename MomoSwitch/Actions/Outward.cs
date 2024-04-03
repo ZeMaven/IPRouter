@@ -31,13 +31,15 @@ namespace MomoSwitch.Actions
         private readonly IHttpService HttpService;
         private readonly ILog Log;
         private readonly IConfiguration Config;
-        public Outward(ISwitchRouter router, ILog log, ITransposer transposer, IHttpService httpService, IConfiguration config)
+        private readonly IUtilities Utilities;
+        public Outward(ISwitchRouter router, ILog log, ITransposer transposer, IHttpService httpService, IConfiguration config, IUtilities utilities)
         {
             SwitchRouter = router;
             Transposer = transposer;
             Log = log;
             HttpService = httpService;
             Config = config;
+            Utilities = utilities;
         }
         JsonSerializerOptions Options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
@@ -154,7 +156,7 @@ namespace MomoSwitch.Actions
                     Method = Models.Internals.HttpService.Method.Post,
                     RequestObject = ProcessorRequest
                 });
-               
+
 
                 FundTransferPxResponse ProcessorRespObj = JsonSerializer.Deserialize<FundTransferPxResponse>(ProcessorResp.Object.ToString(), Options);
                 if (ProcessorResp.ResponseHeader.ResponseCode == Models.Internals.HttpService.HttpServiceStatus.Success)
@@ -415,6 +417,8 @@ namespace MomoSwitch.Actions
                     BenefBvn = Request.beneficiaryBankVerificationNumber,
                     BenefKycLevel = Request.beneficiaryKYCLevel?.ToString() ?? "0",
                     ChannelCode = Request.channelCode.ToString(),
+                    BenefBankName = Utilities.GetBankName(Request.destinationInstitutionCode),
+                    SourceBankName = Utilities.GetBankName(Request.sourceInstitutionCode),
                     Fee = 0,
                     ManadateRef = Request.mandateReferenceNumber,
                     Narration = Request.originatorNarration,
