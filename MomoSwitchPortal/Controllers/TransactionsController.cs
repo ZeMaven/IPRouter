@@ -322,7 +322,9 @@ namespace MomoSwitchPortal.Controllers
                     SourceBvn = transaction.SourceBvn,
                     SourceKycLevel = transaction.SourceKycLevel,
                     TransactionId = transaction.TransactionId,
-                    ValidateDate = transaction.ValidateDate
+                    ValidateDate = transaction.ValidateDate,
+                    SourceBankName = transaction.SourceBankName,
+                    BenefBankName = transaction.BenefBankName
                 };
                 return View(viewModel);
             }
@@ -398,7 +400,9 @@ namespace MomoSwitchPortal.Controllers
                     SourceBvn = x.SourceBvn,
                     SourceKycLevel = x.SourceKycLevel    ,                                                     
                     Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
-                    Amount = x.Amount
+                    Amount = x.Amount,
+                    SourceBankName = x.SourceBankName,
+                    BeneficiaryBankName = x.BenefBankName
                 }).ToList();
 
                 Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {report.Count}");

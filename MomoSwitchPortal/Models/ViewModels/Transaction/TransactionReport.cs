@@ -28,6 +28,8 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public string ResponseMessage { get; set; }             
         [Display(Name = "Source Bank Code")]
         public string SourceBankCode { get; set; }
+        [Display(Name = "Source Bank Name")]
+        public string SourceBankName { get; set; }
         [Display(Name = "Source Account Name")]
         public string SourceAccountName { get; set; }
         [Display(Name = "Source Account Number")]
@@ -38,6 +40,8 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public string SourceKycLevel { get; set; }
         [Display(Name = "Beneficiary Bank Code")]
         public string BenefBankCode { get; set; }
+        [Display(Name = "Beneficiary Bank Name")]
+        public string BeneficiaryBankName { get; set; }
         [Display(Name = "Beneficiary Account Name")]
         public string BenefAccountName { get; set; }
         [Display(Name = "Beneficiary Account Number")]
