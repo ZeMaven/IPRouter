@@ -312,7 +312,7 @@ namespace MomoSwitch.Actions
                 {
                     sessionID = null,
                     transactionId = TranId,
-                    responseCode = "06"
+                    responseCode = "01"
                 };
             }
         }
