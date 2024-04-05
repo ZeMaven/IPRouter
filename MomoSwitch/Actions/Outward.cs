@@ -276,7 +276,6 @@ namespace MomoSwitch.Actions
                             transactionId = Tran.TransactionId,
                             responseCode = QueryTran.responseCode,
                         };
-
                     }
                     else
                     {
@@ -316,8 +315,6 @@ namespace MomoSwitch.Actions
                 };
             }
         }
-
-
 
 
 
@@ -404,6 +401,8 @@ namespace MomoSwitch.Actions
         {
             try
             {
+
+                var LimitOk = Utilities.ProcessorLimitOk(Proccesor);
                 var Db = new MomoSwitchDbContext();
 
                 Db.TransactionTb.Add(new TransactionTb
@@ -423,8 +422,8 @@ namespace MomoSwitch.Actions
                     ManadateRef = Request.mandateReferenceNumber,
                     Narration = Request.originatorNarration,
                     PaymentReference = Request.paymentReference,
-                    ResponseCode = "09",
-                    ResponseMessage = "Pending",
+                    ResponseCode = LimitOk ? "09" : "61",
+                    ResponseMessage = LimitOk ? "Pending" : "Processor limit exceeded",
                     //SessionId = Request.transactionId,
                     SourceAccountName = Request.initiatorAccountName,
                     SourceAccountNumber = Request.initiatorAccountNumber,
@@ -440,8 +439,8 @@ namespace MomoSwitch.Actions
                 Log.Write("DataExpress.SubmitTransaction", $"Transaction saved Ok: Session:{Request.transactionId}");
                 return new ResponseHeader
                 {
-                    ResponseCode = "00",
-                    ResponseMessage = "Saved well"
+                    ResponseCode = LimitOk ? "00" : "61",
+                    ResponseMessage = LimitOk ? "Saved well" : "Processor Limit exceeded"
                 };
 
             }
@@ -563,7 +562,7 @@ namespace MomoSwitch.Actions
                 Log.Write("Outward.TranQuery", $"Err: {Ex.Message}");
                 return new TranQueryResponse
                 {
-                    responseCode = "09",
+                    responseCode = "96",
                     responseMessage = "System challenge",
                     message = "System challenge",
                     transactionId = Req.transactionId,

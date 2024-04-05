@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
@@ -9,7 +10,8 @@ namespace Momo.Common.Models.Tables
 
     [Index(nameof(SessionId), IsUnique = true)]
     [Index(nameof(TransactionId), IsUnique = true)]
-    [Index(nameof(Date))]
+    [Index(nameof(Date))]   
+    [Index(nameof(Date), nameof(Processor))]
     public class TransactionTb
     {
         public int Id { get; set; }
@@ -56,8 +58,9 @@ namespace Momo.Common.Models.Tables
         public string ManadateRef { get; set; }
         [StringLength(150)]
         public string NameEnquiryRef { get; set; }
-
+        [DefaultValue(0)]
         public decimal Amount { get; set; }
+        [DefaultValue(0)]
         public decimal Fee { get; set; }
         [StringLength(50)]
         public string ResponseCode { get; set; }
