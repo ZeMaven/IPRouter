@@ -37,7 +37,7 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 int pageSize = 30;
-                int pageNumber = (page == 0 ? 1 : page);                
+                int pageNumber = (page == 0 ? 1 : page);
 
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
 
@@ -62,39 +62,65 @@ namespace MomoSwitchPortal.Controllers
                     return RedirectToAction("Logout", "Account");
                 }
 
-              
+
                 if (page != 0 && TempData["TransactionFilterRequest"]?.ToString() != null)
                 {
                     //  List<TransactionItem> Trans1 = JsonSerializer.Deserialize<List<TransactionItem>>(TempData["Tran"].ToString());
 
                     var FilterRequest = JsonSerializer.Deserialize<TransactionViewModel>(TempData["TransactionFilterRequest"].ToString());
 
-                    var Data = new List<TransactionTb>();
+                    var Data = new List<TransactionTableViewModel>();
 
-                    
-                    if(FilterRequest.FilterRequest.EndDate == null && FilterRequest.FilterRequest.StartDate == null 
+
+                    if (FilterRequest.FilterRequest.EndDate == null && FilterRequest.FilterRequest.StartDate == null
                         && string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) && string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) && string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor)
                         && string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId))
                     {
-                        Data = await db.TransactionTb.AsNoTracking().OrderByDescending(x => x.Date).Take(50).ToListAsync();
+                        Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
+                        {
+                            Amount = x.Amount,
+                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                            BenefBankCode = x.BenefBankCode,
+                            Id = x.Id,
+                            Processor = x.Processor,
+                            ResponseCode = x.ResponseCode,
+                            ResponseMessage = x.ResponseMessage,
+                            SourceBankCode = x.SourceBankCode,
+                            TransactionId = x.TransactionId,
+                            BenefAccountNumber = x.BenefAccountNumber,
+                            SourceAccountNumber = x.SourceAccountNumber
+                        }).ToListAsync();
                     }
 
                     else
                     {
 
-                       Data =  await db.TransactionTb
-                                         .Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
-                                                     (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
-                                                     (string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId) || t.TransactionId == FilterRequest.FilterRequest.TransactionId.Trim()) &&
-                                                     (string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor) || t.Processor.ToLower().Contains(FilterRequest.FilterRequest.Processor.Trim().ToLower())) &&
-                                                     (string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) || t.ResponseCode == FilterRequest.FilterRequest.ResponseCode.Trim().ToLower()) &&
-                                                     (string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) || (FilterRequest.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode) 
-                                                     || (FilterRequest.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))                                                   
-                                         .OrderByDescending(x => x.Date).ToListAsync();
+                        Data = await db.TransactionTb
+                                          .Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                      (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId) || t.TransactionId == FilterRequest.FilterRequest.TransactionId.Trim()) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor) || t.Processor.ToLower().Contains(FilterRequest.FilterRequest.Processor.Trim().ToLower())) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) || t.ResponseCode == FilterRequest.FilterRequest.ResponseCode.Trim().ToLower()) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) || (FilterRequest.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
+                                                      || (FilterRequest.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
+                                          .OrderByDescending(x => x.Date).Select(x => new TransactionTableViewModel
+                                          {
+                                              Amount = x.Amount,
+                                              Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                                              BenefBankCode = x.BenefBankCode,
+                                              Id = x.Id,
+                                              Processor = x.Processor,
+                                              ResponseCode = x.ResponseCode,
+                                              ResponseMessage = x.ResponseMessage,
+                                              SourceBankCode = x.SourceBankCode,
+                                              TransactionId = x.TransactionId,
+                                              BenefAccountNumber = x.BenefAccountNumber,
+                                              SourceAccountNumber = x.SourceAccountNumber
+                                          }).ToListAsync();
 
-                       
+
                     }
-                   
+
 
 
                     int Count = Data.Count;
@@ -107,18 +133,7 @@ namespace MomoSwitchPortal.Controllers
 
 
                     var viewModel = new TransactionViewModel();
-                    viewModel.Transactions = Data.Select(x => new TransactionTableViewModel
-                    {
-                        Amount = x.Amount,
-                        BenefBankCode = x.BenefBankCode,
-                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
-                        Id = x.Id,
-                        ResponseCode = x.ResponseCode,
-                        Processor = x.Processor,
-                        ResponseMessage = x.ResponseMessage,
-                        SourceBankCode = x.SourceBankCode,
-                        TransactionId = x.TransactionId
-                    }).ToList();
+                    viewModel.Transactions = Data;
                     viewModel.PaginationMetaData = new(Count, pageNumber, pageSize);
                     viewModel.StartSerialNumber = startSerialNumber;
 
@@ -144,7 +159,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Trans = new TransactionViewModel()
                     {
-                        Transactions = db.TransactionTb.AsNoTracking().OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
+                        Transactions = db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                         {
                             Amount = x.Amount,
                             BenefBankCode = x.BenefBankCode,
@@ -154,7 +169,9 @@ namespace MomoSwitchPortal.Controllers
                             Processor = x.Processor,
                             ResponseMessage = x.ResponseMessage,
                             SourceBankCode = x.SourceBankCode,
-                            TransactionId = x.TransactionId
+                            TransactionId = x.TransactionId,
+                            BenefAccountNumber = x.BenefAccountNumber,
+                            SourceAccountNumber = x.SourceAccountNumber
                         }).ToList()
                     };
                 }));
@@ -165,13 +182,13 @@ namespace MomoSwitchPortal.Controllers
                .Take(pageSize)
                .ToList();
 
-               var startSerialNumber2 = (pageNumber - 1) * pageSize + 1;
+                var startSerialNumber2 = (pageNumber - 1) * pageSize + 1;
 
 
                 Trans.PaginationMetaData = new(Count2, pageNumber, pageSize);
                 Trans.StartSerialNumber = startSerialNumber2;
 
-                return View(Trans);               
+                return View(Trans);
             }
             catch (Exception ex)
             {
@@ -190,10 +207,10 @@ namespace MomoSwitchPortal.Controllers
                 TempData["TransactionFilterRequest"] = null;
                 int pageSize = 30;
                 int pageNumber = 1;
-           
+
                 ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
 
-                var db = new MomoSwitchDbContext();            
+                var db = new MomoSwitchDbContext();
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
 
                 var filterRequest = new TransactionViewModel
@@ -214,37 +231,63 @@ namespace MomoSwitchPortal.Controllers
 
 
 
-                 var Data = new List<TransactionTb>();
+                var Data = new List<TransactionTableViewModel>();
 
-                    
-                    if(model.FilterRequest.EndDate == null && model.FilterRequest.StartDate == null 
-                        && string.IsNullOrEmpty(model.FilterRequest.TranType) && string.IsNullOrEmpty(model.FilterRequest.ResponseCode) && string.IsNullOrEmpty(model.FilterRequest.Processor)
-                        && string.IsNullOrEmpty(model.FilterRequest.TransactionId))
+
+                if (model.FilterRequest.EndDate == null && model.FilterRequest.StartDate == null
+                    && string.IsNullOrEmpty(model.FilterRequest.TranType) && string.IsNullOrEmpty(model.FilterRequest.ResponseCode) && string.IsNullOrEmpty(model.FilterRequest.Processor)
+                    && string.IsNullOrEmpty(model.FilterRequest.TransactionId))
+                {
+                    Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                     {
-                        Data = await db.TransactionTb.AsNoTracking().OrderByDescending(x => x.Date).Take(50).ToListAsync();
-                    }
+                        Amount = x.Amount,
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                        BenefBankCode = x.BenefBankCode,
+                        Id = x.Id,
+                        Processor = x.Processor,
+                        ResponseCode = x.ResponseCode,
+                        ResponseMessage = x.ResponseMessage,
+                        SourceBankCode = x.SourceBankCode,
+                        TransactionId = x.TransactionId,
+                        BenefAccountNumber = x.BenefAccountNumber,
+                        SourceAccountNumber = x.SourceAccountNumber
+                    }).ToListAsync();
+                }
 
-                    else
-                    {
+                else
+                {
 
-                       Data =  await db.TransactionTb
-                                         .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
-                                                     (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
-                                                     (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
-                                                     (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
-                                                     (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
-                                                     (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode) 
-                                                     || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))                                                   
-                                         .OrderByDescending(x => x.Date).ToListAsync();
+                    Data = await db.TransactionTb
+                                      .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                  (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
+                                                  || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
+                                      .Select(x => new TransactionTableViewModel
+                                      {
+                                          Amount = x.Amount,
+                                          Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                                          BenefBankCode = x.BenefBankCode,
+                                          Id = x.Id,
+                                          Processor = x.Processor,
+                                          ResponseCode = x.ResponseCode,
+                                          ResponseMessage = x.ResponseMessage,
+                                          SourceBankCode = x.SourceBankCode,
+                                          TransactionId = x.TransactionId,
+                                          BenefAccountNumber = x.BenefAccountNumber,
+                                          SourceAccountNumber = x.SourceAccountNumber
+                                      }).ToListAsync();
 
-                       
-                    }
-                   
+
+                }
+
 
                 TempData["TransactionFilterRequest"] = JsonSerializer.Serialize(filterRequest);
                 TempData.Keep();
 
-              
+
 
 
 
@@ -256,18 +299,7 @@ namespace MomoSwitchPortal.Controllers
 
                 var startSerialNumber = (pageNumber - 1) * pageSize + 1;
 
-                model.Transactions = Data.Select(x => new TransactionTableViewModel
-                {
-                    Amount = x.Amount,
-                    BenefBankCode = x.BenefBankCode,
-                    Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
-                    Id = x.Id,
-                    ResponseCode = x.ResponseCode,
-                    Processor = x.Processor,
-                    ResponseMessage = x.ResponseMessage,
-                    SourceBankCode = x.SourceBankCode,
-                    TransactionId = x.TransactionId
-                }).ToList();
+                model.Transactions = Data;
 
 
                 model.PaginationMetaData = new(Count, pageNumber, pageSize);
@@ -286,11 +318,11 @@ namespace MomoSwitchPortal.Controllers
         public async Task<IActionResult> Details(int id)
         {
             try
-            {              
+            {
                 var db = new MomoSwitchDbContext();
-                var transaction = await db.TransactionTb.SingleOrDefaultAsync(x => x.Id == id);    
+                var transaction = await db.TransactionTb.SingleOrDefaultAsync(x => x.Id == id);
 
-                if(transaction == null)
+                if (transaction == null)
                 {
                     ToastNotification.Error("System Challenge");
                     return RedirectToAction("Index", "Home");
@@ -308,7 +340,7 @@ namespace MomoSwitchPortal.Controllers
                     Date = transaction.Date,
                     Fee = transaction.Fee,
                     ManadateRef = transaction.ManadateRef,
-                    NameEnquiryRef  = transaction.NameEnquiryRef,                    
+                    NameEnquiryRef = transaction.NameEnquiryRef,
                     Narration = transaction.Narration,
                     PaymentDate = transaction.PaymentDate,
                     PaymentReference = transaction.PaymentReference,
@@ -335,7 +367,7 @@ namespace MomoSwitchPortal.Controllers
             }
         }
 
-        [HttpPost]      
+        [HttpPost]
         public async Task<ActionResult> DownloadTransactionsReport(TransactionViewModel model)
         {
             try
@@ -343,18 +375,47 @@ namespace MomoSwitchPortal.Controllers
                 var db = new MomoSwitchDbContext();
 
 
-              
+
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
 
 
-                var Data = new List<TransactionTb>();
+                var Data = new List<TransactionReport>();
 
 
                 if (model.FilterRequest.EndDate == null && model.FilterRequest.StartDate == null
                     && string.IsNullOrEmpty(model.FilterRequest.TranType) && string.IsNullOrEmpty(model.FilterRequest.ResponseCode) && string.IsNullOrEmpty(model.FilterRequest.Processor)
                     && string.IsNullOrEmpty(model.FilterRequest.TransactionId))
                 {
-                    Data = await db.TransactionTb.AsNoTracking().OrderByDescending(x => x.Date).Take(50).ToListAsync();
+                    Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionReport
+                    {
+                        SessionId = x.SessionId,
+                        TransactionId = x.TransactionId,
+                        ResponseCode = x.ResponseCode,
+                        Processor = x.Processor,
+                        ValidateDate = Convert.ToDateTime(x.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                        BenefAccountName = x.BenefAccountName,
+                        BenefAccountNumber = x.BenefAccountNumber,
+                        BenefBankCode = x.BenefBankCode,
+                        BenefBvn = x.BenefBvn,
+                        BenefKycLevel = x.BenefKycLevel,
+                        ChannelCode = x.ChannelCode,
+                        Fee = x.Fee,
+                        ManadateRef = x.ManadateRef,
+                        NameEnquiryRef = x.NameEnquiryRef,
+                        Narration = x.Narration,
+                        PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                        PaymentReference = x.PaymentReference,
+                        ResponseMessage = x.ResponseMessage,
+                        SourceAccountName = x.SourceAccountName,
+                        SourceAccountNumber = x.SourceAccountNumber,
+                        SourceBankCode = x.SourceBankCode,
+                        SourceBvn = x.SourceBvn,
+                        SourceKycLevel = x.SourceKycLevel,
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                        Amount = x.Amount,
+                        SourceBankName = x.SourceBankName,
+                        BeneficiaryBankName = x.BenefBankName
+                    }).ToListAsync();
                 }
 
                 else
@@ -362,62 +423,62 @@ namespace MomoSwitchPortal.Controllers
                     db.TransactionTb.Where(x => (true || x.TransactionId == ""));
 
                     Data = await db.TransactionTb
-                                      .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
-                                                  (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
-                                                  (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
-                                                  (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
-                                                  (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
-                                                  (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
-                                                  || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
-                                      .OrderByDescending(x => x.Date).ToListAsync();
-
+                                       .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                   (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                   (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
+                                                   (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
+                                                   (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
+                                                   (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
+                                                   || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
+                                       .Select(x => new TransactionReport
+                                       {
+                                           SessionId = x.SessionId,
+                                           TransactionId = x.TransactionId,
+                                           ResponseCode = x.ResponseCode,
+                                           Processor = x.Processor,
+                                           ValidateDate = Convert.ToDateTime(x.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                                           BenefAccountName = x.BenefAccountName,
+                                           BenefAccountNumber = x.BenefAccountNumber,
+                                           BenefBankCode = x.BenefBankCode,
+                                           BenefBvn = x.BenefBvn,
+                                           BenefKycLevel = x.BenefKycLevel,
+                                           ChannelCode = x.ChannelCode,
+                                           Fee = x.Fee,
+                                           ManadateRef = x.ManadateRef,
+                                           NameEnquiryRef = x.NameEnquiryRef,
+                                           Narration = x.Narration,
+                                           PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                                           PaymentReference = x.PaymentReference,
+                                           ResponseMessage = x.ResponseMessage,
+                                           SourceAccountName = x.SourceAccountName,
+                                           SourceAccountNumber = x.SourceAccountNumber,
+                                           SourceBankCode = x.SourceBankCode,
+                                           SourceBvn = x.SourceBvn,
+                                           SourceKycLevel = x.SourceKycLevel,
+                                           Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                                           Amount = x.Amount,
+                                           SourceBankName = x.SourceBankName,
+                                           BeneficiaryBankName = x.BenefBankName
+                                       }).ToListAsync();
 
                 }
 
-                var report = Data.Select(x => new TransactionReport
-                {
-                    SessionId = x.SessionId,
-                    TransactionId = x.TransactionId,
-                    ResponseCode = x.ResponseCode,
-                    Processor = x.Processor,
-                    ValidateDate = Convert.ToDateTime(x.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
-                    BenefAccountName = x.BenefAccountName,
-                    BenefAccountNumber  = x.BenefAccountNumber,
-                    BenefBankCode   = x.BenefBankCode,
-                    BenefBvn = x.BenefBvn,
-                    BenefKycLevel   = x.BenefKycLevel,
-                    ChannelCode = x.ChannelCode,
-                    Fee = x.Fee,    
-                    ManadateRef = x.ManadateRef,
-                    NameEnquiryRef = x.NameEnquiryRef,
-                    Narration = x.Narration,
-                    PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
-                    PaymentReference = x.PaymentReference,
-                    ResponseMessage = x.ResponseMessage,    
-                    SourceAccountName = x.SourceAccountName,
-                    SourceAccountNumber = x.SourceAccountNumber,
-                    SourceBankCode      = x.SourceBankCode,
-                    SourceBvn = x.SourceBvn,
-                    SourceKycLevel = x.SourceKycLevel    ,                                                     
-                    Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
-                    Amount = x.Amount,
-                    SourceBankName = x.SourceBankName,
-                    BeneficiaryBankName = x.BenefBankName
-                }).ToList();
+                Data = Data.OrderByDescending(x => x.Date).ToList();
 
-                Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {report.Count}");
+                Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {Data.Count}");
 
                 var sheet = $"MomoSwitchTransactions-{DateTime.Now}";
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage excelPackage = new ExcelPackage())
                 {
                     var workSheet = excelPackage.Workbook.Worksheets.Add(sheet);
-                    var SheetRange = workSheet.Cells["A1"].LoadFromCollection(report, true);
+                    var SheetRange = workSheet.Cells["A1"].LoadFromCollection(Data, true);
                     var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     workSheet.Row(1).Style.Font.Bold = true;
                     workSheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                   
                     SheetRange.AutoFitColumns();
-                    SheetRange.Style.Numberformat.Format = "_(* #,##0.00_);_(* (#,##0.00);_(* \" - \"_);_(@_)";
+                    SheetRange.Style.Numberformat.Format = "_( #,##0.00_);_( (#,##0.00);_(* \" - \"_);_(@_)";
 
                     using (MemoryStream stream = new MemoryStream())
                     {

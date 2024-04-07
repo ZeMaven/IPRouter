@@ -8,7 +8,7 @@ namespace MomoSwitchPortal.Actions
 {
     public interface IHome
     {
-        HomeViewModel GetDashboardData(List<TransactionTb> incomingTransactions, List<TransactionTb> outgoingTransactions);
+        HomeViewModel GetDashboardData(List<HomeMiniTransaction> incomingTransactions, List<HomeMiniTransaction> outgoingTransactions);
     }
     public class Home : IHome
     {
@@ -19,7 +19,7 @@ namespace MomoSwitchPortal.Actions
             Log = log;
         }
 
-        public HomeViewModel GetDashboardData(List<TransactionTb> incomingTransactions, List<TransactionTb> outgoingTransactions)
+        public HomeViewModel GetDashboardData(List<HomeMiniTransaction> incomingTransactions, List<HomeMiniTransaction> outgoingTransactions)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace MomoSwitchPortal.Actions
             }
         }
 
-        private List<TransactionTb> GetThisWeekSuccessfulTransactions(List<TransactionTb> transactions)
+        private List<HomeMiniTransaction> GetThisWeekSuccessfulTransactions(List<HomeMiniTransaction> transactions)
         {
             DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
             DateTime endOfWeek = startOfWeek.AddDays(7).AddSeconds(-1);
@@ -101,7 +101,7 @@ namespace MomoSwitchPortal.Actions
                 endOfWeek = endOfWeek.AddDays(-7);
             }
 
-            var thisWeekTransactions = new List<TransactionTb>();
+            var thisWeekTransactions = new List<HomeMiniTransaction>();
             foreach (var transaction in transactions)
             {
                 if (transaction.Date >= startOfWeek && transaction.Date <= endOfWeek)
@@ -113,7 +113,7 @@ namespace MomoSwitchPortal.Actions
             return thisWeekTransactions;
         }
 
-        private MonthlyTrendViewModel GetHalfYearSuccessfulTransactions(int startingYear, int startingMonth, List<TransactionTb> transactions)
+        private MonthlyTrendViewModel GetHalfYearSuccessfulTransactions(int startingYear, int startingMonth, List<HomeMiniTransaction> transactions)
         {
 
             var halfYearSuccessfulTransactions = new MonthlyTrendViewModel

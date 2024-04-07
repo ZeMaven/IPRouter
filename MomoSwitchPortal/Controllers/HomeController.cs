@@ -27,25 +27,37 @@ namespace MomoSwitchPortal.Controllers
         public async Task<IActionResult> Index()
         {
             try
-            {              
+            {
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
                 var db = new MomoSwitchDbContext();
 
-                var incomingTransactions = await db.TransactionTb.Where(x => x.BenefBankCode == institutionCode && x.ResponseCode != "09").ToListAsync();
-                var outgoingTransactions = await db.TransactionTb.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToListAsync();
-               
+                var Month1stDay = DateTime.Parse(DateTime.Now.AddMonths(-1).ToString("01-MMM-yyyy 00:00:00"));
+                // db.ChangeTracker.AutoDetectChangesEnabled = false;
+                var allTransactions = await db.TransactionTb.Where(x => x.Date > Month1stDay).Select(x => new HomeMiniTransaction
+                {
+                    Amount = x.Amount,
+                    TransactionId = x.TransactionId,
+                    SourceBankCode = x.SourceBankCode,
+                    ResponseCode = x.ResponseCode,
+                    BenefBankCode = x.BenefBankCode,
+                    Date = x.Date
+                }).ToListAsync();
+                var incomingTransactions = allTransactions.Where(x => x.BenefBankCode == institutionCode && x.ResponseCode != "09").ToList();
+
+                var outgoingTransactions = allTransactions.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToList();
+
 
                 var result = homeManager.GetDashboardData(incomingTransactions, outgoingTransactions);
 
-                if(result.ResponseHeader.ResponseCode != "00")
+                if (result.ResponseHeader.ResponseCode != "00")
                 {
                     return View("Error");
                 }
 
-                result.DashboardData.RecentTransactions = db.TransactionTb.OrderByDescending(x => x.Date).Take(15).ToList();                
+                result.DashboardData.RecentTransactions = allTransactions.OrderByDescending(x => x.Date).Take(15).ToList();
                 result.DashboardData.TotalUsers = db.PortalUserTb.Count();
                 result.DashboardData.TotalSwitches = db.SwitchTb.Count();
-                result.DashboardData.TotalTransactions = db.TransactionTb.Count();
+                result.DashboardData.TotalTransactions = allTransactions.Count();
 
                 return View(result.DashboardData);
             }
@@ -53,7 +65,7 @@ namespace MomoSwitchPortal.Controllers
             {
                 Log.Write("HomeController:Index", $"eRR: {ex.Message}");
                 return View("Error");
-            }          
+            }
         }
 
         [HttpGet("accessdenied")]
