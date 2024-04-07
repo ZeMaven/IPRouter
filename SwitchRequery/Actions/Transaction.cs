@@ -66,7 +66,7 @@ namespace SwitchRequery.Actions
 
                 if (Resp.ResponseHeader.ResponseCode == CoralPay.HttpHandler.Models.Status.Successful)
                 {
-                    Log.Write("GetTransaction", $"Response {JsonSerializer.Serialize(Resp.Object)}");
+                    Log.Write("GetTransaction", $"Response {JsonSerializer.Serialize(Resp.Object.ToString())}");
                 }
                 else
                 {
