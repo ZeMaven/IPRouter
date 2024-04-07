@@ -39,14 +39,14 @@ namespace MomoSwitchPortal.Controllers
                 {
                     Amount = x.Amount,
                     TransactionId = x.TransactionId,
-                    SourceBankCode = x.SourceBankCode,
+                    SourceBankName = x.SourceBankName,
                     ResponseCode = x.ResponseCode,
-                    BenefBankCode = x.BenefBankCode,
+                    BenefBankName = x.BenefBankName,
                     Date = x.Date
                 }).ToListAsync();
-                var incomingTransactions = allTransactions.Where(x => x.BenefBankCode == institutionCode && x.ResponseCode != "09").ToList();
+                var incomingTransactions = allTransactions.Where(x => x.BenefBankName == institutionCode && x.ResponseCode != "09").ToList();
 
-                var outgoingTransactions = allTransactions.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToList();
+                var outgoingTransactions = allTransactions.Where(x => x.SourceBankName == institutionCode && x.ResponseCode != "09").ToList();
 
 
                 var result = homeManager.GetDashboardData(incomingTransactions, outgoingTransactions);

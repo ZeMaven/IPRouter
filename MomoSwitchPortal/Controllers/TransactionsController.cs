@@ -88,7 +88,9 @@ namespace MomoSwitchPortal.Controllers
                             SourceBankCode = x.SourceBankCode,
                             TransactionId = x.TransactionId,
                             BenefAccountNumber = x.BenefAccountNumber,
-                            SourceAccountNumber = x.SourceAccountNumber
+                            SourceAccountNumber = x.SourceAccountNumber,
+                            BenefBankName = x.BenefBankName,
+                            SourceBankName = x.SourceBankName,
                         }).ToListAsync();
                     }
 
@@ -416,7 +418,7 @@ namespace MomoSwitchPortal.Controllers
                         Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
                         Amount = x.Amount,
                         SourceBankName = x.SourceBankName,
-                        BeneficiaryBankName = x.BenefBankName,                        
+                        BeneficiaryBankName = x.BenefBankName,
                     }).ToListAsync();
                 }
 
@@ -479,7 +481,7 @@ namespace MomoSwitchPortal.Controllers
                     var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     workSheet.Row(1).Style.Font.Bold = true;
                     workSheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                   
+
                     SheetRange.AutoFitColumns();
                     SheetRange.Style.Numberformat.Format = "_( #,##0.00_);_( (#,##0.00);_(* \" - \"_);_(@_)";
 

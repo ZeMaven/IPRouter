@@ -15,7 +15,7 @@
                         </i>
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
-                        <p class="text-sm mb-0 text-capitalize">Total Incoming</p>
+                        <p class="text-sm mb-0 text-capitalize">@DateTime.Now.ToString("MMM") Incoming</p>
                         <h4 class="mb-0">&#8358;@Model.TotalIncoming</h4>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         </i>
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
-                        <p class="text-sm mb-0 text-capitalize">Total Outgoing</p>
+                        <p class="text-sm mb-0 text-capitalize">>@DateTime.Now.ToString("MMM") Outgoing</p>
                         <h4 class="mb-0">&#8358;@Model.TotalOutGoing</h4>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         </i>
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
-                        <p class="text-sm mb-0 text-capitalize">Total Successful</p>
+                        <p class="text-sm mb-0 text-capitalize">>@DateTime.Now.ToString("MMM") Successful</p>
                         <h4 class="mb-0">&#8358;@Model.TotalSuccessful</h4>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         </i>
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
-                        <p class="text-sm mb-0 text-capitalize">Total Failed</p>
+                        <p class="text-sm mb-0 text-capitalize">>@DateTime.Now.ToString("MMM") Failed</p>
                         <h4 class="mb-0">&#8358;@Model.TotalFailed</h4>
                     </div>
                 </div>
@@ -167,10 +167,10 @@
                                                         <span class="text-xs font-weight-bold">@Item.TransactionId</span>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
-                                                        <span class="text-xs font-weight-bold">@Item.SourceBankCode</span>
+                                                        <span class="text-xs font-weight-bold">@Item.SourceBankName>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
-                                                        <span class="text-xs font-weight-bold">@Item.BenefBankCode</span>
+                                                        <span class="text-xs font-weight-bold">@Item.BenefBankName>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">                                                        
                                                             <div class="progress-info">
