@@ -17,7 +17,7 @@ namespace Momo.Common.Models.Tables
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
 
-        [DefaultValue(0)]
+        [DefaultValue(500000000)]
         public decimal DailyLimit { get; set; }
 
     }
