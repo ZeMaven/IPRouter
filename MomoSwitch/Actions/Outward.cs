@@ -562,7 +562,7 @@ namespace MomoSwitch.Actions
                 Log.Write("Outward.TranQuery", $"Err: {Ex.Message}");
                 return new TranQueryResponse
                 {
-                    responseCode = "96",
+                    responseCode = "01",
                     responseMessage = "System challenge",
                     message = "System challenge",
                     transactionId = Req.transactionId,
