@@ -17,7 +17,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MomoSwitchPortal.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class TransactionsController : Controller
     {
         private ILog Log;

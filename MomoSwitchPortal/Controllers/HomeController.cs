@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace MomoSwitchPortal.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private ILog Log;
