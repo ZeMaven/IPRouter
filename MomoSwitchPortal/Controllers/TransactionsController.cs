@@ -103,7 +103,7 @@ namespace MomoSwitchPortal.Controllers
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) || t.ResponseCode == FilterRequest.FilterRequest.ResponseCode.Trim().ToLower()) &&
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) || (FilterRequest.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
                                                       || (FilterRequest.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
-                                          .OrderByDescending(x => x.Date).Select(x => new TransactionTableViewModel
+                                          .Select(x => new TransactionTableViewModel
                                           {
                                               Amount = x.Amount,
                                               Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
@@ -125,6 +125,7 @@ namespace MomoSwitchPortal.Controllers
 
                     int Count = Data.Count;
                     Data = Data
+                   .OrderByDescending(x => x.Date)
                    .Skip((pageNumber - 1) * pageSize)
                    .Take(pageSize)
                    .ToList();

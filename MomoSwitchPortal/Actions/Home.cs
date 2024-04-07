@@ -3,6 +3,7 @@ using Momo.Common.Models.Tables;
 using MomoSwitchPortal.Models.ViewModels.Home;
 using MomoSwitchPortal.Models;
 using System.Globalization;
+using MomoSwitchPortal.Models.ViewModels.Transaction;
 
 namespace MomoSwitchPortal.Actions
 {
@@ -28,17 +29,21 @@ namespace MomoSwitchPortal.Actions
                 var failedOutgoingTransactions = outgoingTransactions.Where(x => x.ResponseCode != "00" && x.ResponseCode != "09").ToList();
                 var thisWeekTransactions = GetThisWeekSuccessfulTransactions(successfulOutgoingTransactions);
 
-                //successful half year 
-               
+                var startDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                var endDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+
+                var todayTransactions = successfulOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).Count();
+                var todaySuccessfulTransactions = successfulOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
+                var todayFailedTransactions = failedOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
+                var todayIncomingTransactions = incomingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
+                var todayOutgoingTransactions = outgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
+
                 int currentMonth = DateTime.Today.Month;
                 int currentYear = DateTime.Today.Year;
-             
-                int startingMonth = currentMonth <= 6 ? 1 : 7;            
 
-                var successfulHalfYearTransactions = GetHalfYearSuccessfulTransactions(currentYear, startingMonth, successfulOutgoingTransactions);
-                var failedHalfYearTransactions = GetHalfYearSuccessfulTransactions(currentYear, startingMonth, failedOutgoingTransactions);
+                var successfulMonthTransactions = GetMonthlyTrend(currentYear, currentMonth, successfulOutgoingTransactions);
+                var failedMonthTransactions = GetMonthlyTrend(currentYear, currentMonth, failedOutgoingTransactions);
 
-                
                 var viewModel = new HomeViewModel
                 {
                     ResponseHeader = new ResponseHeader
@@ -48,15 +53,15 @@ namespace MomoSwitchPortal.Actions
                     },
                     DashboardData = new DashboardData
                     {
-                        TotalIncoming = incomingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalOutGoing = outgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalIncomingCount = incomingTransactions.Count,
-                        TotalOutGoingCount = outgoingTransactions.Count,
-                        TotalFailed = failedOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalFailedCount = failedOutgoingTransactions.Count,
-                        TotalSuccessful = successfulOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
-                        TotalSuccessfulCount = successfulOutgoingTransactions.Count,
-                        WeeklyTrend = new WeeklyTrendViewModel
+                        TotalIncoming = todayIncomingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalIncomingCount = todayIncomingTransactions.Count,
+                        TotalOutGoing = todayOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalOutGoingCount = todayOutgoingTransactions.Count,
+                        TotalFailed = todayFailedTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalFailedCount = todayFailedTransactions.Count,
+                        TotalSuccessful = todaySuccessfulTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalSuccessfulCount = todaySuccessfulTransactions.Count,
+                        DailyTrend = new DailyTrendViewModel
                         {
                             Monday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Monday).ToList().Count,
                             Tuesday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Tuesday).ToList().Count,
@@ -66,8 +71,9 @@ namespace MomoSwitchPortal.Actions
                             Saturday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Saturday).ToList().Count,
                             Sunday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Sunday).ToList().Count
                         },
-                        SuccessfulHalfYearTrend = successfulHalfYearTransactions,
-                        FailedHalfYearTrend = failedHalfYearTransactions
+                       SuccessfulWeeklyTrend = successfulMonthTransactions,
+                       FailedWeeklyTrend = failedMonthTransactions,
+                       TotalTransactions = todayTransactions
                     }
                     
                     
@@ -141,5 +147,37 @@ namespace MomoSwitchPortal.Actions
             return halfYearSuccessfulTransactions;
         }
 
+        private WeeklyTrendViewModel GetMonthlyTrend(int startingYear, int startingMonth, List<HomeMiniTransaction> transactions)
+        {
+            var currentDate = DateTime.Now;
+            var startOfMonth = new DateTime(startingYear, startingMonth, 1);
+            var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Last day of the current month
+
+            var weekRanges = new List<(DateTime, DateTime)>();
+            for (int i = 0; i < 5; i++)
+            {
+                var weekStart = DateTime.Parse(startOfMonth.AddDays(i * 7).ToString("yyyy-MM-dd") + " 00:00:00");
+                var weekEnd = DateTime.Parse(weekStart.AddDays(6).ToString("yyyy-MM-dd") + " 23:59:59");
+                weekRanges.Add((weekStart, weekEnd));
+            }
+
+            var weeklyTrendViewModel = new WeeklyTrendViewModel()
+            {
+                Weeks = new string[5],
+                WeeksCount = new int[5]
+            };
+
+            for (int i = 0; i < 5; i++)
+            {
+                var transactionsInWeek = transactions
+                    .Where(t => t.Date >= weekRanges[i].Item1 && t.Date <= weekRanges[i].Item2)
+                    .ToList();
+
+                weeklyTrendViewModel.Weeks[i] = $"Week {i + 1}";
+                weeklyTrendViewModel.WeeksCount[i] = transactionsInWeek.Count;
+            }
+
+            return weeklyTrendViewModel;
+        }
     }
 }

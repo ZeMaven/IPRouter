@@ -31,9 +31,11 @@ namespace MomoSwitchPortal.Controllers
                 var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
                 var db = new MomoSwitchDbContext();
 
-                var Month1stDay = DateTime.Parse(DateTime.Now.AddMonths(-1).ToString("01-MMM-yyyy 00:00:00"));
-                // db.ChangeTracker.AutoDetectChangesEnabled = false;
-                var allTransactions = await db.TransactionTb.Where(x => x.Date > Month1stDay).Select(x => new HomeMiniTransaction
+                DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                DateTime lastDayOfMonth = DateTime.Parse(firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("yyyy-MM-dd") + " 23:59:59");
+
+                var allTransactions = await db.TransactionTb.Where(x => x.Date >= firstDayOfMonth && x.Date <= lastDayOfMonth).Select(x => new HomeMiniTransaction
                 {
                     Amount = x.Amount,
                     TransactionId = x.TransactionId,
@@ -57,7 +59,7 @@ namespace MomoSwitchPortal.Controllers
                 result.DashboardData.RecentTransactions = allTransactions.OrderByDescending(x => x.Date).Take(15).ToList();
                 result.DashboardData.TotalUsers = db.PortalUserTb.Count();
                 result.DashboardData.TotalSwitches = db.SwitchTb.Count();
-                result.DashboardData.TotalTransactions = allTransactions.Count();
+                
 
                 return View(result.DashboardData);
             }

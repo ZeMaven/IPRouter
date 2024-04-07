@@ -18,15 +18,15 @@ namespace MomoSwitchPortal.Models.ViewModels.Home
         public string TotalFailed { get; set; }
         public int TotalSuccessfulCount { get; set; }
         public int TotalFailedCount { get; set; }
-        public WeeklyTrendViewModel WeeklyTrend { get; set; }
-        public MonthlyTrendViewModel SuccessfulHalfYearTrend { get; set; }
-        public MonthlyTrendViewModel FailedHalfYearTrend { get; set; }
+        public DailyTrendViewModel DailyTrend { get; set; }
+        public WeeklyTrendViewModel SuccessfulWeeklyTrend { get; set; }
+        public WeeklyTrendViewModel FailedWeeklyTrend { get; set; }
         public List<HomeMiniTransaction> RecentTransactions { get; set; }        
         public int TotalUsers { get; set; }
         public int TotalSwitches { get; set; }
         public int TotalTransactions { get; set; }
     }
-    public class WeeklyTrendViewModel
+    public class DailyTrendViewModel
     {
         public int Monday { get; set; }
         public int Tuesday { get; set; }
@@ -43,9 +43,9 @@ namespace MomoSwitchPortal.Models.ViewModels.Home
         public int[] MonthsCount { get; set; }        
     }
 
-    public class Month
+    public class WeeklyTrendViewModel
     {
-        public string Name { get; set; }
-        public int Count { get; set; }
+        public string[] Weeks { get; set; }
+        public int[] WeeksCount { get; set; }
     }
 }
