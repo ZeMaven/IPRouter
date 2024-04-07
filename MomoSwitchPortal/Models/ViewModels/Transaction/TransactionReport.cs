@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OfficeOpenXml.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace MomoSwitchPortal.Models.ViewModels.Transaction
 {
@@ -53,8 +54,9 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public string Narration { get; set; }
         [Display(Name = "Channel Code")]
         public string ChannelCode { get; set; }
-       
-       
+        [EpplusIgnore]
+        public DateTime TranDate { get; set; }
+
 
 
 

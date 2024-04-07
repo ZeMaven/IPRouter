@@ -79,7 +79,7 @@ namespace MomoSwitchPortal.Controllers
                         Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                         {
                             Amount = x.Amount,
-                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                            Date = x.Date,
                             BenefBankCode = x.BenefBankCode,
                             Id = x.Id,
                             Processor = x.Processor,
@@ -106,7 +106,7 @@ namespace MomoSwitchPortal.Controllers
                                           .Select(x => new TransactionTableViewModel
                                           {
                                               Amount = x.Amount,
-                                              Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                                              Date = x.Date,
                                               BenefBankCode = x.BenefBankCode,
                                               Id = x.Id,
                                               Processor = x.Processor,
@@ -164,7 +164,7 @@ namespace MomoSwitchPortal.Controllers
                         {
                             Amount = x.Amount,
                             BenefBankCode = x.BenefBankCode,
-                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                            Date = x.Date,
                             Id = x.Id,
                             ResponseCode = x.ResponseCode,
                             Processor = x.Processor,
@@ -242,7 +242,7 @@ namespace MomoSwitchPortal.Controllers
                     Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                     {
                         Amount = x.Amount,
-                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                        Date = x.Date,
                         BenefBankCode = x.BenefBankCode,
                         Id = x.Id,
                         Processor = x.Processor,
@@ -269,7 +269,7 @@ namespace MomoSwitchPortal.Controllers
                                       .Select(x => new TransactionTableViewModel
                                       {
                                           Amount = x.Amount,
-                                          Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                                          Date = x.Date,
                                           BenefBankCode = x.BenefBankCode,
                                           Id = x.Id,
                                           Processor = x.Processor,
@@ -294,6 +294,7 @@ namespace MomoSwitchPortal.Controllers
 
                 int Count = Data.Count;
                 Data = Data
+               .OrderByDescending(x => x.Date)
                .Skip((pageNumber - 1) * pageSize)
                .Take(pageSize)
                .ToList();
@@ -415,7 +416,7 @@ namespace MomoSwitchPortal.Controllers
                         Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
                         Amount = x.Amount,
                         SourceBankName = x.SourceBankName,
-                        BeneficiaryBankName = x.BenefBankName
+                        BeneficiaryBankName = x.BenefBankName,                        
                     }).ToListAsync();
                 }
 
@@ -459,12 +460,13 @@ namespace MomoSwitchPortal.Controllers
                                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
                                            Amount = x.Amount,
                                            SourceBankName = x.SourceBankName,
-                                           BeneficiaryBankName = x.BenefBankName
+                                           BeneficiaryBankName = x.BenefBankName,
+                                           TranDate = x.Date
                                        }).ToListAsync();
 
                 }
 
-                Data = Data.OrderByDescending(x => x.Date).ToList();
+                Data = Data.OrderByDescending(x => x.TranDate).ToList();
 
                 Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {Data.Count}");
 
