@@ -4,7 +4,7 @@ metadata:
   name: switchportal-api-deployment
   namespace: app-prod
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: switchportal-api
