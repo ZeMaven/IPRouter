@@ -110,7 +110,7 @@
                 </div>
                 <div class="card-body">
                     <h6 class="mb-0 ">Successful Transactions</h6>
-                    <p class="text-sm ">Past 6-Month Success Trend</p>
+                    <p class="text-sm ">This Month Success Trend</p>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="card-body">
                     <h6 class="mb-0 ">Failed transactions</h6>
-                    <p class="text-sm ">Past 6-Month Failed Trend</p>
+                    <p class="text-sm ">This Month Failure Trend</p>
                 </div>
             </div>
         </div>
@@ -245,7 +245,7 @@
                     borderRadius: 4,
                     borderSkipped: false,
                     backgroundColor: "rgba(255, 255, 255, .8)",
-                    data: [@Model.WeeklyTrend.Monday, @Model.WeeklyTrend.Tuesday, @Model.WeeklyTrend.Wednesday, @Model.WeeklyTrend.Thursday, @Model.WeeklyTrend.Friday, @Model.WeeklyTrend.Saturday, @Model.WeeklyTrend.Sunday],
+                    data: [@Model.DailyTrend.Monday, @Model.DailyTrend.Tuesday, @Model.DailyTrend.Wednesday, @Model.DailyTrend.Thursday, @Model.DailyTrend.Friday, @Model.DailyTrend.Saturday, @Model.DailyTrend.Sunday],
                     maxBarThickness: 6
                 },],
             },
@@ -318,7 +318,7 @@
         new Chart(ctx2, {
             type: "line",
             data: {
-                labels: @Html.Raw(Json.Serialize(Model.SuccessfulHalfYearTrend.Months)),
+                labels: @Html.Raw(Json.Serialize(Model.SuccessfulWeeklyTrend.Weeks)),
                 datasets: [{
                     label: "Transactions",
                     tension: 0,
@@ -331,7 +331,7 @@
                     borderWidth: 6,
                     backgroundColor: "transparent",
                     fill: true,
-                    data: @Html.Raw(Json.Serialize(Model.SuccessfulHalfYearTrend.MonthsCount)),
+                    data: @Html.Raw(Json.Serialize(Model.SuccessfulWeeklyTrend.WeeksCount)),
                     maxBarThickness: 6
 
                 }],
@@ -401,7 +401,7 @@
         new Chart(ctx3, {
             type: "line",
             data: {
-                labels: @Html.Raw(Json.Serialize(Model.FailedHalfYearTrend.Months)),
+                labels: @Html.Raw(Json.Serialize(Model.FailedWeeklyTrend.Weeks)),
                 datasets: [{
                     label: "Transactions",
                     tension: 0,
@@ -413,7 +413,7 @@
                     borderWidth: 4,
                     backgroundColor: "transparent",
                     fill: true,
-                    data: @Html.Raw(Json.Serialize(Model.FailedHalfYearTrend.MonthsCount)),
+                    data: @Html.Raw(Json.Serialize(Model.FailedWeeklyTrend.WeeksCount)),
                     maxBarThickness: 6
 
                 }],

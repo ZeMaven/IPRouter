@@ -124,17 +124,21 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.SourceBankCode</p>
+                                                    <br />
+                                                    <p style="font-size:11px;margin:0">@Item.SourceAccountNumber</p>
                                                 </td>
                                                 
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.BenefBankCode</p>
+                                                    <br />
+                                                    <p style="font-size:11px;margin:0">@Item.BenefAccountNumber</p>
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.ResponseCode</p>
                                                 </td>
                                                 
                                                 <td class="text-center">
-                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Date</p>
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Date.ToString("dd/MM/yyyy HH:mm:ss")</p>
                                                 </td>
                                                 <td>
                                                     <a href="~/transactions/@Item.Id" title="View Transaction Details" data-toggle="tooltip" data-placement="top">

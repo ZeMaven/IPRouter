@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Momo.Common.Actions;
 using Momo.Common.Models.Tables;
 using MomoSwitch.Models.DataBase;
@@ -11,6 +12,7 @@ namespace MomoSwitch.Actions
     {
         string GetBankName(string BankCode);
         Settings GetSettings();
+        bool ProcessorLimitOk(string Processor);
         void RefreshCache();
     }
 
@@ -27,9 +29,9 @@ namespace MomoSwitch.Actions
         }
 
 
-        public void RefreshCache()=>
+        public void RefreshCache() =>
             SettingsCache.Set($"SettingsCache", string.Empty, TimeSpan.FromDays(7));
-        
+
 
         public string GetBankName(string BankCode)
         {
@@ -42,6 +44,28 @@ namespace MomoSwitch.Actions
             {
                 Log.Write("Utilities.GetBanks", $"Err: Error getting BankName | {Ex.Message}");
                 return null;
+            }
+        }
+
+
+
+        public bool ProcessorLimitOk(string Processor)
+        {
+            try
+            {
+                Log.Write("Utilities.ProcessorLimitOk", $"Request: {Processor}");
+                var Yesterday = DateTime.Now.AddHours(-24);
+                var Db = new MomoSwitchDbContext();
+                var Limit = Db.SwitchTb.Where(x => x.Processor == Processor).FirstOrDefault().DailyLimit;
+                Log.Write("Utilities.ProcessorLimitOk", $" {Processor} Limit: {Limit}");
+                var Done = Db.TransactionTb.Where(x => x.Date > Yesterday && x.ResponseCode == "00" && x.Processor == Processor).Sum(x => x.Amount);
+                Log.Write("Utilities.ProcessorLimitOk", $" {Processor} Done: {Done}");
+                return Limit > Done;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Utilities.ProcessorLimitOk", $"Err: Error getting Limit | {Ex.Message}");
+                return false;
             }
         }
 
@@ -68,7 +92,7 @@ namespace MomoSwitch.Actions
                     if (BankSwitch.Count == 0) Log.Write("Utilities.GettSettings", "BankSwitch setting does not exist");
                     var Switch = Db.SwitchTb.ToList();
                     if (Switch.Count == 0) Log.Write("Utilities.GettSettings", "Switch setting does not exist");
-                    var Priority = Db.PriorityTb.OrderBy(x=>x.Priority).ToList();
+                    var Priority = Db.PriorityTb.OrderBy(x => x.Priority).ToList();
                     if (Priority.Count == 0) Log.Write("Utilities.GettSettings", "Priority setting does not exist");
 
 
