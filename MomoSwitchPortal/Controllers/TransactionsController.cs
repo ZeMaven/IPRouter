@@ -17,7 +17,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MomoSwitchPortal.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TransactionsController : Controller
     {
         private ILog Log;
@@ -117,7 +117,9 @@ namespace MomoSwitchPortal.Controllers
                                               SourceBankCode = x.SourceBankCode,
                                               TransactionId = x.TransactionId,
                                               BenefAccountNumber = x.BenefAccountNumber,
-                                              SourceAccountNumber = x.SourceAccountNumber
+                                              SourceAccountNumber = x.SourceAccountNumber,
+                                              BenefBankName = x.BenefBankName,
+                                              SourceBankName = x.SourceBankName,
                                           }).ToListAsync();
 
 
@@ -174,7 +176,9 @@ namespace MomoSwitchPortal.Controllers
                             SourceBankCode = x.SourceBankCode,
                             TransactionId = x.TransactionId,
                             BenefAccountNumber = x.BenefAccountNumber,
-                            SourceAccountNumber = x.SourceAccountNumber
+                            SourceAccountNumber = x.SourceAccountNumber,
+                            BenefBankName = x.BenefBankName,
+                            SourceBankName = x.SourceBankName,
                         }).ToList()
                     };
                 }));
@@ -282,7 +286,9 @@ namespace MomoSwitchPortal.Controllers
                                           SourceBankCode = x.SourceBankCode,
                                           TransactionId = x.TransactionId,
                                           BenefAccountNumber = x.BenefAccountNumber,
-                                          SourceAccountNumber = x.SourceAccountNumber
+                                          SourceAccountNumber = x.SourceAccountNumber,
+                                          BenefBankName = x.BenefBankName,
+                                          SourceBankName = x.SourceBankName,
                                       }).ToListAsync();
 
 

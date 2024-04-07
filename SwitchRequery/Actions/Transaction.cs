@@ -26,13 +26,13 @@ namespace SwitchRequery.Actions
         {
             var Db = new MomoSwitchDbContext();
             DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
-            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && (x.PaymentDate < TwoMinutesAgo)).ToList();
-            Log.Write("Transaction.Requesry", $"Got {Trans.Count} Transaction to requery");
+            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo).ToList();
+            Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction to requery");
             foreach (var Tran in Trans)
             {
                 GetTransaction(Tran.TransactionId);
             }
-            Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction to requery");
+            Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction to requery");
         }
 
 
@@ -59,14 +59,14 @@ namespace SwitchRequery.Actions
                     IsHttpHeader = true,
                     Method = CoralPay.HttpHandler.Models.HttpVerb.Post,
                     RequestObject = new QueryRequest { TransactionId = TransactionId },
-                    ResponseObject = new QueryResponse(),
+                    //ResponseObject = new QueryResponse(),
 
                 });
 
 
                 if (Resp.ResponseHeader.ResponseCode == CoralPay.HttpHandler.Models.Status.Successful)
-                {
-                    Log.Write("GetTransaction", $"Response {JsonSerializer.Serialize((QueryResponse)Resp.Object)}");
+                {                   
+                    Log.Write("GetTransaction", $"Response {Resp.Object}");
                 }
                 else
                 {
