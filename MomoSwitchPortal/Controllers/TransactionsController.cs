@@ -253,7 +253,9 @@ namespace MomoSwitchPortal.Controllers
                         SourceBankCode = x.SourceBankCode,
                         TransactionId = x.TransactionId,
                         BenefAccountNumber = x.BenefAccountNumber,
-                        SourceAccountNumber = x.SourceAccountNumber
+                        SourceAccountNumber = x.SourceAccountNumber,
+                        BenefBankName = x.BenefBankName,
+                        SourceBankName = x.SourceBankName,
                     }).ToListAsync();
                 }
 

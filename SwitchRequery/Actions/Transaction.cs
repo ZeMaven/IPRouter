@@ -26,11 +26,11 @@ namespace SwitchRequery.Actions
         {
             var Db = new MomoSwitchDbContext();
             DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
-            var Trans = Db.TransactionTb.Where(x => x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97" && (x.PaymentDate < TwoMinutesAgo)).ToList();
+            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && (x.PaymentDate < TwoMinutesAgo)).ToList();
             Log.Write("Transaction.Requesry", $"Got {Trans.Count} Transaction to requery");
             foreach (var Tran in Trans)
             {
-                GetTransaction(Tran.TransactionId );
+                GetTransaction(Tran.TransactionId);
             }
             Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction to requery");
         }
