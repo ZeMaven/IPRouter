@@ -402,7 +402,7 @@ namespace MomoSwitch.Actions
             try
             {
 
-                var LimitOk = Utilities.ProcessorLimitOk(Proccesor);
+                var LimitOk = Utilities.ProcessorLimitOk(Proccesor, Request.amount);
                 var Db = new MomoSwitchDbContext();
 
                 Db.TransactionTb.Add(new TransactionTb
