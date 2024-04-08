@@ -49,18 +49,18 @@ namespace MomoSwitch.Actions
 
 
 
-        public bool ProcessorLimitOk(string Processor)
+        public bool ProcessorLimitOk(string Processor, decimal Amount)
         {
             try
             {
                 Log.Write("Utilities.ProcessorLimitOk", $"Request: {Processor}");
-                var Yesterday = DateTime.Now.AddHours(-24);
+                var Today = DateTime.Today;
                 var Db = new MomoSwitchDbContext();
                 var Limit = Db.SwitchTb.Where(x => x.Processor == Processor).FirstOrDefault().DailyLimit;
                 Log.Write("Utilities.ProcessorLimitOk", $" {Processor} Limit: {Limit}");
-                var Done = Db.TransactionTb.Where(x => x.Date > Yesterday && x.ResponseCode == "00" && x.Processor == Processor).Sum(x => x.Amount);
-                Log.Write("Utilities.ProcessorLimitOk", $" {Processor} Done: {Done}");
-                return Limit > Done;
+                var Done = Db.TransactionTb.Where(x => x.Date > Today && x.ResponseCode == "00" && x.Processor == Processor).Sum(x => x.Amount);
+                Log.Write("Utilities.Proces)sorLimitOk", $" {Processor} Done: {Done}");
+                return Limit > (Done + Amount);
             }
             catch (Exception Ex)
             {

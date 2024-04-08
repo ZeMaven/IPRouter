@@ -47,7 +47,8 @@ namespace MomoSwitchPortal.Actions.Rules
                         TransferUrl = x.TransferUrl,
                         NameEnquiryUrl = x.NameEnquiryUrl,
                         IsDefault = x.IsDefault,
-                        Processor = x.Processor
+                        Processor = x.Processor,
+                        DailyLimit = x.DailyLimit
                     }).ToList()
                 };
 
@@ -141,6 +142,7 @@ namespace MomoSwitchPortal.Actions.Rules
                     NameEnquiryUrl = Request.NameEnquiryUrl,
                     TransferUrl = Request.TransferUrl,
                     TranQueryUrl = Request.TranQueryUrl,
+                    DailyLimit = Request.DailyLimit
                 });
                 await Db.SaveChangesAsync();
                 var Resp = new ResponseHeader()
@@ -181,6 +183,18 @@ namespace MomoSwitchPortal.Actions.Rules
                         ResponseMessage = "System challenge"
                     };
                 }
+
+                var processorExists = await Db.SwitchTb.SingleOrDefaultAsync(x => x.Processor.ToLower() == Request.Processor.ToLower().Trim());
+
+                if (processorExists != null && processorExists.Id != Request.Id)
+                {
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = $"Processor with name {Request.Processor} already exists."
+                    };
+                }
+
                 var currentDefault = await Db.SwitchTb.SingleOrDefaultAsync(x => x.IsDefault);
 
                 if (Request.IsDefault && currentDefault != null)
@@ -194,6 +208,7 @@ namespace MomoSwitchPortal.Actions.Rules
                 Data.TransferUrl = Request.TransferUrl;
                 Data.NameEnquiryUrl = Request.NameEnquiryUrl;
                 Data.Processor = Request.Processor;
+                Data.DailyLimit = Request.DailyLimit;
                 Data.IsDefault = Request.IsDefault;
                 Data.IsActive = Request.IsActive;
 
