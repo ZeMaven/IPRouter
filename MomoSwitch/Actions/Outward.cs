@@ -127,7 +127,8 @@ namespace MomoSwitch.Actions
                 var ProcessorRequest = Transposer.ToProxyFundTransferRequest(Req);
                 var Submit = SubmitTransaction(Req, RouterDetail.Switch);
                 if (Submit.ResponseCode != "00")
-                    return new FundTransferResponse
+                {                
+                    var Response = new FundTransferResponse
                     {
                         responseCode = Submit.ResponseCode,
                         amount = Req.amount,
@@ -150,6 +151,10 @@ namespace MomoSwitch.Actions
                         originatorAccountNumber = Req.originatorAccountNumber,
                         originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                     };
+                    Log.Write("Outward.Transfer", $"Response:  {JsonSerializer.Serialize(Response)}");
+                }
+
+
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
                     EndPoint = RouterDetail.TransferUrl,
