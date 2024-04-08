@@ -18,6 +18,8 @@
                                     {
                                         <form>
                                             @Html.HiddenFor(z => z.FilterRequest.TransactionId)
+                                            @Html.HiddenFor(z => z.FilterRequest.SourceAccountNumber)
+                                            @Html.HiddenFor(z => z.FilterRequest.BenefAccountNumber)
                                             @Html.HiddenFor(z => z.FilterRequest.Processor)
                                             @Html.HiddenFor(z => z.FilterRequest.ResponseCode)
                                             @Html.HiddenFor(z => z.FilterRequest.TranType)
@@ -44,37 +46,46 @@
                             @Html.AntiForgeryToken()
 
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="FilterRequest.StartDate" class="form-label">Start Date:</label>
                   
                                     <input type="date" value="@(Model?.FilterRequest?.StartDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="Start Date" id="FilterRequest.StartDate" name="FilterRequest.StartDate">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="endDate" class="form-label">End Date:</label>
                               
                                     <input type="date" value="@(Model?.FilterRequest?.EndDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="End Date" id="FilterRequest.EndDate" name="FilterRequest.EndDate">
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="transactionId" class="form-label">Transaction ID:</label>
                                     <input type="text" value="@Model?.FilterRequest?.TransactionId" class="form-control border p-2" placeholder="TransactionId" id="TransactionId" name="FilterRequest.TransactionId">
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="Processor" class="form-label">Processor:</label>
                                     <input type="text" value="@Model?.FilterRequest?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="FilterRequest.Processor">
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="ResponseCode" class="form-label">Response Code:</label>
                                     <input type="text" value="@Model?.FilterRequest?.ResponseCode" class="form-control border p-2" placeholder="ResponseCode" id="ResponseCode" name="FilterRequest.ResponseCode">
                                 </div>
+                                
+                                <div class="col-sm-2">
+                                    <label for="SourceAccountNumber" class="form-label">Source Account No.:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.SourceAccountNumber" class="form-control border p-2" placeholder="Source Account No." id="SourceAccountNumber" name="FilterRequest.SourceAccountNumber">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="BenefAccountNumber" class="form-label">Benef Account No.:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.BenefAccountNumber" class="form-control border p-2" placeholder="Benef Account No." id="BenefAccountNumber" name="FilterRequest.BenefAccountNumber">
+                                </div>
 
-                                <div class="col-md-3">
+                                <div class="col-sm-2">
                                     <label for="TranType" class="form-label">Tran Type:</label>
                                     @Html.DropDownListFor(x => x.FilterRequest.TranType, ViewBag.tranTypes as SelectList, "Tran Type", new { @Class = "form-control border px-3", @title = " Select Tran Type" })
                                 </div>
-                                <div class="col-md-3 align-self-end pt-4">
+                                <div class="col-sm-2 align-self-end pt-4">
                                     <button type="submit" class="btn btn-dark mt-2 ">Search</button>
                                 </div>
 
