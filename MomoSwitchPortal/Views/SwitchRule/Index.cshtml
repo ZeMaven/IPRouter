@@ -1,4 +1,5 @@
-﻿@model MomoSwitchPortal.Models.ViewModels.Rules.Switch.SwitchResponse
+﻿@using System.Globalization
+@model MomoSwitchPortal.Models.ViewModels.Rules.Switch.SwitchResponse
 @{
     ViewData["Title"] = "Switch page";
     ViewData["RouterSetup"] = "active bg-gradient-warning";
@@ -39,6 +40,7 @@
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ps-2">Transfer Url</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ps-2">Name Enquiry Url</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ps-2">Transaction Query Url</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ps-2">Daily Limit</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ps-2">Is-Default</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Is-Active</th>
                                 <th></th>
@@ -70,10 +72,16 @@
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 " title="@Item.TranQueryUrl">
                                                     @(string.IsNullOrWhiteSpace(Item.TranQueryUrl) ? "Unset" : "Set")</p>
-                                                </td>                                             
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.DailyLimit.ToString("N", CultureInfo.InvariantCulture)</p>
+                                                </td>
+
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.IsDefault</p>
                                                 </td>
+                                             
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.IsActive</p>
                                                 </td>

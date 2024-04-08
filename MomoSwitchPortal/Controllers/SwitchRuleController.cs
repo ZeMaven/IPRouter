@@ -162,7 +162,8 @@ namespace MomoSwitchPortal.Controllers
                     IsDefault = false,
                     NameEnquiryUrl = model.NameEnquiryUrl,
                     TranQueryUrl = model.TranQueryUrl,
-                    TransferUrl = model.TransferUrl
+                    TransferUrl = model.TransferUrl,
+                    DailyLimit = model.DailyLimit
                 };
                 var result = await switchManager.Create(request);
 
@@ -223,7 +224,8 @@ namespace MomoSwitchPortal.Controllers
                     IsDefault = existingSwitch.IsDefault,
                     NameEnquiryUrl = existingSwitch.NameEnquiryUrl,
                     TranQueryUrl = existingSwitch.TranQueryUrl,
-                    TransferUrl = existingSwitch.TransferUrl
+                    TransferUrl = existingSwitch.TransferUrl,
+                    DailyLimit = existingSwitch.DailyLimit
                 };
 
 
@@ -281,7 +283,8 @@ namespace MomoSwitchPortal.Controllers
                     NameEnquiryUrl = model.NameEnquiryUrl,
                     Processor = model.Processor,
                     TranQueryUrl = model.TranQueryUrl,
-                    TransferUrl = model.TransferUrl
+                    TransferUrl = model.TransferUrl,
+                    DailyLimit = model.DailyLimit
                 };
 
                 var result = await switchManager.Edit(switchDetails);
