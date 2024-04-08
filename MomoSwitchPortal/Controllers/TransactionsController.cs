@@ -74,7 +74,7 @@ namespace MomoSwitchPortal.Controllers
 
                     if (FilterRequest.FilterRequest.EndDate == null && FilterRequest.FilterRequest.StartDate == null
                         && string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) && string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) && string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor)
-                        && string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId))
+                        && string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId)&& string.IsNullOrEmpty(FilterRequest.FilterRequest.BenefAccountNumber)&& string.IsNullOrEmpty(FilterRequest.FilterRequest.SourceAccountNumber))
                     {
                         Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                         {
@@ -101,6 +101,8 @@ namespace MomoSwitchPortal.Controllers
                                           .Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
                                                       (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId) || t.TransactionId == FilterRequest.FilterRequest.TransactionId.Trim()) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.SourceAccountNumber) || t.SourceAccountNumber == FilterRequest.FilterRequest.SourceAccountNumber.Trim()) &&
+                                                      (string.IsNullOrEmpty(FilterRequest.FilterRequest.BenefAccountNumber) || t.BenefAccountNumber == FilterRequest.FilterRequest.BenefAccountNumber.Trim()) &&
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor) || t.Processor.ToLower().Contains(FilterRequest.FilterRequest.Processor.Trim().ToLower())) &&
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) || t.ResponseCode == FilterRequest.FilterRequest.ResponseCode.Trim().ToLower()) &&
                                                       (string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) || (FilterRequest.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
@@ -149,7 +151,9 @@ namespace MomoSwitchPortal.Controllers
                         TransactionId = FilterRequest.FilterRequest.TransactionId,
                         TranType = FilterRequest.FilterRequest.TranType,
                         ResponseCode = FilterRequest.FilterRequest.ResponseCode,
-                        Processor = FilterRequest.FilterRequest.Processor
+                        Processor = FilterRequest.FilterRequest.Processor,
+                        BenefAccountNumber = FilterRequest.FilterRequest.BenefAccountNumber,
+                        SourceAccountNumber = FilterRequest.FilterRequest.SourceAccountNumber
                     };
 
                     TempData.Keep();
@@ -226,10 +230,10 @@ namespace MomoSwitchPortal.Controllers
                     {
                         ResponseCode = model.FilterRequest.ResponseCode,
                         Amount = model.FilterRequest.Amount,
-                        BenefBankCode = model.FilterRequest.BenefBankCode,
+                        BenefAccountNumber = model.FilterRequest.BenefAccountNumber,
                         EndDate = model.FilterRequest.EndDate,
                         Processor = model.FilterRequest.Processor,
-                        SourceBankCode = model.FilterRequest.SourceBankCode,
+                        SourceAccountNumber = model.FilterRequest.SourceAccountNumber,
                         StartDate = model.FilterRequest.StartDate,
                         TransactionId = model.FilterRequest.TransactionId,
                         TranType = model.FilterRequest.TranType
@@ -243,7 +247,7 @@ namespace MomoSwitchPortal.Controllers
 
                 if (model.FilterRequest.EndDate == null && model.FilterRequest.StartDate == null
                     && string.IsNullOrEmpty(model.FilterRequest.TranType) && string.IsNullOrEmpty(model.FilterRequest.ResponseCode) && string.IsNullOrEmpty(model.FilterRequest.Processor)
-                    && string.IsNullOrEmpty(model.FilterRequest.TransactionId))
+                    && string.IsNullOrEmpty(model.FilterRequest.TransactionId) && string.IsNullOrEmpty(model.FilterRequest.SourceAccountNumber) && string.IsNullOrEmpty(model.FilterRequest.BenefAccountNumber))
                 {
                     Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                     {
@@ -270,6 +274,8 @@ namespace MomoSwitchPortal.Controllers
                                       .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
                                                   (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
                                                   (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.SourceAccountNumber) || t.SourceAccountNumber == model.FilterRequest.SourceAccountNumber.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.BenefAccountNumber) || t.BenefAccountNumber == model.FilterRequest.BenefAccountNumber.Trim()) &&
                                                   (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
                                                   (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
                                                   (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
@@ -396,7 +402,7 @@ namespace MomoSwitchPortal.Controllers
 
                 if (model.FilterRequest.EndDate == null && model.FilterRequest.StartDate == null
                     && string.IsNullOrEmpty(model.FilterRequest.TranType) && string.IsNullOrEmpty(model.FilterRequest.ResponseCode) && string.IsNullOrEmpty(model.FilterRequest.Processor)
-                    && string.IsNullOrEmpty(model.FilterRequest.TransactionId))
+                    && string.IsNullOrEmpty(model.FilterRequest.TransactionId) && string.IsNullOrEmpty(model.FilterRequest.SourceAccountNumber) && string.IsNullOrEmpty(model.FilterRequest.BenefAccountNumber))
                 {
                     Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionReport
                     {
@@ -435,13 +441,15 @@ namespace MomoSwitchPortal.Controllers
                     db.TransactionTb.Where(x => (true || x.TransactionId == ""));
 
                     Data = await db.TransactionTb
-                                       .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
-                                                   (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
-                                                   (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
-                                                   (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
-                                                   (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
-                                                   (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
-                                                   || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
+                                      .Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                  (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.TransactionId) || t.TransactionId == model.FilterRequest.TransactionId.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.SourceAccountNumber) || t.SourceAccountNumber == model.FilterRequest.SourceAccountNumber.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.BenefAccountNumber) || t.BenefAccountNumber == model.FilterRequest.BenefAccountNumber.Trim()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor.ToLower().Contains(model.FilterRequest.Processor.Trim().ToLower())) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.ResponseCode) || t.ResponseCode == model.FilterRequest.ResponseCode.Trim().ToLower()) &&
+                                                  (string.IsNullOrEmpty(model.FilterRequest.TranType) || (model.FilterRequest.TranType == "INCOMING" && t.BenefBankCode == institutionCode)
+                                                  || (model.FilterRequest.TranType == "OUTGOING" && t.SourceBankCode == institutionCode)))
                                        .Select(x => new TransactionReport
                                        {
                                            SessionId = x.SessionId,
