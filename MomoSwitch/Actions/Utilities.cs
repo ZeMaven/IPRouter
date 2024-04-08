@@ -12,7 +12,7 @@ namespace MomoSwitch.Actions
     {
         string GetBankName(string BankCode);
         Settings GetSettings();
-        bool ProcessorLimitOk(string Processor);
+        bool ProcessorLimitOk(string Processor, decimal Amount);
         void RefreshCache();
     }
 
