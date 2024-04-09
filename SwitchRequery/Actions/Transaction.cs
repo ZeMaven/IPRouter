@@ -26,13 +26,34 @@ namespace SwitchRequery.Actions
         {
             var Db = new MomoSwitchDbContext();
             DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
-            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo).ToList();
-            Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction to requery");
+            DateTime FifteenAgo = DateTime.Now.AddMinutes(-15);
+            var CurrentMinute = DateTime.Now.Minute;
+
+
+            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo && x.Date > FifteenAgo).ToList();
+            Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
+
+
             foreach (var Tran in Trans)
             {
                 GetTransaction(Tran.TransactionId);
             }
             Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction to requery");
+
+
+            //If schedule is every2 min, then this is every hr eg 01:02
+            if (CurrentMinute == 2)
+            {
+                DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
+                var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
+                Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
+
+                foreach (var Tran in Trans1)
+                {
+                    GetTransaction(Tran.TransactionId);
+                }
+                Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction 3Hourly requery");
+            }
         }
 
 
@@ -65,7 +86,7 @@ namespace SwitchRequery.Actions
 
 
                 if (Resp.ResponseHeader.ResponseCode == CoralPay.HttpHandler.Models.Status.Successful)
-                {                   
+                {
                     Log.Write("GetTransaction", $"Response {Resp.Object}");
                 }
                 else
