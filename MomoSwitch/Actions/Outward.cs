@@ -152,6 +152,8 @@ namespace MomoSwitch.Actions
                         originatorBankVerificationNumber = Req.originatorBankVerificationNumber,
                     };
                     Log.Write("Outward.Transfer", $"Response:  {JsonSerializer.Serialize(Response)}");
+
+                    return Response;
                 }
 
 
