@@ -138,12 +138,12 @@
         </div>
 
         <div class="row">
-            <div class="col-6 mb-3">
+       
                 <div class="col-6 mb-3">
                     <label for="Sourcebvn" class="form-label font-weight-bold">Source Bvn</label>
                     <input type="text" readonly value="@Model.SourceBvn" class="form-control border px-3" id="Sourcebvn" placeholder="Sourcebvn" required>
                 </div>
-
+            <div class="col-6 mb-3">
                 <label for="SourceKycLevel" class="form-label font-weight-bold">Source KycLevel</label>
                 <input type="text" readonly value="@Model.SourceKycLevel" class="form-control border px-3" id="SourceKycLevel" placeholder="SourceKycLevel" required>
             </div>
@@ -153,24 +153,25 @@
         </div>
 
         <div class="row">
+           
             <div class="col-6 mb-3">
-                <div class="col-6 mb-3">
-                    <label for="ChannelCode" class="form-label font-weight-bold">Channel Code</label>
-                    <input type="text" readonly value="@Model.ChannelCode" class="form-control border px-3" id="ChannelCode" placeholder="ChannelCode" required>
-                </div>
+                <label for="ChannelCode" class="form-label font-weight-bold">Channel Code</label>
+                <input type="text" readonly value="@Model.ChannelCode" class="form-control border px-3" id="ChannelCode" placeholder="ChannelCode" required>
+            </div>
 
+            <div class="col-6 mb-3">
                 <label for="manadateRef" class="form-label font-weight-bold">Manadate Ref</label>
                 <input type="text" readonly value="@Model.ManadateRef" class="form-control border px-3" id="manadateRef" placeholder="manadateRef" required>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-6 mb-3">
+           
                 <div class="col-6 mb-3">
                     <label for="nameEnquiryRef" class="form-label font-weight-bold">Name Enquiry Ref</label>
                     <input type="text" readonly value="@Model.NameEnquiryRef" class="form-control border px-3" id="nameEnquiryRef" placeholder="nameEnquiryRef" required>
                 </div>
-
+            <div class="col-6 mb-3">
                 <label for="Validatedate" class="form-label font-weight-bold">Validate Date</label>
                 <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
             </div>       
