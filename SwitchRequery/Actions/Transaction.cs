@@ -77,7 +77,7 @@ namespace SwitchRequery.Actions
             try
             {
                 int Rate;
-                var IntervalHr = Convert.ToInt16(Config.GetSection("AnalysisInterval").Value);
+                var IntervalHr = Convert.ToInt16(Config.GetSection("AnalysisIntervalHr").Value);
                 var HrAgo = DateTime.Now.AddHours(-IntervalHr);
                 var Db = new MomoSwitchDbContext();
                 var Tran = Db.TransactionTb.Where(x => x.Date > HrAgo).ToList();
