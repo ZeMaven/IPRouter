@@ -9,7 +9,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<RequeryWorker>();
+builder.Services.AddHostedService<AnalysisWorker>();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ITransaction, Transaction>();
 

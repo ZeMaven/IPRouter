@@ -1,13 +1,16 @@
 ﻿using Momo.Common.Actions;
+using Momo.Common.Models.Tables;
 using SwitchRequery.Models;
 using SwitchRequery.Models.DataBase;
 using System.Diagnostics;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SwitchRequery.Actions
 {
     public interface ITransaction
     {
+        void Analyse();
         void Requery();
     }
 
@@ -24,38 +27,134 @@ namespace SwitchRequery.Actions
         }
         public void Requery()
         {
-            var Db = new MomoSwitchDbContext();
-            DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
-            DateTime FifteenAgo = DateTime.Now.AddMinutes(-15);
-            var CurrentMinute = DateTime.Now.Minute;
-
-
-            var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo && x.Date > FifteenAgo).ToList();
-            Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
-
-
-            foreach (var Tran in Trans)
+            try
             {
-                GetTransaction(Tran.TransactionId);
-            }
-            Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction to requery");
+                var Db = new MomoSwitchDbContext();
+                DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
+                DateTime FifteenAgo = DateTime.Now.AddMinutes(-15);
+                var CurrentMinute = DateTime.Now.Minute;
 
 
-            //If schedule is every2 min, then this is every hr eg 01:02
-            if (CurrentMinute == 2)
-            {
-                DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
-                var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
-                Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
+                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo && x.Date > FifteenAgo).ToList();
+                Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
 
-                foreach (var Tran in Trans1)
+
+                foreach (var Tran in Trans)
                 {
                     GetTransaction(Tran.TransactionId);
                 }
-                Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction 3Hourly requery");
+                Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction to requery");
+
+
+                //If schedule is every2 min, then this is every hr eg 01:02
+                if (CurrentMinute == 2)
+                {
+                    DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
+                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
+                    Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
+
+                    foreach (var Tran in Trans1)
+                    {
+                        GetTransaction(Tran.TransactionId);
+                    }
+                    Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction 3Hourly requery");
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Transaction.Requery", $"Err: {Ex.Message}");
+            }
+
+
+        }
+
+
+
+
+        public void Analyse()
+        {
+            try
+            {
+                int Rate;
+                var IntervalHr = Convert.ToInt16(Config.GetSection("AnalysisInterval").Value);
+                var HrAgo = DateTime.Now.AddHours(-IntervalHr);
+                var Db = new MomoSwitchDbContext();
+                var Tran = Db.TransactionTb.Where(x => x.Date > HrAgo).ToList();
+
+                var AllBanks = Db.BanksTb.Select(x => x).Distinct().ToList();
+                var BankCodeList = AllBanks.Select(x => x.BankCode).Distinct().ToList();
+                List<PerformanceTb> Performance = new();
+                foreach (var BankCode in BankCodeList)
+                {
+                    Rate = -1;
+                    var BankTran = Tran.Where(x => x.BenefBankCode == BankCode).ToList();
+                    if (BankTran.Count > 0)
+                    {
+                        var Succ = (decimal)BankTran.Where(x => x.ResponseCode == "00" && x.ResponseCode != "09").Count();
+                          Rate = (int)Math.Round((decimal)(Succ / BankTran.Count) * 100);
+                        
+                    }
+                   
+
+                    Performance.Add(new PerformanceTb
+                    {
+                        Rate = Rate,
+                        BankCode = BankCode,
+                        BankName = AllBanks.Where(x=>x.BankCode==BankCode).FirstOrDefault().BankName,
+                        Time = DateTime.Now,
+                        Remark = GetPerformance(Rate)
+
+                    });
+
+                }
+
+                Db.PerformanceTb.RemoveRange(Db.PerformanceTb);
+
+                Db.PerformanceTb.AddRange(Performance.OrderByDescending(x=>x.Rate));
+
+                Db.SaveChanges();
+
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("Transaction.Analyse", $"Finished {Ex.Message}");
             }
         }
 
+
+        private string GetPerformance(int rate)
+        {
+            switch (rate)
+            {
+                case int n when (n >= 95 && n <= 100):
+                    return "Excellent";
+                case int n when (n >= 90 && n <= 94):
+                    return "Very Good";
+                case int n when (n >= 85 && n <= 89):
+                    return "Good";
+                case int n when (n >= 80 && n <= 84):
+                    return "Satisfactory";
+                case int n when (n >= 75 && n <= 79):
+                    return "Fair";
+                case int n when (n >= 70 && n <= 74):
+                    return "Poor";
+                case int n when (n >= 65 && n <= 69):
+                    return "Very Poor";
+                case int n when (n >= 60 && n <= 64):
+                    return "Unreliable";
+                case int n when (n >= 55 && n <= 59):
+                    return "Unstable";
+                case int n when (n >= 1 && n <= 54):
+                    return "Bad";
+                case int n when (n == 0):
+                    return "No Success";
+                case int n when (n == -1):
+                    return "No Data";
+                default:
+                    return "Out of range";
+            }
+        }
 
 
         private void GetTransaction(string TransactionId)

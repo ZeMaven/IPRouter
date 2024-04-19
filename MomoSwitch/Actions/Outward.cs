@@ -22,6 +22,7 @@ namespace MomoSwitch.Actions
         Task<TranQueryResponse> GetTransaction(string SessionId);
         Task<FundTransferResponse> Transfer(FundTransferRequest Req);
         AuthResponse Reset(AuthRequest Req);
+        List<Perfomance> GetPerfomance();
     }
 
     public class Outward : IOutward
@@ -127,7 +128,7 @@ namespace MomoSwitch.Actions
                 var ProcessorRequest = Transposer.ToProxyFundTransferRequest(Req);
                 var Submit = SubmitTransaction(Req, RouterDetail.Switch);
                 if (Submit.ResponseCode != "00")
-                {                
+                {
                     var Response = new FundTransferResponse
                     {
                         responseCode = Submit.ResponseCode,
@@ -400,6 +401,36 @@ namespace MomoSwitch.Actions
                 return new AuthResponse { access_token = "", status = "FAILED" };
             }
         }
+
+
+
+        public List<Perfomance> GetPerfomance()
+        {
+            try
+            {
+                Log.Write($"AuthController", $"Request Performance");
+
+                var Db = new MomoSwitchDbContext();
+                return Db.PerformanceTb.Select(x => new Perfomance
+                {
+                    BankCode = x.BankCode,
+                    BankName = x.BankName,
+                    Rate = x.Rate,
+                    Remark = x.Remark,
+                    Time = x.Time,
+                }).ToList();
+
+            }
+            catch( Exception Ex)
+            {
+                Log.Write($"GetPerfomance", $"Error: {Ex.Message}");
+                return new List<Perfomance> { new Perfomance { } };
+            }
+        }
+
+
+
+
 
 
 
