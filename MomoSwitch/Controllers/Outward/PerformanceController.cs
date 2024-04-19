@@ -8,7 +8,7 @@ namespace MomoSwitch.Controllers.Outward
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class PerformanceController : ControllerBase
     {
         private readonly IOutward Outward;
