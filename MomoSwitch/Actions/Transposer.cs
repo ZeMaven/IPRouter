@@ -97,7 +97,7 @@ namespace MomoSwitch.Actions
         public FundTransferPxRequest ToProxyFundTransferRequest(FundTransferRequest Request) => new FundTransferPxRequest
         {
             TransactionId = Request.transactionId,
-            PaymentRef = Request.paymentReference,
+            PaymentRef = Request.transactionId,
             BenefBvn = Request.beneficiaryBankVerificationNumber,
             DestinationBankCode = Request.destinationInstitutionCode,
             Amount = Request.amount,
