@@ -486,7 +486,7 @@ namespace MomoSwitchPortal.Controllers
 
                 Data = Data.OrderByDescending(x => x.TranDate).ToList();
 
-                Log.Write("TransactionsController.DownloadTransactionsReport", $"Get report count {Data.Count}");
+                Log.Write("TransactionsController.DownloadTransactionsReport", $"Gotten reports count {Data.Count}");
 
                 var sheet = $"MomoSwitchTransactions-{DateTime.Now}";
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
