@@ -32,12 +32,14 @@ namespace MomoSwitchPortal.Actions
                 var startDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
                 var endDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
 
-                var todayTransactions = successfulOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).Count();
+               
                 var todaySuccessfulTransactions = successfulOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
                 var todayFailedTransactions = failedOutgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
                 var todayIncomingTransactions = incomingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
                 var todayOutgoingTransactions = outgoingTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
 
+
+                    
                 int currentMonth = DateTime.Today.Month;
                 int currentYear = DateTime.Today.Year;
 
@@ -72,8 +74,7 @@ namespace MomoSwitchPortal.Actions
                             Sunday = thisWeekTransactions.Where(x => x.Date.DayOfWeek == DayOfWeek.Sunday).ToList().Count
                         },
                        SuccessfulWeeklyTrend = successfulMonthTransactions,
-                       FailedWeeklyTrend = failedMonthTransactions,
-                       TotalTransactions = todayTransactions
+                       FailedWeeklyTrend = failedMonthTransactions                  
                     }
                     
                     
@@ -125,7 +126,7 @@ namespace MomoSwitchPortal.Actions
             var halfYearSuccessfulTransactions = new MonthlyTrendViewModel
             {
                 Months = new string[6],
-                MonthsCount = new int[6]
+                MonthsCount = new double[6]
             };
             for (int i = 0; i < 6; i++)
             {
@@ -164,7 +165,7 @@ namespace MomoSwitchPortal.Actions
             var weeklyTrendViewModel = new WeeklyTrendViewModel()
             {
                 Weeks = new string[5],
-                WeeksCount = new int[5]
+                WeeksCount = new double?[5]
             };
 
             for (int i = 0; i < 5; i++)
@@ -174,8 +175,8 @@ namespace MomoSwitchPortal.Actions
                     .ToList();
 
                 weeklyTrendViewModel.Weeks[i] = $"Week {i + 1}";
-                weeklyTrendViewModel.WeeksCount[i] = transactionsInWeek.Count;
-            }
+                weeklyTrendViewModel.WeeksCount[i] = transactionsInWeek.Count == 0 ? null : transactionsInWeek.Count;
+            }               
 
             return weeklyTrendViewModel;
         }

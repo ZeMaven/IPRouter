@@ -35,6 +35,9 @@ namespace MomoSwitchPortal.Controllers
 
                 DateTime lastDayOfMonth = DateTime.Parse(firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("yyyy-MM-dd") + " 23:59:59");
 
+
+                var startDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                var endDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
                 var allTransactions = await db.TransactionTb.Where(x => x.Date >= firstDayOfMonth && x.Date <= lastDayOfMonth).Select(x => new HomeMiniTransaction
                 {
                     Amount = x.Amount,
@@ -50,6 +53,7 @@ namespace MomoSwitchPortal.Controllers
 
                 var outgoingTransactions = allTransactions.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToList();
 
+                var todayTransactions = allTransactions.Where(x => x.Date >= startDay && x.Date <= endDay && x.ResponseCode != "09").Count();
 
                 var result = homeManager.GetDashboardData(incomingTransactions, outgoingTransactions);
 
@@ -58,10 +62,15 @@ namespace MomoSwitchPortal.Controllers
                     return View("Error");
                 }
 
+                
                 result.DashboardData.RecentTransactions = allTransactions.OrderByDescending(x => x.Date).Take(15).ToList();
                 result.DashboardData.TotalUsers = db.PortalUserTb.Count();
                 result.DashboardData.TotalSwitches = db.SwitchTb.Count();
-                
+                result.DashboardData.TotalTransactions = todayTransactions;
+                result.DashboardData.TotalIncomingPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalIncomingCount / todayTransactions) * 100, 2);
+                result.DashboardData.TotalOutGoingPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalOutGoingCount / todayTransactions) * 100,2);
+                result.DashboardData.TotalSuccessfulPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalSuccessfulCount / result.DashboardData.TotalOutGoingCount) * 100,2);
+                result.DashboardData.TotalFailedPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalFailedCount / result.DashboardData.TotalOutGoingCount) * 100, 2);
 
                 return View(result.DashboardData);
             }
