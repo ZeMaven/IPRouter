@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MomoSwitchPortal.Models.ViewModels.Reports
+namespace MomoSwitchPortal.Models.ViewModels.Analytics
 {
     public class SummaryReport
     {
