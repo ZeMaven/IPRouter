@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MomoSwitch.Models.DataBase;
 
@@ -11,9 +12,11 @@ using MomoSwitch.Models.DataBase;
 namespace MomoSwitch.models.database.Migrations
 {
     [DbContext(typeof(MomoSwitchDbContext))]
-    partial class MomoSwitchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240419223028_migration12")]
+    partial class migration12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,39 +93,6 @@ namespace MomoSwitch.models.database.Migrations
                         .HasFilter("[BankCode] IS NOT NULL");
 
                     b.ToTable("BanksTb");
-                });
-
-            modelBuilder.Entity("Momo.Common.Models.Tables.PerformanceTb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BankCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("BankName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BankCode");
-
-                    b.ToTable("PerformanceTb");
                 });
 
             modelBuilder.Entity("Momo.Common.Models.Tables.PortalUserTb", b =>

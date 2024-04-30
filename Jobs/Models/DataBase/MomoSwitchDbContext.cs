@@ -3,7 +3,7 @@ using Momo.Common.Models.Tables;
 using System.Collections.Generic;
 using System.Transactions;
 
-namespace SwitchRequery.Models.DataBase
+namespace Jobs.Models.DataBase
 {
     public class MomoSwitchDbContext : DbContext
     {

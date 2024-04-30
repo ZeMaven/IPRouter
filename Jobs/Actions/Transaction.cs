@@ -1,12 +1,17 @@
 ﻿using Momo.Common.Actions;
 using Momo.Common.Models.Tables;
-using SwitchRequery.Models;
-using SwitchRequery.Models.DataBase;
+using Jobs.Models;
+using Jobs.Models.DataBase;
 using System.Diagnostics;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Data;
+using ExcelDataReader;
+using System;
 
-namespace SwitchRequery.Actions
+using System.IO;
+
+namespace Jobs.Actions
 {
     public interface ITransaction
     {
@@ -59,14 +64,11 @@ namespace SwitchRequery.Actions
                     }
                     Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction 3Hourly requery");
                 }
-
             }
             catch (Exception Ex)
             {
                 Log.Write("Transaction.Requery", $"Err: {Ex.Message}");
             }
-
-
         }
 
 
@@ -92,26 +94,23 @@ namespace SwitchRequery.Actions
                     if (BankTran.Count > 0)
                     {
                         var Succ = (decimal)BankTran.Where(x => x.ResponseCode == "00" && x.ResponseCode != "09").Count();
-                          Rate = (int)Math.Round((decimal)(Succ / BankTran.Count) * 100);
-                        
+                        Rate = (int)Math.Round((decimal)(Succ / BankTran.Count) * 100);
+
                     }
-                   
 
                     Performance.Add(new PerformanceTb
                     {
                         Rate = Rate,
                         BankCode = BankCode,
-                        BankName = AllBanks.Where(x=>x.BankCode==BankCode).FirstOrDefault().BankName,
+                        BankName = AllBanks.Where(x => x.BankCode == BankCode).FirstOrDefault().BankName,
                         Time = DateTime.Now,
                         Remark = GetPerformance(Rate)
-
                     });
-
                 }
 
                 Db.PerformanceTb.RemoveRange(Db.PerformanceTb);
 
-                Db.PerformanceTb.AddRange(Performance.OrderByDescending(x=>x.Rate));
+                Db.PerformanceTb.AddRange(Performance.OrderByDescending(x => x.Rate));
 
                 Db.SaveChanges();
 
@@ -127,29 +126,29 @@ namespace SwitchRequery.Actions
         {
             switch (rate)
             {
-                case int n when (n >= 95 && n <= 100):
+                case int n when n >= 95 && n <= 100:
                     return "Excellent";
-                case int n when (n >= 90 && n <= 94):
+                case int n when n >= 90 && n <= 94:
                     return "Very Good";
-                case int n when (n >= 85 && n <= 89):
+                case int n when n >= 85 && n <= 89:
                     return "Good";
-                case int n when (n >= 80 && n <= 84):
+                case int n when n >= 80 && n <= 84:
                     return "Satisfactory";
-                case int n when (n >= 75 && n <= 79):
+                case int n when n >= 75 && n <= 79:
                     return "Fair";
-                case int n when (n >= 70 && n <= 74):
+                case int n when n >= 70 && n <= 74:
                     return "Poor";
-                case int n when (n >= 65 && n <= 69):
+                case int n when n >= 65 && n <= 69:
                     return "Very Poor";
-                case int n when (n >= 60 && n <= 64):
+                case int n when n >= 60 && n <= 64:
                     return "Unreliable";
-                case int n when (n >= 55 && n <= 59):
+                case int n when n >= 55 && n <= 59:
                     return "Unstable";
-                case int n when (n >= 1 && n <= 54):
+                case int n when n >= 1 && n <= 54:
                     return "Bad";
-                case int n when (n == 0):
+                case int n when n == 0:
                     return "No Success";
-                case int n when (n == -1):
+                case int n when n == -1:
                     return "No Data";
                 default:
                     return "Out of range";
@@ -180,9 +179,7 @@ namespace SwitchRequery.Actions
                     Method = CoralPay.HttpHandler.Models.HttpVerb.Post,
                     RequestObject = new QueryRequest { TransactionId = TransactionId },
                     //ResponseObject = new QueryResponse(),
-
                 });
-
 
                 if (Resp.ResponseHeader.ResponseCode == CoralPay.HttpHandler.Models.Status.Successful)
                 {
@@ -192,15 +189,13 @@ namespace SwitchRequery.Actions
                 {
                     Log.Write("GetTransaction", $"Conn err: {Resp.ResponseHeader.ResponseMessage} | URL: {QueryUrl}");
                 }
-
             }
             catch (Exception Ex)
             {
                 Log.Write("GetTransaction", $"Err: {Ex.Message}");
             }
-
-
-
         }
+
+
     }
 }

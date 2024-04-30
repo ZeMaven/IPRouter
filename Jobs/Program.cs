@@ -1,5 +1,5 @@
+using Jobs.Actions;
 using Momo.Common.Actions;
-using SwitchRequery.Actions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,12 @@ builder.Services.AddHostedService<RequeryWorker>();
 builder.Services.AddHostedService<AnalysisWorker>();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ITransaction, Transaction>();
+builder.Services.AddTransient<IReconcilation, Reconcilation>();
+builder.Services.AddTransient<IExcel, Excel>();
+
+
+
+
 
 var app = builder.Build();
 
