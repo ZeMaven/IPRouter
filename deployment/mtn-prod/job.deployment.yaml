@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: momojobs-api-deployment
+  namespace: app-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: momojobs-api
+  template:
+    metadata:
+      labels:
+        app: momojobs-api
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+      - name: momojobs-api
+        image: dockub.coralpay.com/momojobs:#{image-tag}#
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "200M"
+            cpu: "100m"
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: momojobs
+        - configMapRef:
+            name: momojobs
+        - configMapRef:
+            name: timezone
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: momojobs-api-service
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: momojobs-api
+  ports:
+  - port: 5391
+    targetPort: 8080
