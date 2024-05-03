@@ -79,8 +79,8 @@ namespace Jobs.Actions
             try
             {
                 int Rate;
-                var IntervalHr = Convert.ToInt16(Config.GetSection("AnalysisIntervalHr").Value);
-                var HrAgo = DateTime.Now.AddHours(-IntervalHr);
+                var IntervalMin = Convert.ToInt16(Config.GetSection("AnalysisIntervalMin").Value);
+                var HrAgo = DateTime.Now.AddHours(-IntervalMin);
                 var Db = new MomoSwitchDbContext();
                 var Tran = Db.TransactionTb.Where(x => x.Date > HrAgo).ToList();
 
