@@ -66,9 +66,7 @@ namespace MomoSwitchPortal.Controllers
                 result.DashboardData.RecentTransactions = allTransactions.OrderByDescending(x => x.Date).Take(15).ToList();
                 result.DashboardData.TotalUsers = db.PortalUserTb.Count();
                 result.DashboardData.TotalSwitches = db.SwitchTb.Count();
-                result.DashboardData.TotalTransactions = todayTransactions;
-                result.DashboardData.TotalIncomingPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalIncomingCount / todayTransactions) * 100, 2);
-                result.DashboardData.TotalOutGoingPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalOutGoingCount / todayTransactions) * 100,2);
+                result.DashboardData.TotalTransactions = todayTransactions;               
                 result.DashboardData.TotalSuccessfulPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalSuccessfulCount / result.DashboardData.TotalOutGoingCount) * 100,2);
                 result.DashboardData.TotalFailedPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalFailedCount / result.DashboardData.TotalOutGoingCount) * 100, 2);
 

@@ -48,20 +48,28 @@
                 </li>
             
                 <li class="nav-item dropdown">
-                    <a class="@ViewData["Reports"]   nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="@ViewData["Analytics"]   nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">receipt</i>
+                            <i class="material-icons opacity-10">show_chart</i>
                         </div>
-                        <span class="nav-link-text ms-1">Reports</span>
+                        <span class="nav-link-text ms-1">Analytics</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
                         <li>
-                            <a class="dropdown-item d-flex" href="~/reports/summaryreport">
+                            <a class="dropdown-item d-flex" href="~/analytics/summaryreport">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">file_download</i>
                                 </div>
-                                <span class="nav-link-text ms-1">Sumamry Report</span>
+                                <span class="nav-link-text ms-1">Summary Report</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex" href="~/analytics/InstitutionPerformance">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">insert_chart</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Institutions Performance</span>
                             </a>
                         </li>
                     </ul>

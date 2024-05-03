@@ -153,7 +153,7 @@ namespace NipOutwardProxy.Actions
                 Log.Write("NibssOutward.TranQuery", $"Err: {Ex.Message}");
                 return new TranQueryPxResponse
                 {
-                    ResponseCode = "01",
+                    ResponseCode = "97",
                     ResponseMessage = "Failed",
                     TransactionId = Request.SessionId,
                 };
