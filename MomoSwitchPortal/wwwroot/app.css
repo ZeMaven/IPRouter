@@ -54,7 +54,3 @@ h1:focus {
     line-height: 3px;
 }
 
-.card .card-footer {
-    display: flex;
-    justify-content: space-between;
-}

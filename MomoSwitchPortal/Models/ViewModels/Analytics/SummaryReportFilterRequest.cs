@@ -1,4 +1,4 @@
-﻿namespace MomoSwitchPortal.Models.ViewModels.Reports
+﻿namespace MomoSwitchPortal.Models.ViewModels.Analytics
 {
     public class SummaryReportFilterRequest
     {
