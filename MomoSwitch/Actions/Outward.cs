@@ -408,10 +408,10 @@ namespace MomoSwitch.Actions
         {
             try
             {
-                Log.Write($"AuthController", $"Request Performance");
+                Log.Write($"Outward.GetPerfomance", $"Request Performance");
 
                 var Db = new MomoSwitchDbContext();
-                return Db.PerformanceTb.Select(x => new Perfomance
+                var Data= Db.PerformanceTb.Select(x => new Perfomance
                 {
                     BankCode = x.BankCode,
                     BankName = x.BankName,
@@ -420,10 +420,13 @@ namespace MomoSwitch.Actions
                     Time = x.Time,
                 }).ToList();
 
+                Log.Write($"GetPerfomance", $"Response: {JsonSerializer.Serialize(Data)}");
+                return Data;
+
             }
             catch( Exception Ex)
             {
-                Log.Write($"GetPerfomance", $"Error: {Ex.Message}");
+                Log.Write($"Outward.GetPerfomance", $"Error: {Ex.Message}");
                 return new List<Perfomance> { new Perfomance { } };
             }
         }
