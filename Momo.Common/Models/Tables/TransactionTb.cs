@@ -21,7 +21,7 @@ namespace Momo.Common.Models.Tables
         [StringLength(50)]
         public string Processor { get; set; }
         [StringLength(100)]
-        public string TransactionId { get; set; }
+        public string TransactionId { get; set; } 
         [StringLength(100)]
         public string SessionId { get; set; }
         [StringLength(100)]
