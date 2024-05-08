@@ -35,14 +35,12 @@ namespace Jobs.Actions
             try
             {
                 var Db = new MomoSwitchDbContext();
-                DateTime TwoMinutesAgo = DateTime.Now.AddMinutes(-2);
-                DateTime FifteenAgo = DateTime.Now.AddMinutes(-15);
+                DateTime StartMin = DateTime.Now.AddMinutes(-int.Parse(Config.GetSection("QueryStartMin").Value));
+                DateTime EndMin = DateTime.Now.AddMinutes(-int.Parse(Config.GetSection("QueryEndMin").Value));
                 var CurrentMinute = DateTime.Now.Minute;
 
-
-                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo && x.Date > FifteenAgo).ToList();
+                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date > StartMin && x.Date < EndMin).ToList();
                 Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
-
 
                 foreach (var Tran in Trans)
                 {

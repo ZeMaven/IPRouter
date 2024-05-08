@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
+
 
 namespace Jobs.Actions
 {
@@ -34,6 +38,8 @@ namespace Jobs.Actions
 
         public void Main()
         {
+
+            GetFilePath();
             var MsrTrans = GetMsrTransactions();
 
             var EwpTran = GetExcelTransactions("EWP");
@@ -126,6 +132,8 @@ namespace Jobs.Actions
 
         private List<ProcessorReconData> GetExcelTransactions(string Processor)
         {
+
+            GetFilePath();
             var EwpFilePath = GetfilePath(Processor);
             List<ProcessorReconData> ProcessorTran = new();
             using (var stream = File.Open(EwpFilePath, FileMode.Open, FileAccess.Read))
@@ -217,6 +225,72 @@ namespace Jobs.Actions
             string excelFilePath = Path.Combine(directoryPath, $"{EwpFilename}");
             return excelFilePath;
         }
+        public static bool AcceptAllCertificates(
+        object sender, X509Certificate certificate, X509Chain chain,
+        SslPolicyErrors sslPolicyErrors)
+        {
+            // Always accept
+            return true;
+        }
 
+
+      
+
+
+            public void GetFilePath()
+        {
+
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((AcceptAllCertificates));
+
+            string ftpServer = "ftps.coralpay.com:9192";
+            string ftpUsername = "msrreconuser";
+            string ftpPassword = "P@ssw0rd1234567890";
+            string remoteDirectory = "reconciled";
+
+            // FTP URI
+            string ftpUri = $"ftp://{ftpServer}/{remoteDirectory}";
+
+            // Create FTP request
+            FtpWebRequest request = WebRequest.Create(ftpUri) as FtpWebRequest;
+            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;           
+            request.UseBinary = true;
+            request.EnableSsl = true;
+            request.UsePassive = true;
+            request.KeepAlive = true;
+            request.ImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Identification;
+            ServicePoint sp = request.ServicePoint;
+             
+
+            sp.ConnectionLimit = 1;
+
+            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword,"coralpay.com");
+
+            try
+            {
+                var jj=request.GetResponse();
+                // Get the response
+                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(responseStream);
+
+                    // Read the response
+                    Console.WriteLine(reader.ReadToEnd());
+
+                    // Close streams
+                    reader.Close();
+                    response.Close();
+                }
+
+            }
+            catch (WebException ex)
+            {
+                // Handle exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+
+
+        }
     }
 }
