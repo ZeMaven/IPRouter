@@ -10,6 +10,11 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using FluentFTP;
+using System;
+using System.Reflection.Emit;
+
+//using static System.Net.WebRequestMethods;
 
 
 namespace Jobs.Actions
@@ -38,7 +43,8 @@ namespace Jobs.Actions
 
         public void Main()
         {
-
+            Connect3();
+            Connect2();
             GetFilePath();
             var MsrTrans = GetMsrTransactions();
 
@@ -234,10 +240,226 @@ namespace Jobs.Actions
         }
 
 
-      
 
 
-            public void GetFilePath()
+
+
+
+        public static void Connect3()
+        {
+            string host = "ftps.coralpay.com";
+            int port = 9192;
+            string username = "msrreconuser";
+            string password = "P@ssw0rd1234567890";
+            string directoryPath = "/To-Reconcile";
+            string fileName = "CIP_Tran.xlsx";
+            string localFilePath = "c:/logs/peter.xlsx";
+        Label:
+            try
+            {
+
+                using (var client = new FtpClient(host, port)
+                {
+                    Config = {
+                    EncryptionMode = FtpEncryptionMode.Implicit,
+                    ValidateAnyCertificate = true,
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                    DataConnectionType= FtpDataConnectionType.EPSV
+                    },
+                    Credentials = new NetworkCredential(username, password)
+                })
+
+                {
+
+
+                    client.Connect();
+
+                    if (client.IsConnected)
+                    {
+                        client.SetWorkingDirectory(directoryPath);
+
+                        // Download specific file (optional)
+                        // client.DownloadFile(fileName, localFilePath);
+
+                        // Get directory listing (if needed for other files)
+                        var files = client.GetListing(directoryPath);
+
+                        foreach (var file in files)
+                        {
+                            if (file.Name == fileName) // Check for specific file
+                            {
+                                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+                                using (var stream = client.OpenRead(file.FullName, FtpDataType.Binary, 0,true))
+                                {
+
+                                    var strm = stream;
+
+                                    var rd = new StreamReader(strm);
+                                    // Assuming you have a reference to ExcelDataReader
+                                    using (var reader = ExcelReaderFactory.CreateOpenXmlReader(strm))
+                                    {
+                                        DataSet excelData = reader.AsDataSet();
+                                        DataTable dataTable = excelData.Tables[0];
+
+                                        // Implement your logic to process data from dataTable
+                                        foreach (DataRow row in dataTable.Rows)
+                                        {
+                                            // Process each row as needed
+                                        }
+                                    }
+                                }
+                                break; // Exit loop after downloading the desired file
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Handle FTP specific exceptions
+                Console.WriteLine($"FTP Error: {ex.Message}");
+                goto Label;
+            }
+
+        }
+
+
+
+
+        public static void Connect2()
+        {
+            string host = "ftps.coralpay.com";
+            int port = 9192;
+            string username = "msrreconuser";
+            string password = "P@ssw0rd1234567890";
+            string directoryPath = "/To-Reconcile";
+            string fileName = "CIP_Tran.xlsx";
+            string localFilePath = "c:/logs/peter.xlsx";
+
+            try
+            {
+                using (var client = new FtpClient(host, port)
+                {
+                    Config = {
+                    EncryptionMode = FtpEncryptionMode.Implicit,
+                    ValidateAnyCertificate = true,
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                    DataConnectionType= FtpDataConnectionType.EPSV
+                    },
+                    Credentials = new NetworkCredential(username, password)
+                })
+                {
+                    client.Connect();
+
+                    if (client.IsConnected)
+                    {
+
+
+
+                        //client.DownloadDirectory("c/logs", directoryPath);
+                        client.SetWorkingDirectory($"{directoryPath}");
+
+                        client.IsStillConnected();
+                        var Prot = client.SslProtocolActive;
+
+                        var files = client.GetListing(directoryPath);
+
+
+
+                        foreach (var file in files)
+                        {
+                            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+                            using (var stream = client.OpenRead(file.FullName))
+                            {
+                                var rd = new StreamReader(stream);
+                                stream.Position = 0;
+
+
+                                //using (var reader = ExcelReaderFactory.CreateReader(stream))
+                                //{
+                                using (var reader = ExcelReaderFactory.CreateOpenXmlReader(stream))
+                                {
+                                    DataSet excelData = reader.AsDataSet();
+                                    DataTable dataTable = excelData.Tables[0];
+
+
+                                    int i = 0;
+                                    foreach (DataRow row in dataTable.Rows)
+                                    {
+
+
+                                    }
+
+
+
+
+
+
+
+
+
+                                }
+
+                            }
+
+
+                            var ff = file.Name;
+
+                        }
+
+                        var dwnd = client.DownloadFile("c:/Logs/peter.xlsx", directoryPath + "/NIP_Tran.xlsx");
+
+
+
+                        string fileContents = System.IO.File.ReadAllText(localFilePath);
+                        Console.WriteLine("File Contents:");
+                        Console.WriteLine(fileContents);
+
+                    }
+
+                    using (var stream = client.OpenRead(Path.Combine(directoryPath, fileName)))
+                    {
+                        // Process the file stream (read the file, save it, etc.)
+                        // For example:
+                        using (var reader = new StreamReader(stream))
+                        {
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                Console.WriteLine(line);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            Console.WriteLine($"Error: ");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void GetFilePath()
         {
 
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((AcceptAllCertificates));
@@ -245,29 +467,29 @@ namespace Jobs.Actions
             string ftpServer = "ftps.coralpay.com:9192";
             string ftpUsername = "msrreconuser";
             string ftpPassword = "P@ssw0rd1234567890";
-            string remoteDirectory = "reconciled";
+            string remoteDirectory = "/To-Reconcile";
 
             // FTP URI
             string ftpUri = $"ftp://{ftpServer}/{remoteDirectory}";
 
             // Create FTP request
             FtpWebRequest request = WebRequest.Create(ftpUri) as FtpWebRequest;
-            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;           
+            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             request.UseBinary = true;
             request.EnableSsl = true;
             request.UsePassive = true;
             request.KeepAlive = true;
             request.ImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Identification;
             ServicePoint sp = request.ServicePoint;
-             
+
 
             sp.ConnectionLimit = 1;
 
-            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword,"coralpay.com");
+            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
 
             try
             {
-                var jj=request.GetResponse();
+                var jj = request.GetResponse();
                 // Get the response
                 using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
                 {
@@ -292,5 +514,37 @@ namespace Jobs.Actions
 
 
         }
+
+
+
+
+
+
+
+        static void DownloadFile(FtpClient ftpClient, string remoteDirectory, string fileName)
+        {
+            string remoteFilePath = $"{remoteDirectory}/{fileName}";
+            string localFilePath = Path.Combine(Environment.CurrentDirectory, fileName);
+
+            try
+            {
+                // Download the file from the FTP server
+                ftpClient.DownloadFile(localFilePath, remoteFilePath);
+                Console.WriteLine($"Downloaded file: {fileName}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while downloading {fileName}: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
 }
