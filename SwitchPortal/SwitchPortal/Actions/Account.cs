@@ -191,7 +191,7 @@ public class Account : IAccount
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("username", user.Username),
                 new Claim("role", user.Role),
-                new Claim("refreshExpiration", DateTime.Now.AddDays(_jwtSettings.RefreshExpiration).ToString())
+                new Claim("refreshExpiration", DateTime.Now.AddMinutes(_jwtSettings.RefreshExpiration).ToString())
             };
 
        

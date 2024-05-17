@@ -1,11 +1,13 @@
 ﻿@page "/login"
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using SwitchPortal.Components.Layout
 @inject ProtectedLocalStorage ProtectedLocalStore
 @inject NavigationManager NavigationManager
 @inject  IAccount accountManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [AllowAnonymous]
+@layout NoLayout
 <EditForm Model="request" OnValidSubmit="CompleteLogin" FormName="Login">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
@@ -67,6 +69,7 @@
         await ProtectedLocalStore.SetAsync("authToken", result.Token);
 
         await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated();
-        NavigationManager.NavigateTo(ReturnUrl);
+        var returnUrl = NavigationManager.BaseUri + ReturnUrl;
+        NavigationManager.NavigateTo(returnUrl);
     }
 }

@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal", "SwitchPorta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchPortal.Client", "SwitchPortal\SwitchPortal.Client\SwitchPortal.Client.csproj", "{587F3300-2614-4CE7-9E2D-E07CCDC339D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MomoSwitchPortal", "MomoSwitchPortal\MomoSwitchPortal.csproj", "{5B0D8615-0352-41DC-9792-87DBEB49E214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MomoSwitchPortal", "MomoSwitchPortal\MomoSwitchPortal.csproj", "{5B0D8615-0352-41DC-9792-87DBEB49E214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchRequery", "SwitchRequery\SwitchRequery.csproj", "{16A15846-4F91-4856-AEE9-F01E73ED19F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchRequery", "SwitchRequery\SwitchRequery.csproj", "{16A15846-4F91-4856-AEE9-F01E73ED19F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
