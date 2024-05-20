@@ -42,6 +42,8 @@ namespace Jobs.Actions
         public void Main()
         {
 
+            if (DetermineDayType(DateTime.Now) == Week.Weekend) return;
+
             var MsrTrans = GetMsrTransactions();
 
             var EwpTran = GetExcelTransactions("EWP");
@@ -109,11 +111,28 @@ namespace Jobs.Actions
             UploadRecociledFile(reportStream);
 
             // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
-
         }
 
 
+        public Week DetermineDayType(DateTime date)
+        {
+            // Get the day of the week for the given date
+            DayOfWeek dayOfWeek = date.DayOfWeek;
 
+            // Check if the day is Saturday or Sunday
+            if (dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday)
+            {
+                return Week.Weekend;
+            }
+            else if(dayOfWeek == DayOfWeek.Monday)
+            {
+                return Week.Monday;
+            }
+            else
+            {
+                return  Week.Weekday;
+            }
+        }
 
 
         public string CompareResponses(string var1, string var2, string var3)
@@ -133,7 +152,13 @@ namespace Jobs.Actions
         private List<ProcessorReconData> GetMsrTransactions()
         {
             var Db = new MomoSwitchDbContext();
-            var yesterday = DateTime.Now.AddDays(-1).Date;
+            DateTime yesterday;
+            if (DetermineDayType(DateTime.Now) == Week.Monday)
+                yesterday = DateTime.Now.AddDays(-3).Date;
+            else
+                yesterday = DateTime.Now.AddDays(-1).Date;
+
+
             var MsrData = from tb in Db.TransactionTb where tb.Date.Date == yesterday select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
 
             var MsrTran = MsrData.ToList();
@@ -322,7 +347,7 @@ namespace Jobs.Actions
                 MemoryStream memoryStream = new MemoryStream();
 
                 var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}";
-                client.UploadStream(memoryStream, $"{directoryPath}/{fileName}");
+                client.UploadStream(memoryStream, $"{resultPath}/{fileName}");
             }
         }
 
@@ -346,5 +371,17 @@ namespace Jobs.Actions
             }
         }
 
+
+
+
+
+
+    }
+
+   public enum Week
+    {
+        Monday=0,
+        Weekday=1,
+        Weekend=2
     }
 }
