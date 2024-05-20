@@ -159,7 +159,7 @@ namespace Jobs.Actions
                 yesterday = DateTime.Now.AddDays(-1).Date;
 
 
-            var MsrData = from tb in Db.TransactionTb where tb.Date.Date == yesterday select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
+            var MsrData = from tb in Db.TransactionTb where tb.Date.Date >= yesterday && tb.Date.Date!= DateTime.Today select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
 
             var MsrTran = MsrData.ToList();
             var Processors = MsrTran.Select(x => x.Processor).Distinct().ToList();
@@ -344,10 +344,10 @@ namespace Jobs.Actions
 
 
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                MemoryStream memoryStream = new MemoryStream();
+                //MemoryStream memoryStream = new MemoryStream(fileStream);
 
-                var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}";
-                client.UploadStream(memoryStream, $"{resultPath}/{fileName}");
+                var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}.xlsx";
+                client.UploadStream(fileStream, $"{resultPath}/{fileName}");
             }
         }
 
