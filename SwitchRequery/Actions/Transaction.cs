@@ -35,7 +35,7 @@ namespace SwitchRequery.Actions
                 var CurrentMinute = DateTime.Now.Minute;
 
 
-                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < TwoMinutesAgo && x.Date > FifteenAgo).ToList();
+                var Trans = Db.TransactionTb.Where(x => ( x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date > TwoMinutesAgo && x.Date < FifteenAgo).ToList();
                 Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
 
 
@@ -50,7 +50,7 @@ namespace SwitchRequery.Actions
                 if (CurrentMinute == 2)
                 {
                     DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
-                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01" || x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
+                    var Trans1 = Db.TransactionTb.Where(x => (  x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
                     Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
 
                     foreach (var Tran in Trans1)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MomoSwitch.Models.DataBase;
 
@@ -11,9 +12,11 @@ using MomoSwitch.Models.DataBase;
 namespace MomoSwitch.models.database.Migrations
 {
     [DbContext(typeof(MomoSwitchDbContext))]
-    partial class MomoSwitchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520141305_migration15")]
+    partial class migration15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,40 +110,31 @@ namespace MomoSwitch.models.database.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EwpResponseCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EwpSessionId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MsrResponseCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MsrSessionId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentRef")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Processor")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProcessorResponseCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProcessorSessionId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remarks")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

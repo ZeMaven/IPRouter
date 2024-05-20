@@ -9,11 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\FinalReconData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CoralPay" Version="1.9.0.3" />
     <PackageReference Include="Cronos" Version="0.8.4" />
     <PackageReference Include="EPPlus" Version="7.1.2" />
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+    <PackageReference Include="FluentFTP" Version="50.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>

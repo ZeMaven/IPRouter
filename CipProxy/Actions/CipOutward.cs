@@ -72,7 +72,7 @@ namespace CipProxy.Actions
                         SessionId = SessionId,
                         TransactionId = Request.TransactionId,
                         SourceBankCode = SourceBank,
-                        ResponseCode = "01",
+                        ResponseCode = CipResp.ResponseHeader.ResponseCode,
                     };
                 }
 
@@ -191,7 +191,7 @@ namespace CipProxy.Actions
                     SessionId = SessionId,
                     TransactionId = Request.SessionId,
                     SourceBankCode = SourceBank,
-                    ResponseCode = "09",
+                    ResponseCode = "97",
                 };
             }
         }
@@ -287,7 +287,7 @@ namespace CipProxy.Actions
                     SessionId = SessionId,
                     TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
-                    ResponseCode = "09",
+                    ResponseCode = "97",
                 };
             }
         }

@@ -7,6 +7,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
+using FluentFTP;
+using System;
+using System.Reflection.Emit;
+using Momo.Common.Models;
+using Momo.Common.Models.Tables;
+
+//using static System.Net.WebRequestMethods;
+
 
 namespace Jobs.Actions
 {
@@ -26,14 +37,13 @@ namespace Jobs.Actions
             Log = log;
             Config = config;
             Excel = excel;
-
         }
-
-
-
 
         public void Main()
         {
+
+            if (DetermineDayType(DateTime.Now) == Week.Weekend) return;
+
             var MsrTrans = GetMsrTransactions();
 
             var EwpTran = GetExcelTransactions("EWP");
@@ -46,16 +56,18 @@ namespace Jobs.Actions
             var ProcessorTrans = NIPTran.Concat(CIPTran).ToList();
 
 
-            var FinalRecon = new List<FinalReconData>();
+            var FinalRecon = new List<ReconDetails>();
+            var FinalReconTb = new List<DailyReconciliationTb>();
+
 
             foreach (var tran in EwpTran)
             {
                 var MsrTran = MsrTrans.Where(x => x.PaymentRef == tran.PaymentRef).SingleOrDefault();
                 var ProcessorTran = ProcessorTrans.Where(x => x.PaymentRef == tran.PaymentRef).SingleOrDefault();
 
-                FinalRecon.Add(new FinalReconData
+                FinalRecon.Add(new ReconDetails
                 {
-                    Date = tran.Date,
+                    Date = DateTime.Parse(tran.Date),
                     Amount = tran.Amount,
                     Processor = MsrTran?.Processor ?? ProcessorTran?.Processor,
                     MsrSessionId = MsrTran?.SessionId ?? "NA",
@@ -73,13 +85,54 @@ namespace Jobs.Actions
                 });
             }
 
+            FinalReconTb = FinalRecon.Select(x => new DailyReconciliationTb
+            {
+                Date = x.Date,
+                Amount = x.Amount,
+                Processor = x.Processor,
+                EwpResponseCode = x.EwpResponseCode,
+                EwpSessionId = x.EwpSessionId,
+                ProcessorSessionId = x.ProcessorSessionId,
+                MsrResponseCode = x.MsrResponseCode,
+                MsrSessionId = x.MsrSessionId,
+                ProcessorResponseCode = x.ProcessorResponseCode,
+                PaymentRef = x.PaymentRef,
+                Remarks = x.Remarks
+            }).ToList();
+            MomoSwitchDbContext db = new();
 
-            Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
+            db.AddRangeAsync(FinalReconTb);
+            db.SaveChangesAsync();
 
+            var FileByte = Excel.Write(FinalRecon, "ReconReport");
+
+            MemoryStream reportStream = new MemoryStream(FileByte);
+
+            UploadRecociledFile(reportStream);
+
+            // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
         }
 
 
+        public Week DetermineDayType(DateTime date)
+        {
+            // Get the day of the week for the given date
+            DayOfWeek dayOfWeek = date.DayOfWeek;
 
+            // Check if the day is Saturday or Sunday
+            if (dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday)
+            {
+                return Week.Weekend;
+            }
+            else if(dayOfWeek == DayOfWeek.Monday)
+            {
+                return Week.Monday;
+            }
+            else
+            {
+                return  Week.Weekday;
+            }
+        }
 
 
         public string CompareResponses(string var1, string var2, string var3)
@@ -99,8 +152,14 @@ namespace Jobs.Actions
         private List<ProcessorReconData> GetMsrTransactions()
         {
             var Db = new MomoSwitchDbContext();
-            var yesterday = DateTime.Now.AddDays(-1).Date;
-            var MsrData = from tb in Db.TransactionTb where tb.Date.Date == yesterday select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
+            DateTime yesterday;
+            if (DetermineDayType(DateTime.Now) == Week.Monday)
+                yesterday = DateTime.Now.AddDays(-3).Date;
+            else
+                yesterday = DateTime.Now.AddDays(-1).Date;
+
+
+            var MsrData = from tb in Db.TransactionTb where tb.Date.Date >= yesterday && tb.Date.Date!= DateTime.Today select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
 
             var MsrTran = MsrData.ToList();
             var Processors = MsrTran.Select(x => x.Processor).Distinct().ToList();
@@ -126,81 +185,78 @@ namespace Jobs.Actions
 
         private List<ProcessorReconData> GetExcelTransactions(string Processor)
         {
-            var EwpFilePath = GetfilePath(Processor);
+            var stream = GetFileStream(Processor);
             List<ProcessorReconData> ProcessorTran = new();
-            using (var stream = File.Open(EwpFilePath, FileMode.Open, FileAccess.Read))
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                // Read Excel data
+                DataSet excelData = reader.AsDataSet();
+                DataTable dataTable = excelData.Tables[0];
+
+
+                int i = 0;
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    // Read Excel data
-                    DataSet excelData = reader.AsDataSet();
-                    DataTable dataTable = excelData.Tables[0];
+                    i++;
+                    if (i == 1) continue;
 
-
-                    int i = 0;
-                    foreach (DataRow row in dataTable.Rows)
+                    switch (Processor)
                     {
-                        i++;
-                        if (i == 1) continue;
+                        case "EWP":
 
-                        switch (Processor)
-                        {
-                            case "EWP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Date = row[2].ToString(),
+                                PaymentRef = row[1].ToString(),
+                                Amount = Convert.ToDecimal(row[12]),
+                                Processor = Processor,
+                                ResponseCode = row[3].ToString(),
+                                SessionId = row[0].ToString() //change later
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Date = row[2].ToString(),
-                                    PaymentRef = row[1].ToString(),
-                                    Amount = Convert.ToDecimal(row[12]),
-                                    Processor = Processor,
-                                    ResponseCode = row[3].ToString(),
-                                    SessionId = row[0].ToString() //change later
+                            });
 
-                                });
+                            break;
+                        case "NIP":
 
-                                break;
-                            case "NIP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Amount = Convert.ToDecimal(row[6]),
+                                // Date = Convert.ToDateTime(row["Date"]),
+                                PaymentRef = row[14].ToString(),
+                                Processor = Processor,
+                                ResponseCode = row[5].ToString(),
+                                SessionId = row[2].ToString()
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Amount = Convert.ToDecimal(row[6]),
-                                    // Date = Convert.ToDateTime(row["Date"]),
-                                    PaymentRef = row[14].ToString(),
-                                    Processor = Processor,
-                                    ResponseCode = row[5].ToString(),
-                                    SessionId = row[2].ToString()
+                            });
 
-                                });
+                            break;
+                        case "CIP":
 
-                                break;
-                            case "CIP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Amount = Convert.ToDecimal(row[12]),
+                                PaymentRef = row[3].ToString(),
+                                Processor = Processor,
+                                ResponseCode = row[5].ToString(),
+                                SessionId = row[2].ToString()
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Amount = Convert.ToDecimal(row[12]),
-                                    PaymentRef = row[3].ToString(),
-                                    Processor = Processor,
-                                    ResponseCode = row[5].ToString(),
-                                    SessionId = row[2].ToString()
+                            });
 
-                                });
+                            break;
 
-                                break;
-
-                            default:
-                                //log
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                });
-                                break;
-
-
-                        }
-
-
+                        default:
+                            //log
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                            });
+                            break;
 
 
                     }
+
+
+
+
                 }
             }
             return ProcessorTran;
@@ -217,6 +273,115 @@ namespace Jobs.Actions
             string excelFilePath = Path.Combine(directoryPath, $"{EwpFilename}");
             return excelFilePath;
         }
+        public static bool AcceptAllCertificates(
+        object sender, X509Certificate certificate, X509Chain chain,
+        SslPolicyErrors sslPolicyErrors)
+        {
+            // Always accept
+            return true;
+        }
 
+
+
+        private MemoryStream GetFileStream(string processorName)
+        {
+            string host = Config.GetSection("Host").Value;
+            int port = int.Parse(Config.GetSection("Port").Value);
+            string username = Config.GetSection("Username1").Value;
+            string password = Config.GetSection("Password").Value;
+            string directoryPath = Config.GetSection("TransationFilePath").Value;
+            string resultPath = Config.GetSection("ReconciliationPath").Value;
+
+
+            using (var client = new FtpClient(host, port)
+            {
+                Config = {
+                    EncryptionMode = FtpEncryptionMode.Implicit,
+                    ValidateAnyCertificate = true,
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                    DataConnectionType= FtpDataConnectionType.EPSV
+                    },
+                Credentials = new NetworkCredential(username, password)
+            })
+            {
+                client.Connect();
+                client.SetWorkingDirectory(directoryPath);
+                var files = client.GetListing(directoryPath);
+                var selectedFile = files.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Name).StartsWith(processorName));
+                string excelFilePath = Path.Combine(directoryPath, $"{selectedFile.Name}");
+
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                MemoryStream memoryStream = new MemoryStream();
+                client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");
+
+                return memoryStream;
+            }
+        }
+
+        private void UploadRecociledFile(Stream fileStream)
+        {
+            string host = Config.GetSection("Host").Value;
+            int port = int.Parse(Config.GetSection("Port").Value);
+            string username = Config.GetSection("Username1").Value;
+            string password = Config.GetSection("Password").Value;
+            string directoryPath = Config.GetSection("TransationFilePath").Value;
+            string resultPath = Config.GetSection("ReconciliationPath").Value;
+
+
+            using (var client = new FtpClient(host, port)
+            {
+                Config = {
+                    EncryptionMode = FtpEncryptionMode.Implicit,
+                    ValidateAnyCertificate = true,
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                    DataConnectionType= FtpDataConnectionType.EPSV
+                    },
+                Credentials = new NetworkCredential(username, password)
+            })
+            {
+                client.Connect();
+                client.SetWorkingDirectory(resultPath);
+
+
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                //MemoryStream memoryStream = new MemoryStream(fileStream);
+
+                var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}.xlsx";
+                client.UploadStream(fileStream, $"{resultPath}/{fileName}");
+            }
+        }
+
+
+
+
+        static void DownloadFile(FtpClient ftpClient, string remoteDirectory, string fileName)
+        {
+            string remoteFilePath = $"{remoteDirectory}/{fileName}";
+            string localFilePath = Path.Combine(Environment.CurrentDirectory, fileName);
+
+            try
+            {
+                // Download the file from the FTP server
+                ftpClient.DownloadFile(localFilePath, remoteFilePath);
+                Console.WriteLine($"Downloaded file: {fileName}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while downloading {fileName}: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
+    }
+
+   public enum Week
+    {
+        Monday=0,
+        Weekday=1,
+        Weekend=2
     }
 }
