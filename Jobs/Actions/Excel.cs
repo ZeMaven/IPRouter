@@ -8,6 +8,7 @@ namespace Jobs.Actions
     public interface IExcel
     {
         Task Write<T>(List<T> ReportCollection, string SheetName, string FileName, string Path);
+        byte[] Write<T>(List<T> ReportCollection, string SheetName);
     }
 
     public class Excel : IExcel
@@ -48,5 +49,37 @@ namespace Jobs.Actions
                 Log.Write($"Excel.Write", $"Err: {Ex.Message}");
             }
         }
+
+
+
+        public byte[] Write<T>(List<T> ReportCollection, string SheetName)
+        {
+            try
+            {
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var Package = new ExcelPackage())
+                {
+                    var WorkSheet = Package.Workbook.Worksheets.Add(SheetName);
+                    var SheetRange = WorkSheet.Cells["A1"].LoadFromCollection(ReportCollection, true);
+
+                    WorkSheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    WorkSheet.Row(1).Style.Font.Bold = true;
+                    SheetRange.AutoFitColumns();
+                    Package.Save();
+                    Filebytes = Package.GetAsByteArray();
+                }
+
+                Log.Write("Excel.Write", $" finished creating excel sheet:{SheetName}");
+                return Filebytes;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write($"Excel.Write", $"Err: {Ex.Message}");
+                return null;
+            }
+        }
+
+
     }
 }

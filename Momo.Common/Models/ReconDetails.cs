@@ -1,6 +1,12 @@
-﻿namespace Jobs.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Momo.Common.Models
 {
-    public class FinalReconData
+    public class ReconDetails
     {
         public string Date { get; set; }
         public string PaymentRef { get; set; }
@@ -16,5 +22,4 @@
         public string ProcessorResponseCode { get; set; }
         public string Remarks { get; set; }
     }
-
 }

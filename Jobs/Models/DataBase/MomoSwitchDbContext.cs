@@ -30,5 +30,12 @@ namespace Jobs.Models.DataBase
         public DbSet<PortalUserTb> PortalUserTb { get; set; }
         public DbSet<BanksTb> BanksTb { get; set; }
         public DbSet<PerformanceTb> PerformanceTb { get; set; }
+        public DbSet<DailyReconciliationTb> DailyReconciliationTb { get; set; }
+
+
+
+
+        
+
     }
 }

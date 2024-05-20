@@ -13,6 +13,8 @@ using System.Security.Cryptography.X509Certificates;
 using FluentFTP;
 using System;
 using System.Reflection.Emit;
+using Momo.Common.Models;
+using Momo.Common.Models.Tables;
 
 //using static System.Net.WebRequestMethods;
 
@@ -35,17 +37,11 @@ namespace Jobs.Actions
             Log = log;
             Config = config;
             Excel = excel;
-
         }
-
-
-
 
         public void Main()
         {
-            Connect3();
-            Connect2();
-            GetFilePath();
+          
             var MsrTrans = GetMsrTransactions();
 
             var EwpTran = GetExcelTransactions("EWP");
@@ -58,14 +54,16 @@ namespace Jobs.Actions
             var ProcessorTrans = NIPTran.Concat(CIPTran).ToList();
 
 
-            var FinalRecon = new List<FinalReconData>();
+            var FinalRecon = new List<ReconDetails>();
+            var FinalReconTb= new List<DailyReconciliationTb>();
+
 
             foreach (var tran in EwpTran)
             {
                 var MsrTran = MsrTrans.Where(x => x.PaymentRef == tran.PaymentRef).SingleOrDefault();
                 var ProcessorTran = ProcessorTrans.Where(x => x.PaymentRef == tran.PaymentRef).SingleOrDefault();
 
-                FinalRecon.Add(new FinalReconData
+                FinalRecon.Add(new ReconDetails
                 {
                     Date = tran.Date,
                     Amount = tran.Amount,
@@ -85,8 +83,15 @@ namespace Jobs.Actions
                 });
             }
 
+            FinalReconTb= new 
 
-            Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
+            var FileByte = Excel.Write(FinalRecon, "ReconReport");
+
+            MemoryStream reportStream = new MemoryStream(FileByte);
+
+            UploadRecociledFile(reportStream);
+
+           // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
 
         }
 
@@ -137,84 +142,79 @@ namespace Jobs.Actions
         /// <returns></returns>
 
         private List<ProcessorReconData> GetExcelTransactions(string Processor)
-        {
-
-            GetFilePath();
-            var EwpFilePath = GetfilePath(Processor);
+        {         
+            var stream = GetFileStream(Processor);
             List<ProcessorReconData> ProcessorTran = new();
-            using (var stream = File.Open(EwpFilePath, FileMode.Open, FileAccess.Read))
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                // Read Excel data
+                DataSet excelData = reader.AsDataSet();
+                DataTable dataTable = excelData.Tables[0];
+
+
+                int i = 0;
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    // Read Excel data
-                    DataSet excelData = reader.AsDataSet();
-                    DataTable dataTable = excelData.Tables[0];
+                    i++;
+                    if (i == 1) continue;
 
-
-                    int i = 0;
-                    foreach (DataRow row in dataTable.Rows)
+                    switch (Processor)
                     {
-                        i++;
-                        if (i == 1) continue;
+                        case "EWP":
 
-                        switch (Processor)
-                        {
-                            case "EWP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Date = row[2].ToString(),
+                                PaymentRef = row[1].ToString(),
+                                Amount = Convert.ToDecimal(row[12]),
+                                Processor = Processor,
+                                ResponseCode = row[3].ToString(),
+                                SessionId = row[0].ToString() //change later
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Date = row[2].ToString(),
-                                    PaymentRef = row[1].ToString(),
-                                    Amount = Convert.ToDecimal(row[12]),
-                                    Processor = Processor,
-                                    ResponseCode = row[3].ToString(),
-                                    SessionId = row[0].ToString() //change later
+                            });
 
-                                });
+                            break;
+                        case "NIP":
 
-                                break;
-                            case "NIP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Amount = Convert.ToDecimal(row[6]),
+                                // Date = Convert.ToDateTime(row["Date"]),
+                                PaymentRef = row[14].ToString(),
+                                Processor = Processor,
+                                ResponseCode = row[5].ToString(),
+                                SessionId = row[2].ToString()
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Amount = Convert.ToDecimal(row[6]),
-                                    // Date = Convert.ToDateTime(row["Date"]),
-                                    PaymentRef = row[14].ToString(),
-                                    Processor = Processor,
-                                    ResponseCode = row[5].ToString(),
-                                    SessionId = row[2].ToString()
+                            });
 
-                                });
+                            break;
+                        case "CIP":
 
-                                break;
-                            case "CIP":
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Amount = Convert.ToDecimal(row[12]),
+                                PaymentRef = row[3].ToString(),
+                                Processor = Processor,
+                                ResponseCode = row[5].ToString(),
+                                SessionId = row[2].ToString()
 
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                    Amount = Convert.ToDecimal(row[12]),
-                                    PaymentRef = row[3].ToString(),
-                                    Processor = Processor,
-                                    ResponseCode = row[5].ToString(),
-                                    SessionId = row[2].ToString()
+                            });
 
-                                });
+                            break;
 
-                                break;
-
-                            default:
-                                //log
-                                ProcessorTran.Add(new ProcessorReconData
-                                {
-                                });
-                                break;
-
-
-                        }
-
-
+                        default:
+                            //log
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                            });
+                            break;
 
 
                     }
+
+
+
+
                 }
             }
             return ProcessorTran;
@@ -241,282 +241,73 @@ namespace Jobs.Actions
 
 
 
-
-
-
-
-        public static void Connect3()
+        private MemoryStream GetFileStream(string processorName)
         {
-            string host = "ftps.coralpay.com";
-            int port = 9192;
-            string username = "msrreconuser";
-            string password = "P@ssw0rd1234567890";
-            string directoryPath = "/To-Reconcile";
-            string fileName = "CIP_Tran.xlsx";
-            string localFilePath = "c:/logs/peter.xlsx";
-        Label:
-            try
-            {
+            string host = Config.GetSection("Host").Value;
+            int port = int.Parse(Config.GetSection("Port").Value);
+            string username = Config.GetSection("Username1").Value;
+            string password = Config.GetSection("Password").Value;
+            string directoryPath = Config.GetSection("TransationFilePath").Value;
+            string resultPath = Config.GetSection("ReconciliationPath").Value;
 
-                using (var client = new FtpClient(host, port)
-                {
-                    Config = {
+
+            using (var client = new FtpClient(host, port)
+            {
+                Config = {
                     EncryptionMode = FtpEncryptionMode.Implicit,
                     ValidateAnyCertificate = true,
                     SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
                     DataConnectionType= FtpDataConnectionType.EPSV
                     },
-                    Credentials = new NetworkCredential(username, password)
-                })
-
-                {
-
-
-                    client.Connect();
-
-                    if (client.IsConnected)
-                    {
-                        client.SetWorkingDirectory(directoryPath);
-
-                        // Download specific file (optional)
-                        // client.DownloadFile(fileName, localFilePath);
-
-                        // Get directory listing (if needed for other files)
-                        var files = client.GetListing(directoryPath);
-
-                        foreach (var file in files)
-                        {
-                            if (file.Name == fileName) // Check for specific file
-                            {
-                                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-
-                                using (var stream = client.OpenRead(file.FullName, FtpDataType.Binary, 0,true))
-                                {
-
-                                    var strm = stream;
-
-                                    var rd = new StreamReader(strm);
-                                    // Assuming you have a reference to ExcelDataReader
-                                    using (var reader = ExcelReaderFactory.CreateOpenXmlReader(strm))
-                                    {
-                                        DataSet excelData = reader.AsDataSet();
-                                        DataTable dataTable = excelData.Tables[0];
-
-                                        // Implement your logic to process data from dataTable
-                                        foreach (DataRow row in dataTable.Rows)
-                                        {
-                                            // Process each row as needed
-                                        }
-                                    }
-                                }
-                                break; // Exit loop after downloading the desired file
-                            }
-                        }
-                    }
-
-
-                }
-
-            }
-            catch (Exception ex)
+                Credentials = new NetworkCredential(username, password)
+            })
             {
-                // Handle FTP specific exceptions
-                Console.WriteLine($"FTP Error: {ex.Message}");
-                goto Label;
-            }
+                client.Connect();
+                client.SetWorkingDirectory(directoryPath);
+                var files = client.GetListing(directoryPath);
+                var selectedFile = files.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Name).StartsWith(processorName));
+                string excelFilePath = Path.Combine(directoryPath, $"{selectedFile.Name}");
 
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                MemoryStream memoryStream = new MemoryStream();
+                client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");     
+                              
+                return memoryStream;
+            }
         }
 
-
-
-
-        public static void Connect2()
+        private void UploadRecociledFile(Stream fileStream)
         {
-            string host = "ftps.coralpay.com";
-            int port = 9192;
-            string username = "msrreconuser";
-            string password = "P@ssw0rd1234567890";
-            string directoryPath = "/To-Reconcile";
-            string fileName = "CIP_Tran.xlsx";
-            string localFilePath = "c:/logs/peter.xlsx";
+            string host = Config.GetSection("Host").Value;
+            int port = int.Parse(Config.GetSection("Port").Value);
+            string username = Config.GetSection("Username1").Value;
+            string password = Config.GetSection("Password").Value;
+            string directoryPath = Config.GetSection("TransationFilePath").Value;
+            string resultPath = Config.GetSection("ReconciliationPath").Value;
 
-            try
+
+            using (var client = new FtpClient(host, port)
             {
-                using (var client = new FtpClient(host, port)
-                {
-                    Config = {
+                Config = {
                     EncryptionMode = FtpEncryptionMode.Implicit,
                     ValidateAnyCertificate = true,
                     SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
                     DataConnectionType= FtpDataConnectionType.EPSV
                     },
-                    Credentials = new NetworkCredential(username, password)
-                })
-                {
-                    client.Connect();
-
-                    if (client.IsConnected)
-                    {
-
-
-
-                        //client.DownloadDirectory("c/logs", directoryPath);
-                        client.SetWorkingDirectory($"{directoryPath}");
-
-                        client.IsStillConnected();
-                        var Prot = client.SslProtocolActive;
-
-                        var files = client.GetListing(directoryPath);
-
-
-
-                        foreach (var file in files)
-                        {
-                            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-
-                            using (var stream = client.OpenRead(file.FullName))
-                            {
-                                var rd = new StreamReader(stream);
-                                stream.Position = 0;
-
-
-                                //using (var reader = ExcelReaderFactory.CreateReader(stream))
-                                //{
-                                using (var reader = ExcelReaderFactory.CreateOpenXmlReader(stream))
-                                {
-                                    DataSet excelData = reader.AsDataSet();
-                                    DataTable dataTable = excelData.Tables[0];
-
-
-                                    int i = 0;
-                                    foreach (DataRow row in dataTable.Rows)
-                                    {
-
-
-                                    }
-
-
-
-
-
-
-
-
-
-                                }
-
-                            }
-
-
-                            var ff = file.Name;
-
-                        }
-
-                        var dwnd = client.DownloadFile("c:/Logs/peter.xlsx", directoryPath + "/NIP_Tran.xlsx");
-
-
-
-                        string fileContents = System.IO.File.ReadAllText(localFilePath);
-                        Console.WriteLine("File Contents:");
-                        Console.WriteLine(fileContents);
-
-                    }
-
-                    using (var stream = client.OpenRead(Path.Combine(directoryPath, fileName)))
-                    {
-                        // Process the file stream (read the file, save it, etc.)
-                        // For example:
-                        using (var reader = new StreamReader(stream))
-                        {
-                            string line;
-                            while ((line = reader.ReadLine()) != null)
-                            {
-                                Console.WriteLine(line);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
+                Credentials = new NetworkCredential(username, password)
+            })
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                client.Connect();
+                client.SetWorkingDirectory(resultPath);
+
+ 
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                MemoryStream memoryStream = new MemoryStream();
+
+                var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}";
+                client.UploadStream(memoryStream, $"{directoryPath}/{fileName}");                
             }
-            Console.WriteLine($"Error: ");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void GetFilePath()
-        {
-
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((AcceptAllCertificates));
-
-            string ftpServer = "ftps.coralpay.com:9192";
-            string ftpUsername = "msrreconuser";
-            string ftpPassword = "P@ssw0rd1234567890";
-            string remoteDirectory = "/To-Reconcile";
-
-            // FTP URI
-            string ftpUri = $"ftp://{ftpServer}/{remoteDirectory}";
-
-            // Create FTP request
-            FtpWebRequest request = WebRequest.Create(ftpUri) as FtpWebRequest;
-            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-            request.UseBinary = true;
-            request.EnableSsl = true;
-            request.UsePassive = true;
-            request.KeepAlive = true;
-            request.ImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Identification;
-            ServicePoint sp = request.ServicePoint;
-
-
-            sp.ConnectionLimit = 1;
-
-            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
-
-            try
-            {
-                var jj = request.GetResponse();
-                // Get the response
-                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
-                {
-                    Stream responseStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(responseStream);
-
-                    // Read the response
-                    Console.WriteLine(reader.ReadToEnd());
-
-                    // Close streams
-                    reader.Close();
-                    response.Close();
-                }
-
-            }
-            catch (WebException ex)
-            {
-                // Handle exceptions
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-
-
-        }
-
-
-
 
 
 
@@ -537,14 +328,6 @@ namespace Jobs.Actions
                 Console.WriteLine($"An error occurred while downloading {fileName}: {ex.Message}");
             }
         }
-
-
-
-
-
-
-
-
 
     }
 }
