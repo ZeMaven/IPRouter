@@ -67,7 +67,7 @@ namespace Jobs.Actions
 
                 FinalRecon.Add(new ReconDetails
                 {
-                    Date = tran.Date,
+                    Date = DateTime.Parse(tran.Date),
                     Amount = tran.Amount,
                     Processor = MsrTran?.Processor ?? ProcessorTran?.Processor,
                     MsrSessionId = MsrTran?.SessionId ?? "NA",
