@@ -714,5 +714,113 @@ namespace MomoSwitchPortal.Controllers
             
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DailyReconcilation(int page)
+        {
+            try
+            {
+                int pageSize = 30;
+                int pageNumber = (page == 0 ? 1 : page);
+
+                ViewBag.tranTypes = new SelectList(new[] { "INCOMING", "OUTGOING" });
+
+                var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
+                var summaryReportTableList = new List<SummaryReportTableViewModel>();
+
+                var db = new MomoSwitchDbContext();
+
+                var loggedInUser = HttpContext.GetLoggedInUser();
+
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+
+                if (loggedInUserInDatabase == null)
+                {
+                    Log.Write("AnalyticsController:SummaryReport", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("AnalyticsController:SummaryReport", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                var Data = new List<DailyReconcilationTableViewModel>();
+
+                if (page != 0 && TempData["InstitutionPerformanceFilterRequest"]?.ToString() != null)
+                {
+                    //  List<TransactionItem> Trans1 = JsonSerializer.Deserialize<List<TransactionItem>>(TempData["Tran"].ToString());
+
+                    var FilterRequest = JsonSerializer.Deserialize<DailyReconcilationViewModel>(TempData["DailyReconcilationFilterRequest"].ToString());
+
+
+
+                    if (FilterRequest.FilterRequest.PaymentRef == null && FilterRequest.FilterRequest.Processor == null &&)
+                    {
+                        Data = await db.DailyReconciliationTb.Select(x => new DailyReconcilationTableViewModel
+                        {
+                          Amount = x.Amount,
+                          Date = x.Date,
+                          EwpResponseCode = x.EwpResponseCode,
+                          EwpSessionId = x.EwpSessionId,
+                          MsrResponseCode = x.MsrResponseCode,
+                          MsrSessionId = x.MsrSessionId,
+                          PaymentRef = x.PaymentRef,
+                          Processor = x.Processor,
+                          ProcessorResponseCode = x.ProcessorResponseCode,
+                          ProcessorSessionId = x.ProcessorSessionId,
+                          Remarks = x.Remarks
+                        }).ToListAsync();
+                    }
+
+                    else
+                    {
+                        Data = await db.PerformanceTb.Where(t => (string.IsNullOrWhiteSpace(FilterRequest.FilterRequest.BankCode) || t.BankCode == FilterRequest.FilterRequest.BankCode))
+                            .Select(x => new DailyReconcilationTableViewModel
+                            {
+                                BankCode = x.BankCode,
+                                BankName = x.BankName,
+                                Remark = x.Remark,
+                                SuccessRate = x.Rate,
+                                Time = x.Time
+                            })
+                            .ToListAsync();
+                    }
+
+
+
+                    int Count = Data.Count;
+                    Data = Data
+                   .OrderByDescending(d => d.SuccessRate)
+                   .Skip((pageNumber - 1) * pageSize)
+                   .Take(pageSize)
+                   .ToList();
+
+                    var startSerialNumber = (pageNumber - 1) * pageSize + 1;
+
+
+                    var viewModel = new InstitutionPerformanceViewModel();
+                    viewModel.Institutions = Data;
+                    viewModel.PaginationMetaData = new(Count, pageNumber, pageSize);
+                    viewModel.StartSerialNumber = startSerialNumber;
+
+                    viewModel.FilterRequest = new InstitutionPerformanceFilterRequest
+                    {
+                        BankCode = FilterRequest.FilterRequest.BankCode
+                    };
+
+                    TempData.Keep();
+
+                    return View(viewModel);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

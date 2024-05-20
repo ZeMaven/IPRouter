@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Momo.Common.Models
+﻿namespace MomoSwitchPortal.Models.ViewModels.Analytics
 {
-    public class ReconDetails
+    public class DailyReconcilationTableViewModel
     {
         public DateTime Date { get; set; }
         public string PaymentRef { get; set; }
         public string Processor { get; set; }
         public decimal Amount { get; set; }
-
         public string EwpSessionId { get; set; }
         public string MsrSessionId { get; set; }
         public string ProcessorSessionId { get; set; }

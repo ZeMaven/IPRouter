@@ -27,6 +27,7 @@ namespace MomoSwitchPortal.Models.Database
         public DbSet<TransactionTb> TransactionTb { get; set; }
         public DbSet<PortalUserTb> PortalUserTb { get; set; }
         public DbSet<PerformanceTb> PerformanceTb { get; set; }
+        public DbSet<DailyReconciliationTb> DailyReconciliationTb { get; set; }
 
     }
 }
