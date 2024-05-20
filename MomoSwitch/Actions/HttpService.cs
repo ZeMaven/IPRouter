@@ -37,7 +37,7 @@ namespace MomoSwitch.Actions
             //string Auth = Convert.ToBase64String(Encoding.Default.GetBytes($"{Uname}:{Pswd}"));
             //WireClient.DefaultRequestHeaders.Add("Authorization", $"Basic {Auth}");
 
-
+            WireClient.Timeout = TimeSpan.FromSeconds(65);
             try
             {
                 HttpResponseMessage response = null;

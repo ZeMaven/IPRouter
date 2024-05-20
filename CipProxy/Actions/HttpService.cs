@@ -57,7 +57,7 @@ namespace CipProxy.Actions
                 var WireClient = new HttpClient();
                 //WireClient.DefaultRequestHeaders.Accept.Clear();
                 //WireClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {NipToken}");
-
+                WireClient.Timeout = TimeSpan.FromSeconds(60);
                 HttpResponseMessage response = null;
 
                 response = await WireClient.PostAsync(Url, new StringContent(EncTextRequest, Encoding.UTF8, "text/plain"));
@@ -92,6 +92,20 @@ namespace CipProxy.Actions
                         ResponseContent = Result
                     };
                 }
+            }
+            catch  (TimeoutException tEx)
+            {
+                Log.Write("HttpService.Call", $"Err: {tEx.Message}");
+                Log.Write("HttpService.Call", $"Cip Url: {Url}");
+                return new HttpServiceResponse
+                {
+                    ResponseHeader = new Models.ResponseHeader
+                    {
+                        ResponseCode = "97",
+                        ResponseMessage = "System timeout"
+                    },
+                    ResponseContent = null
+                };
             }
             catch (Exception Ex)
             {
@@ -169,6 +183,20 @@ namespace CipProxy.Actions
                         ResponseContent = Result
                     };
                 }
+            }
+            catch (TimeoutException tEx)
+            {
+                Log.Write("HttpService.Call", $"Err: {tEx.Message}");
+                Log.Write("HttpService.Call", $"Cip Url: {Url}");
+                return new HttpServiceResponse
+                {
+                    ResponseHeader = new Models.ResponseHeader
+                    {
+                        ResponseCode = "97",
+                        ResponseMessage = "System timeout"
+                    },
+                    ResponseContent = null
+                };
             }
             catch (Exception Ex)
             {

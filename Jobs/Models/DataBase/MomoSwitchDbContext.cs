@@ -3,9 +3,9 @@ using Momo.Common.Models.Tables;
 using System.Collections.Generic;
 using System.Transactions;
 
-namespace MomoSwitch.Models.DataBase
+namespace Jobs.Models.DataBase
 {
-    public class MomoSwitchDbContext:DbContext
+    public class MomoSwitchDbContext : DbContext
     {
         public MomoSwitchDbContext()
         {
@@ -31,5 +31,11 @@ namespace MomoSwitch.Models.DataBase
         public DbSet<BanksTb> BanksTb { get; set; }
         public DbSet<PerformanceTb> PerformanceTb { get; set; }
         public DbSet<DailyReconciliationTb> DailyReconciliationTb { get; set; }
+
+
+
+
+        
+
     }
 }
