@@ -41,7 +41,7 @@ namespace Jobs.Actions
 
         public void Main()
         {
-          
+
             var MsrTrans = GetMsrTransactions();
 
             var EwpTran = GetExcelTransactions("EWP");
@@ -55,7 +55,7 @@ namespace Jobs.Actions
 
 
             var FinalRecon = new List<ReconDetails>();
-            var FinalReconTb= new List<DailyReconciliationTb>();
+            var FinalReconTb = new List<DailyReconciliationTb>();
 
 
             foreach (var tran in EwpTran)
@@ -83,7 +83,24 @@ namespace Jobs.Actions
                 });
             }
 
-            FinalReconTb= new 
+            FinalReconTb = FinalRecon.Select(x => new DailyReconciliationTb
+            {
+                Date = x.Date,
+                Amount = x.Amount,
+                Processor = x.Processor,
+                EwpResponseCode = x.EwpResponseCode,
+                EwpSessionId = x.EwpSessionId,
+                ProcessorSessionId = x.ProcessorSessionId,
+                MsrResponseCode = x.MsrResponseCode,
+                MsrSessionId = x.MsrSessionId,
+                ProcessorResponseCode = x.ProcessorResponseCode,
+                PaymentRef = x.PaymentRef,
+                Remarks = x.Remarks
+            }).ToList();
+            MomoSwitchDbContext db = new();
+
+            db.AddRangeAsync(FinalReconTb);
+            db.SaveChangesAsync();
 
             var FileByte = Excel.Write(FinalRecon, "ReconReport");
 
@@ -91,7 +108,7 @@ namespace Jobs.Actions
 
             UploadRecociledFile(reportStream);
 
-           // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
+            // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
 
         }
 
@@ -142,7 +159,7 @@ namespace Jobs.Actions
         /// <returns></returns>
 
         private List<ProcessorReconData> GetExcelTransactions(string Processor)
-        {         
+        {
             var stream = GetFileStream(Processor);
             List<ProcessorReconData> ProcessorTran = new();
             using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -270,8 +287,8 @@ namespace Jobs.Actions
 
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
                 MemoryStream memoryStream = new MemoryStream();
-                client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");     
-                              
+                client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");
+
                 return memoryStream;
             }
         }
@@ -300,12 +317,12 @@ namespace Jobs.Actions
                 client.Connect();
                 client.SetWorkingDirectory(resultPath);
 
- 
+
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
                 MemoryStream memoryStream = new MemoryStream();
 
                 var fileName = $"Reconciled-{DateTime.Now.ToString("ddMMMyyHHmmss")}";
-                client.UploadStream(memoryStream, $"{directoryPath}/{fileName}");                
+                client.UploadStream(memoryStream, $"{directoryPath}/{fileName}");
             }
         }
 
