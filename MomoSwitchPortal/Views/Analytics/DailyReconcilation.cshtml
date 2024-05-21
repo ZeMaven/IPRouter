@@ -1,0 +1,234 @@
+﻿@using System.Globalization
+@model MomoSwitchPortal.Models.ViewModels.Analytics.DailyReconcilationViewModel
+@{
+    ViewData["Title"] = "Daily Reconciliation List page";
+    ViewData["Analytics"] = "active bg-gradient-warning";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-info shadow-warning border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                    <h6 class="text-white text-capitalize ps-3">Daily Reconciliation List</h6>
+                    @if (Model != null)
+                    {
+                        if (Model.DailyReconcilations.Count > 0)
+                        {
+                            using (Html.BeginForm("DownloadDailyReconcilationReport", "Analytics", FormMethod.Post))
+                            {
+                    
+
+                                
+                                    @Html.HiddenFor(z => z.FilterRequest.PaymentRef)
+                                    @Html.HiddenFor(z => z.FilterRequest.EwpSessionId)
+                                    @Html.HiddenFor(z => z.FilterRequest.MsrSessionId)
+                                    @Html.HiddenFor(z => z.FilterRequest.Processor)
+                                    @Html.HiddenFor(z => z.FilterRequest.ProcessorSessionId)
+                                    @Html.HiddenFor(z => z.FilterRequest.Remarks)
+                                    @Html.HiddenFor(z => z.FilterRequest.StartDate)
+                                    @Html.HiddenFor(z => z.FilterRequest.EndDate)
+                                    <button type class="btn btn-dark btn-sm me-3 my-0">Download</button>
+
+                                
+                            }
+                        }
+                    }
+                    </button>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="container pb-3 px-4">
+
+
+
+                    @if (Model != null)
+                    {
+                        @using (Html.BeginForm("DailyReconcilation", "Analytics", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label for="FilterRequest.StartDate" class="form-label">Start Date:</label>
+
+                                    <input type="date" value="@(Model?.FilterRequest?.StartDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="Start Date" id="FilterRequest.StartDate" name="FilterRequest.StartDate">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="endDate" class="form-label">End Date:</label>
+
+                                    <input type="date" value="@(Model?.FilterRequest?.EndDate?.ToString("yyyy-MM-dd"))" class="form-control border p-2" placeholder="End Date" id="FilterRequest.EndDate" name="FilterRequest.EndDate">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <label for="PaymentRef" class="form-label">Payment Ref:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.PaymentRef" class="form-control border p-2" placeholder="Payment Ref" id="PaymentRef" name="FilterRequest.PaymentRef">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <label for="Processor" class="form-label">Processor:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.Processor" class="form-control border p-2" placeholder="Processor" id="Processor" name="FilterRequest.Processor">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <label for="ResponseCode" class="form-label">Ewp Session Id:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.EwpSessionId" class="form-control border p-2" placeholder="Ewp Session Id" id="EwpSessionId" name="FilterRequest.EwpSessionId">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <label for="SourceAccountNumber" class="form-label">Msr Session Id:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.MsrSessionId" class="form-control border p-2" placeholder="Msr Session Id" id="SourceAccountNumber" name="FilterRequest.MsrSessionId">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="BenefAccountNumber" class="form-label">Processor Session Id:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.ProcessorSessionId" class="form-control border p-2" placeholder="Processor Session Id" id="ProcessorSessionId" name="FilterRequest.ProcessorSessionId">
+                                </div>
+                                
+                            @*     <div class="col-sm-2">
+                                    <label for="BenefAccountNumber" class="form-label">Remarks:</label>
+                                    <input type="text" value="@Model?.FilterRequest?.Remarks" class="form-control border p-2" placeholder="Remarks" id="Remarks" name="FilterRequest.Remarks">
+                                </div >*@
+
+                                <div class="col-sm-2">
+                                    <label for="TranType" class="form-label">Remarks:</label>
+                                    @Html.DropDownListFor(x => x.FilterRequest.Remarks, ViewBag.remarks as SelectList, "Remarks", new { @Class = "form-control border px-3", @title = " Select Remark" })
+                                </div>
+                                <div class="col-sm-2 align-self-end pt-4">
+                                    <button type="submit" class="btn btn-dark mt-2 ">Search</button>
+                                </div>
+
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">S/N</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">Payment Ref</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  text-center ps-2">Amount</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Processor</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Remarks</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Processor Session Id</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Ewp Session Id</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Msr Session Id</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Ewp Response Code</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Msr Response Code</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Date</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    if (Model.DailyReconcilations.Count > 0)
+                                    {
+                                        foreach (var Item in Model.DailyReconcilations)
+                                        {
+                                            <tr>
+                                                <td class="text-center">                                                
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Model.StartSerialNumber</p>                                                
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold mb-0 opacity-8 px-3 ">@Item.PaymentRef</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Amount.ToString("N", CultureInfo.InvariantCulture)</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Processor</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Remarks</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.ProcessorSessionId</p>                                                   
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.EwpSessionId</p>                                                
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.MsrSessionId</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.EwpResponseCode</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.MsrResponseCode</p>
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.Date.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                                                </td>
+                                          
+
+                                            </tr>
+
+                                            {
+                                                Model.StartSerialNumber++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container">
+
+                    @{
+                        if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
+                        {
+                            <p class="pagination justify-content-end"> Page @Model.PaginationMetaData.CurrentPage of @Model.PaginationMetaData.TotalPages</p>
+                        }
+
+
+                        <ul class="pagination justify-content-end">
+
+
+                            @if (Model.PaginationMetaData.TotalCount > 0)
+                            {
+
+
+
+                                if (Model.PaginationMetaData.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Analytics" asp-action="DailyReconcilation" asp-route-page=1>&#10094; &#10094;  </a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Analytics" asp-action="DailyReconcilation" asp-route-page="@(Model.PaginationMetaData.CurrentPage-1)">  &#10094;</a>
+                                    </li>
+
+                                }
+
+                                @for (var i = Model.PaginationMetaData.StartPage; i <= Model.PaginationMetaData.EndPage; i++)
+                                {
+                                    <li class="page-item @(i== Model.PaginationMetaData.CurrentPage? "active":"")">
+                                        <a class="page-link" asp-controller="Analytics" action="Index" asp-route-page=@i> @i </a>
+                                    </li>
+                                }
+
+                                if (Model.PaginationMetaData.CurrentPage < Model.PaginationMetaData.EndPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Analytics" asp-action="DailyReconcilation" asp-route-page="@(Model.PaginationMetaData.CurrentPage+1)">  &#10095;</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link " asp-controller="Analytics" asp-action="DailyReconcilation" asp-route-page=@Model.PaginationMetaData.EndPage>&#10095; &#10095; </a>
+                                    </li>
+                                }
+
+                            }
+
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

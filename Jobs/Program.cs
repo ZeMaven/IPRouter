@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHostedService<RequeryWorker>();
 builder.Services.AddHostedService<AnalysisWorker>();
+builder.Services.AddHostedService<ReconWorker>();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ITransaction, Transaction>();
 builder.Services.AddTransient<IReconcilation, Reconcilation>();
