@@ -61,7 +61,7 @@
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">S/N</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center ">Bank Code</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder  text-center ps-2">Bank Name</th>
-                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Success Rate</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Success Rate %</th>
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Remark</th>                                
                                 <th class="text-uppercase text-secondary text-xs font-weight-bolder text-center  ps-2">Time</th>
                             </tr>
@@ -75,6 +75,7 @@
                                         foreach (var Item in Model.Institutions)
                                         {
                                             string rowColor = "";
+                                            string textColor = "black";
                                             if(Item.SuccessRate >= 95 && Item.SuccessRate <= 100)
                                             {
                                                 rowColor = "#00E000";
@@ -115,12 +116,13 @@
                                             }
                                             if(Item.SuccessRate < 55)
                                             {
-                                                rowColor = "#333333";
-                                            }
-                                            
-                                            if(Item.SuccessRate == 0)
-                                            {
                                                 rowColor = "#DDDDDD";
+                                            }
+
+                                            if(Item.SuccessRate <= 0)
+                                            {
+                                                rowColor = "#5c5c5c";
+                                                // textColor = "#fff";
                                             }
                                             <tr>
                                                 <td class="text-center">
@@ -132,7 +134,7 @@
                                                 <td class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">@Item.BankName</p>
                                                 </td>
-                                                <td style="background-color:@rowColor;border-color:@rowColor;color:#666b86" class="text-center">
+                                                <td style="background-color:@rowColor;border-color:@rowColor;color:@textColor" class="text-center">
                                                     <p class="text-sm font-weight-bold opacity-8  mb-0 ">
                                                     @Item.SuccessRate.ToString(Item.SuccessRate % 1 == 0 ? "#,0" : "#,0.00", CultureInfo.InvariantCulture)
                                                     </p>

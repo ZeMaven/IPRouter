@@ -69,7 +69,7 @@ namespace MomoSwitchPortal.Controllers
 
                     var FilterRequest = JsonSerializer.Deserialize<TransactionViewModel>(TempData["SummaryFilterRequest"].ToString());
 
-                    
+
 
                     if (FilterRequest.FilterRequest.EndDate == null && FilterRequest.FilterRequest.StartDate == null)
                     {
@@ -84,7 +84,7 @@ namespace MomoSwitchPortal.Controllers
                     }
 
                     else
-                    {                       
+                    {
                         Data = await db.TransactionTb
                                           .Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
                                                       (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
@@ -136,8 +136,8 @@ namespace MomoSwitchPortal.Controllers
                     viewModel.FilterRequest = new SummaryReportFilterRequest
                     {
                         StartDate = FilterRequest.FilterRequest.StartDate,
-                        EndDate = FilterRequest.FilterRequest.EndDate,                       
-                        TranType = FilterRequest.FilterRequest.TranType,                       
+                        EndDate = FilterRequest.FilterRequest.EndDate,
+                        TranType = FilterRequest.FilterRequest.TranType,
                     };
 
                     TempData.Keep();
@@ -227,9 +227,9 @@ namespace MomoSwitchPortal.Controllers
                 {
                     FilterRequest = new SummaryReportFilterRequest
                     {
-                       EndDate = model.FilterRequest.EndDate,
-                       StartDate = model.FilterRequest.StartDate,                       
-                       TranType = model.FilterRequest.TranType
+                        EndDate = model.FilterRequest.EndDate,
+                        StartDate = model.FilterRequest.StartDate,
+                        TranType = model.FilterRequest.TranType
                     }
                 };
 
@@ -580,7 +580,7 @@ namespace MomoSwitchPortal.Controllers
                 {
                     FilterRequest = new InstitutionPerformanceFilterRequest
                     {
-                      BankCode = model.FilterRequest.BankCode
+                        BankCode = model.FilterRequest.BankCode
                     }
                 };
 
@@ -620,7 +620,7 @@ namespace MomoSwitchPortal.Controllers
 
 
 
-            
+
                 int Count = Data.Count;
                 Data = Data
                .OrderByDescending(x => x.SuccessRate)
@@ -634,7 +634,7 @@ namespace MomoSwitchPortal.Controllers
 
 
                 model.PaginationMetaData = new(Count, pageNumber, pageSize);
-                model.StartSerialNumber = startSerialNumber;                
+                model.StartSerialNumber = startSerialNumber;
                 return View(model);
             }
             catch (Exception ex)
@@ -651,10 +651,10 @@ namespace MomoSwitchPortal.Controllers
             try
             {
                 var db = new MomoSwitchDbContext();
-                 
+
 
                 var Data = new List<InstitutionPerformanceReport>();
-                 
+
                 if (model.FilterRequest.BankCode == null)
                 {
                     Data = await db.PerformanceTb.Select(x => new InstitutionPerformanceReport
@@ -711,7 +711,396 @@ namespace MomoSwitchPortal.Controllers
                 ViewBag.BadNews = "System Challenge";
                 return View();
             }
-            
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DailyReconcilation(int page)
+        {
+            try
+            {
+                int pageSize = 30;
+                int pageNumber = (page == 0 ? 1 : page);
+
+                ViewBag.remarks = new SelectList(new[] { "OK", "Others" });
+
+                var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
+                var summaryReportTableList = new List<SummaryReportTableViewModel>();
+
+                var db = new MomoSwitchDbContext();
+
+                var loggedInUser = HttpContext.GetLoggedInUser();
+
+                var loggedInUserInDatabase = await db.PortalUserTb.SingleOrDefaultAsync(x => x.Username.ToLower() == loggedInUser.ToLower());
+
+                if (loggedInUserInDatabase == null)
+                {
+                    Log.Write("AnalyticsController:SummaryReport", $"eRR: Logged in user not gotten");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                if (!loggedInUserInDatabase.IsActive)
+                {
+                    //should they be logged out?
+                    Log.Write("AnalyticsController:SummaryReport", $"eRR: User with username: {loggedInUserInDatabase.Username} is deactivated");
+                    return RedirectToAction("Logout", "Account");
+                }
+
+                var Data = new List<DailyReconcilationTableViewModel>();
+
+                if (page != 0 && TempData["DailyReconcilationFilterRequest"]?.ToString() != null)
+                {
+                    var FilterRequest = JsonSerializer.Deserialize<DailyReconcilationViewModel>(TempData["DailyReconcilationFilterRequest"].ToString());
+
+
+
+                    if (FilterRequest.FilterRequest.PaymentRef == null && FilterRequest.FilterRequest.Processor == null
+                        && FilterRequest.FilterRequest.EwpSessionId == null && FilterRequest.FilterRequest.MsrSessionId == null && FilterRequest.FilterRequest.ProcessorSessionId == null
+                        && FilterRequest.FilterRequest.Remarks == null && FilterRequest.FilterRequest.StartDate == null && FilterRequest.FilterRequest.EndDate == null)
+                    {
+                        Data = await db.DailyReconciliationTb.OrderByDescending(x => x.Date).Take(50).Select(x => new DailyReconcilationTableViewModel
+                        {
+                            Amount = x.Amount,
+                            Date = x.Date,
+                            Id = x.Id,
+                            EwpResponseCode = x.EwpResponseCode,
+                            EwpSessionId = x.EwpSessionId,
+                            MsrResponseCode = x.MsrResponseCode,
+                            MsrSessionId = x.MsrSessionId,
+                            PaymentRef = x.PaymentRef,
+                            Processor = x.Processor,
+                            ProcessorResponseCode = x.ProcessorResponseCode,
+                            ProcessorSessionId = x.ProcessorSessionId,
+                            Remarks = x.Remarks
+                        }).ToListAsync();
+                    }
+
+                    else
+                    {
+                        Data = await db.DailyReconciliationTb.Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                      (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.PaymentRef) || t.PaymentRef == FilterRequest.FilterRequest.PaymentRef.Trim()) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.EwpSessionId) || t.EwpSessionId == FilterRequest.FilterRequest.EwpSessionId.Trim()) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.ProcessorSessionId) || t.ProcessorSessionId == FilterRequest.FilterRequest.ProcessorSessionId.Trim()) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.MsrSessionId) || t.MsrSessionId == FilterRequest.FilterRequest.MsrSessionId.Trim()) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor) || t.Processor == FilterRequest.FilterRequest.Processor.Trim()) &&
+                                                        (string.IsNullOrEmpty(FilterRequest.FilterRequest.Remarks) || (FilterRequest.FilterRequest.Remarks.ToLower() == "ok" && t.Remarks.ToLower() == "ok") || (FilterRequest.FilterRequest.Remarks == "Others" && t.Remarks.ToLower() != "ok")))
+                                                        .Select(x => new DailyReconcilationTableViewModel
+                                                        {
+                                                            Amount = x.Amount,
+                                                            Date = x.Date,
+                                                            Id = x.Id,
+                                                            EwpResponseCode = x.EwpResponseCode,
+                                                            EwpSessionId = x.EwpSessionId,
+                                                            MsrResponseCode = x.MsrResponseCode,
+                                                            MsrSessionId = x.MsrSessionId,
+                                                            PaymentRef = x.PaymentRef,
+                                                            Processor = x.Processor,
+                                                            ProcessorResponseCode = x.ProcessorResponseCode,
+                                                            ProcessorSessionId = x.ProcessorSessionId,
+                                                            Remarks = x.Remarks
+                                                        })
+                                                        .ToListAsync();
+                    }
+
+
+
+                    int Count = Data.Count;
+                    Data = Data
+                   .OrderByDescending(d => d.Date)
+                   .Skip((pageNumber - 1) * pageSize)
+                   .Take(pageSize)
+                   .ToList();
+
+                    var startSerialNumber = (pageNumber - 1) * pageSize + 1;
+
+
+                    var viewModel = new DailyReconcilationViewModel();
+                    viewModel.DailyReconcilations = Data;
+                    viewModel.PaginationMetaData = new(Count, pageNumber, pageSize);
+                    viewModel.StartSerialNumber = startSerialNumber;
+
+                    viewModel.FilterRequest = new DailyReconcilationFilterRequest
+                    {
+                        Processor = FilterRequest.FilterRequest.Processor,
+                        EndDate = FilterRequest.FilterRequest.EndDate,
+                        StartDate = FilterRequest.FilterRequest.StartDate,
+                        MsrSessionId = FilterRequest.FilterRequest.MsrSessionId,
+                        EwpSessionId = FilterRequest.FilterRequest.EwpSessionId,
+                        PaymentRef = FilterRequest.FilterRequest.PaymentRef,
+                        ProcessorSessionId = FilterRequest.FilterRequest.ProcessorSessionId,
+                        Remarks = FilterRequest.FilterRequest.Remarks
+                    };
+
+                    TempData.Keep();
+
+                    return View(viewModel);
+                }
+
+                TempData["DailyReconcilationFilterRequest"] = null;
+
+                DailyReconcilationViewModel dailyRecons = new();
+                await Task.Run((() =>
+                {
+                    Data = db.DailyReconciliationTb.OrderByDescending(x => x.Date).Take(50).Select(x => new DailyReconcilationTableViewModel
+                    {
+
+                        Amount = x.Amount,
+                        Date = x.Date,
+                        Id = x.Id,
+                        EwpResponseCode = x.EwpResponseCode,
+                        EwpSessionId = x.EwpSessionId,
+                        MsrResponseCode = x.MsrResponseCode,
+                        MsrSessionId = x.MsrSessionId,
+                        PaymentRef = x.PaymentRef,
+                        Processor = x.Processor,
+                        ProcessorResponseCode = x.ProcessorResponseCode,
+                        ProcessorSessionId = x.ProcessorSessionId,
+                        Remarks = x.Remarks
+                    }).ToList();
+
+
+                    dailyRecons = new DailyReconcilationViewModel()
+                    {
+                        DailyReconcilations = Data
+                    };
+                }));
+
+                int Count2 = dailyRecons.DailyReconcilations.Count;
+                dailyRecons.DailyReconcilations = dailyRecons.DailyReconcilations
+               .OrderByDescending(d => d.Date)
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+               .ToList();
+
+                var startSerialNumber2 = (pageNumber - 1) * pageSize + 1;
+
+
+                dailyRecons.PaginationMetaData = new(Count2, pageNumber, pageSize);
+                dailyRecons.StartSerialNumber = startSerialNumber2;
+
+                return View(dailyRecons);
+
+            }
+            catch (Exception ex)
+            {
+                Log.Write("AnalyticsController.DailyReconcilation.Get", $"Err:  {ex.Message}");
+                ViewBag.BadNews = "System Challenge";
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DailyReconcilation(DailyReconcilationViewModel model)
+        {
+            try
+            {
+                TempData["DailyReconcilationFilterRequest"] = null;
+                int pageSize = 30;
+                int pageNumber = 1;
+
+                ViewBag.remarks = new SelectList(new[] { "OK", "Others" });
+
+
+                var db = new MomoSwitchDbContext();
+                var institutionCode = configuration.GetValue<string>("MomoInstitutionCode");
+
+                var FilterRequest = new DailyReconcilationViewModel
+                {
+                    FilterRequest = new DailyReconcilationFilterRequest
+                    {
+                        Processor = model.FilterRequest.Processor,
+                        EndDate = model.FilterRequest.EndDate,
+                        StartDate = model.FilterRequest.StartDate,
+                        MsrSessionId = model.FilterRequest.MsrSessionId,
+                        EwpSessionId = model.FilterRequest.EwpSessionId,
+                        PaymentRef = model.FilterRequest.PaymentRef,
+                        ProcessorSessionId = model.FilterRequest.ProcessorSessionId,
+                        Remarks = model.FilterRequest.Remarks
+                    }
+                };
+
+
+
+                var Data = new List<DailyReconcilationTableViewModel>();
+
+                var startDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                var endDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+
+                if (FilterRequest.FilterRequest.PaymentRef == null && FilterRequest.FilterRequest.Processor == null
+                      && FilterRequest.FilterRequest.EwpSessionId == null && FilterRequest.FilterRequest.MsrSessionId == null && FilterRequest.FilterRequest.ProcessorSessionId == null
+                      && FilterRequest.FilterRequest.Remarks == null && FilterRequest.FilterRequest.StartDate == null && FilterRequest.FilterRequest.EndDate == null)
+                {
+                    Data = await db.DailyReconciliationTb.OrderByDescending(x => x.Date).Take(50).Select(x => new DailyReconcilationTableViewModel
+                    {
+                        Amount = x.Amount,
+                        Date = x.Date,
+                        EwpResponseCode = x.EwpResponseCode,
+                        EwpSessionId = x.EwpSessionId,
+                        MsrResponseCode = x.MsrResponseCode,
+                        MsrSessionId = x.MsrSessionId,
+                        PaymentRef = x.PaymentRef,
+                        Processor = x.Processor,
+                        Id = x.Id,
+                        ProcessorResponseCode = x.ProcessorResponseCode,
+                        ProcessorSessionId = x.ProcessorSessionId,
+                        Remarks = x.Remarks
+                    }).ToListAsync();
+                }
+                else
+                {
+                    db.TransactionTb.Where(x => (true || x.TransactionId == ""));
+
+
+                    Data = await db.DailyReconciliationTb.Where(t => (!FilterRequest.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                  (!FilterRequest.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(FilterRequest.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.PaymentRef) || t.PaymentRef == FilterRequest.FilterRequest.PaymentRef.Trim()) &&                                                    
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.EwpSessionId) || t.EwpSessionId == FilterRequest.FilterRequest.EwpSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.ProcessorSessionId) || t.ProcessorSessionId == FilterRequest.FilterRequest.ProcessorSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.MsrSessionId) || t.MsrSessionId == FilterRequest.FilterRequest.MsrSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor) || t.Processor == FilterRequest.FilterRequest.Processor.Trim()) &&
+                                                    (string.IsNullOrEmpty(FilterRequest.FilterRequest.Remarks) || (FilterRequest.FilterRequest.Remarks.ToLower() == "ok" && t.Remarks.ToLower() == "ok") || (FilterRequest.FilterRequest.Remarks == "Others" && t.Remarks.ToLower() != "ok")))
+                                                    .Select(x => new DailyReconcilationTableViewModel
+                                                    {
+                                                        Amount = x.Amount,
+                                                        Id = x.Id,
+                                                        Date = x.Date,
+                                                        EwpResponseCode = x.EwpResponseCode,
+                                                        EwpSessionId = x.EwpSessionId,
+                                                        MsrResponseCode = x.MsrResponseCode,
+                                                        MsrSessionId = x.MsrSessionId,
+                                                        PaymentRef = x.PaymentRef,
+                                                        Processor = x.Processor,
+                                                        ProcessorResponseCode = x.ProcessorResponseCode,
+                                                        ProcessorSessionId = x.ProcessorSessionId,
+                                                        Remarks = x.Remarks
+                                                    })
+                                                    .ToListAsync();
+                }
+
+
+                TempData["DailyReconcilationFilterRequest"] = JsonSerializer.Serialize(FilterRequest);
+                TempData.Keep();
+
+
+                int Count = Data.Count;
+                Data = Data
+               .OrderByDescending(x => x.Date)
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+               .ToList();
+
+                var startSerialNumber = (pageNumber - 1) * pageSize + 1;
+
+                model.DailyReconcilations = Data;
+
+
+                model.PaginationMetaData = new(Count, pageNumber, pageSize);
+                model.StartSerialNumber = startSerialNumber;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("AnalyticsController:DailyReconcilation.Post", $"eRR: {ex.Message}");
+                return View("Error");
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DownloadDailyReconcilationReport(DailyReconcilationViewModel model)
+        {
+            try
+            {
+                var db = new MomoSwitchDbContext();
+
+
+                var Data = new List<DailyReconcilationReport>();
+
+
+                if (model.FilterRequest.PaymentRef == null && model.FilterRequest.Processor == null
+                      && model.FilterRequest.EwpSessionId == null && model.FilterRequest.MsrSessionId == null && model.FilterRequest.ProcessorSessionId == null
+                      && model.FilterRequest.Remarks == null && model.FilterRequest.StartDate == null && model.FilterRequest.EndDate == null)
+                {
+                    Data = await db.DailyReconciliationTb.OrderByDescending(x => x.Date).Take(50).Select(x => new DailyReconcilationReport
+                    {
+                        Amount = x.Amount,
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                        EwpResponseCode = x.EwpResponseCode,
+                        EwpSessionId = x.EwpSessionId,
+                        MsrResponseCode = x.MsrResponseCode,
+                        MsrSessionId = x.MsrSessionId,
+                        PaymentRef = x.PaymentRef,
+                        Processor = x.Processor,                        
+                        ProcessorResponseCode = x.ProcessorResponseCode,
+                        ProcessorSessionId = x.ProcessorSessionId,
+                        Remarks = x.Remarks
+                    }).ToListAsync();
+                }
+
+                else
+                {
+                    db.TransactionTb.Where(x => (true || x.TransactionId == ""));
+
+
+                    Data = await db.DailyReconciliationTb.Where(t => (!model.FilterRequest.StartDate.HasValue || t.Date >= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.StartDate).ToString("yyyy-MM-dd") + " 00:00:00")) &&
+                                                  (!model.FilterRequest.EndDate.HasValue || t.Date <= DateTime.Parse(Convert.ToDateTime(model.FilterRequest.EndDate).ToString("yyyy-MM-dd") + " 23:59:59")) &&
+                                                    (string.IsNullOrEmpty(model.FilterRequest.PaymentRef) || t.PaymentRef == model.FilterRequest.PaymentRef.Trim()) &&                                                    
+                                                    (string.IsNullOrEmpty(model.FilterRequest.EwpSessionId) || t.EwpSessionId == model.FilterRequest.EwpSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(model.FilterRequest.ProcessorSessionId) || t.ProcessorSessionId == model.FilterRequest.ProcessorSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(model.FilterRequest.MsrSessionId) || t.MsrSessionId == model.FilterRequest.MsrSessionId.Trim()) &&
+                                                    (string.IsNullOrEmpty(model.FilterRequest.Processor) || t.Processor == model.FilterRequest.Processor.Trim()) &&
+                                                    (string.IsNullOrEmpty(model.FilterRequest.Remarks) || (model.FilterRequest.Remarks.ToLower() == "ok" && t.Remarks.ToLower() == "ok") || (model.FilterRequest.Remarks == "Others" && t.Remarks.ToLower() != "ok")))
+                                                    .Select(x => new DailyReconcilationReport
+                                                    {
+                                                        Amount = x.Amount,                                                        
+                                                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss.fff"),
+                                                        EwpResponseCode = x.EwpResponseCode,
+                                                        EwpSessionId = x.EwpSessionId,
+                                                        MsrResponseCode = x.MsrResponseCode,
+                                                        MsrSessionId = x.MsrSessionId,
+                                                        PaymentRef = x.PaymentRef,
+                                                        Processor = x.Processor,
+                                                        ProcessorResponseCode = x.ProcessorResponseCode,
+                                                        ProcessorSessionId = x.ProcessorSessionId,
+                                                        Remarks = x.Remarks
+                                                    })
+                                                    .ToListAsync();
+                }
+
+                Data = Data.OrderByDescending(x => x.Date).ToList();
+                Log.Write("AnalyticsController.DownloadDailyReconcilationReport", $"Report count {Data.Count}");
+
+                var sheet = $"MomoSwitchDailyReconcilation-{DateTime.Now}";
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage excelPackage = new ExcelPackage())
+                {
+                    var workSheet = excelPackage.Workbook.Worksheets.Add(sheet);
+                    var SheetRange = workSheet.Cells["A1"].LoadFromCollection(Data, true);
+                    var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    workSheet.Row(1).Style.Font.Bold = true;
+                    workSheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                    SheetRange.AutoFitColumns();
+                    SheetRange.Style.Numberformat.Format = "_( #,##_);_( (#,##0.00);_(* \" 0 \"_);_(@_)";
+
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        excelPackage.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(content, contentType, sheet + ".xlsx");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write("AnalyticsController.DownloadDailyReconcilationReport", $"Err:  {ex.Message}");
+                ViewBag.BadNews = "System Challenge";
+                return View();
+            }
+
         }
 
     }
