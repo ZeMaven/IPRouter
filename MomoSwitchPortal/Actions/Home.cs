@@ -10,6 +10,7 @@ namespace MomoSwitchPortal.Actions
     public interface IHome
     {
         HomeViewModel GetDashboardData(List<HomeMiniTransaction> incomingTransactions, List<HomeMiniTransaction> outgoingTransactions);
+        HomeViewModel GetTodayDashboardData(List<HomeMiniTransaction> todayIncomingTransactions, List<HomeMiniTransaction> todayOutgoingTransactions);        
     }
     public class Home : IHome
     {
@@ -179,6 +180,58 @@ namespace MomoSwitchPortal.Actions
             }               
 
             return weeklyTrendViewModel;
+        }
+
+        public HomeViewModel GetTodayDashboardData(List<HomeMiniTransaction> todayIncomingTransactions, List<HomeMiniTransaction> todayOutgoingTransactions)
+        {
+            try
+            {
+
+                var successfulOutgoingTransactions = todayOutgoingTransactions.Where(x => x.ResponseCode == "00").ToList();
+                var failedOutgoingTransactions = todayOutgoingTransactions.Where(x => x.ResponseCode != "00" && x.ResponseCode != "09").ToList();                
+    
+                var todaySuccessfulTransactions = successfulOutgoingTransactions.ToList();
+                var todayFailedTransactions = failedOutgoingTransactions.ToList();             
+
+
+
+                int currentMonth = DateTime.Today.Month;
+                int currentYear = DateTime.Today.Year;
+              
+                var viewModel = new HomeViewModel
+                {
+                    ResponseHeader = new ResponseHeader
+                    {
+                        ResponseCode = "00",
+                        ResponseMessage = "Success"
+                    },
+                    DashboardData = new DashboardData
+                    {
+                        TotalIncoming = todayIncomingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalIncomingCount = todayIncomingTransactions.Count,
+                        TotalOutGoing = todayOutgoingTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalOutGoingCount = todayOutgoingTransactions.Count,
+                        TotalFailed = todayFailedTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalFailedCount = todayFailedTransactions.Count,
+                        TotalSuccessful = todaySuccessfulTransactions.Sum(x => x.Amount).ToString("N", CultureInfo.InvariantCulture),
+                        TotalSuccessfulCount = todaySuccessfulTransactions.Count,                    
+                    }
+                };
+
+                return viewModel;
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Home:GetDashboardData", $"eRR: {ex.Message}");
+                return new HomeViewModel
+                {
+                    ResponseHeader = new ResponseHeader
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "System Challenge"
+                    }
+                };
+            }
         }
     }
 }
