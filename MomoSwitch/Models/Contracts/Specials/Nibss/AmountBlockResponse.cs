@@ -7,7 +7,7 @@ namespace MomoSwitch.Models.Contracts.Specials.Nibss
 {
     public class AmountBlockResponse : AccountBlockResponse
     {
-        public string ResponseCode { get; set; }
+        public new string ResponseCode { get; set; }
         public decimal Amount { get; set; }
     }
 }

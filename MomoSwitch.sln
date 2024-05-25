@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchRequery", "SwitchRequ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobs", "Jobs\Jobs.csproj", "{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtransactProxy", "EtransactProxy\EtransactProxy.csproj", "{0F14DE67-C555-4192-923E-BBE86CE6A2DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

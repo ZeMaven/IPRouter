@@ -1,4 +1,5 @@
 ﻿using MomoSwitch.Models.Contracts.Momo;
+using Momo.Common.Models;
 
 namespace MomoSwitch.Models.Internals
 {
