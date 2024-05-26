@@ -82,9 +82,9 @@ namespace EtransactProxy.Actions
 
                 EtranzactRequest.transaction.pin = "*****";
                 var JsonReq = JsonSerializer.Serialize(EtranzactRequest);
-                Log.Write("Etranzact.NameEnquiry", $"Request to Cip: {JsonReq}");
+                Log.Write("Etranzact.NameEnquiry", $"Request to Etransact: {JsonReq}");
 
-                Log.Write("Etranzact.NameEnquiry", $"Response from Cip Enc: {EtranzactResp.ResponseContent}");
+                Log.Write("Etranzact.NameEnquiry", $"Response from Etransact Enc: {EtranzactResp.ResponseContent}");
                 if (EtranzactResp.ResponseHeader.ResponseCode != "00")
                 {
                     return new NameEnquiryPxResponse
