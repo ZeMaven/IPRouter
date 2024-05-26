@@ -1,58 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nipoutward-api-deployment
-  namespace: app-prod
+  name: etransact-api-deployment
+  namespace: app-stg
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nipoutward-api
+      app: etransact-api
   template:
     metadata:
       labels:
-        app: nipoutward-api
+        app: etransact-api
     spec:
       containers:
-      - name: nipoutward-api
-        image: dockub.coralpay.com/nipoutward:#{image-tag}#
+      - name: etransact-api
+        image: dockub.coralpay.com/etransact:#{image-tag}#
         resources:
           limits:
-            memory: "1Gi"
-            cpu: "1"
+            memory: "228Mi"
+            cpu: "200m"
           requests:
             memory: "200M"
             cpu: "100m"  
         ports:
         - containerPort: 8080
           protocol: TCP
-        volumeMounts:
-            - name: keys
-              mountPath: /app/keys
         envFrom:
         - secretRef:
-            name: nipoutward
+            name: etransact
         - configMapRef:
-            name: nipoutward
+            name: etransact
         - configMapRef:
             name: timezone
       imagePullSecrets:
         - name: docker-cred
-      volumes:
-        - name: keys
-          secret:
-            secretName: nipoutward
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: nipoutward-api-service
-  namespace: app-prod
+  name: etransact-api-service
+  namespace: app-stg
 spec:
   type: ClusterIP
   selector:
-    app: nipoutward-api
+    app: etransact-api
   ports:
   - port: 8080
     targetPort: 8080
