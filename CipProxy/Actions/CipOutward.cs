@@ -1,6 +1,7 @@
 ﻿using CipProxy.Models.Cip.NameEnq;
 using CipProxy.Models.Cip.TranQuery;
 using CipProxy.Models.Cip.Transfer;
+using Momo.Common.Models.HttpService;
 using Momo.Common.Actions;
 using Momo.Common.Models;
 using System.Text.Json;

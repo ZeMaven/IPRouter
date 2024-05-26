@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Momo.Common.Models;
 
 namespace MomoSwitch.Models.Internals.HttpService
 {
@@ -15,13 +16,14 @@ namespace MomoSwitch.Models.Internals.HttpService
     }
 
 
-        public class HttpResponseHeader : ResponseHeader
-        {
-            //  [HiddenInput]
-            public HttpServiceStatus ResponseCode { get; set; }
-            public HttpStatusCode HttpStatusCode { get; set; }
-        }
+    public class HttpResponseHeader : ResponseHeader
+    {
+        //  [HiddenInput]
+        public new HttpServiceStatus ResponseCode { get; set; }
+        public HttpStatusCode HttpStatusCode { get; set; }
+    }
 
-        public enum HttpServiceStatus { Failed = 0, Error = 3, Success = 1, TimeOut = 2 }
-    
+    public enum HttpServiceStatus { Failed = 0, Error = 3, Success = 1, TimeOut = 2 }
+
 }
+;
