@@ -65,7 +65,7 @@ namespace EtransactProxy.Actions
                     {
                         description = "Account Query",
                         amount = 0m,
-                        bankCode = Bank.OldCode,
+                        bankCode = Bank?.OldCode,
                         destination = Request.AccountId,
                         endPoint = "A",
                         pin = Pin,
@@ -246,7 +246,7 @@ namespace EtransactProxy.Actions
                     transaction = new Transaction
                     {
                         amount = Request.Amount,
-                        bankCode = Bank.OldCode,
+                        bankCode = Bank?.OldCode,
                         description = Request.Narration,
                         destination = Request.BenefAccountNumber,
                         senderName = Request.SourceAccountName,
