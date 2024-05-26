@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: etransact-api-deployment
+  name: etranzactproxy-api-deployment
   namespace: dev
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: etransact-api
+      app: etranzactproxy-api
   template:
     metadata:
       labels:
-        app: etransact-api
+        app: etranzactproxy-api
     spec:
       containers:
-      - name: etransact-api
-        image: dockub.coralpay.com/etransact:#{image-tag}#
+      - name: etranzactproxy-api
+        image: dockub.coralpay.com/etranzactproxy:#{image-tag}#
         resources:
           limits:
             memory: "228Mi"
@@ -28,9 +28,9 @@ spec:
           protocol: TCP
         envFrom:
         - secretRef:
-            name: etransact
+            name: etranzactproxy
         - configMapRef:
-            name: etransact
+            name: etranzactproxy
         - configMapRef:
             name: timezone
       imagePullSecrets:
@@ -40,12 +40,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: etransact-api-service
+  name: etranzactproxy-api-service
   namespace: dev
 spec:
   type: ClusterIP
   selector:
-    app: etransact-api
+    app: etranzactproxy-api
   ports:
   - port: 8080
     targetPort: 8080
