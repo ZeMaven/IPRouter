@@ -1,9 +1,13 @@
-﻿using Momo.Common.Models;
+﻿using EtransactProxy.Models.Internal;
+using Momo.Common.Actions;
+using Momo.Common.Models;
+using System.ComponentModel.Design;
 
 namespace EtransactProxy.Actions
 {
     public interface ITransposer
     {
+        BankDetails GetBank(string BankCode);
         ResponseHeader Response(string ResponseCode);
     }
 
@@ -11,6 +15,16 @@ namespace EtransactProxy.Actions
     {
 
 
+        private readonly IConfiguration Config;
+        private readonly ILog Log;
+
+
+        public Transposer(IConfiguration config, ILog log)
+        {
+            Log = log;
+            Config = config;
+
+        }
 
         public ResponseHeader Response(string ResponseCode)
         {
@@ -271,5 +285,24 @@ namespace EtransactProxy.Actions
             }
 
         }
+
+
+
+        public BankDetails GetBank(string BankCode)
+        {
+            var BankList = Config.GetSection("BankCodes").Get<List<BankDetails>>();
+
+            if (BankCode.Length == 3)
+                return BankList.Where(x => x.OldCode == BankCode).FirstOrDefault();
+            else if (BankCode.Length == 6)
+                return BankList.Where(x => x.NewCode == BankCode).FirstOrDefault();
+            else
+            {
+                Log.Write("Transposer.GetBank", $"BankCode not found: {BankCode}");
+                return new BankDetails();
+            }
+
+        }
+
     }
 }

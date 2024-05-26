@@ -9,16 +9,12 @@ using System.Text.Json;
 
 namespace EtransactProxy.Actions
 {
-
-
     public interface IEntranzactOutward
     {
         Task<NameEnquiryPxResponse> NameEnquiry(NameEnquiryPxRequest Request);
         Task<TranQueryPxResponse> TransactionQuery(TranQueryPxRequest Request);
         Task<FundTransferPxResponse> Transfer(FundTransferPxRequest Request);
     }
-
-
 
     public class EtranzactOutward : IEntranzactOutward
     {
@@ -53,9 +49,10 @@ namespace EtransactProxy.Actions
 
             try
             {
+
                 var JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("Etranzact.NameEnquiry", $"Request from Router: {JsonStr}");
-
+                var Bank = Transposer.GetBank(Request.DestinationBankCode);
 
                 var TranId = Utilities.CreateTransactionId();
                 SessionId = $"{SourceBank}{TranId}";
@@ -68,7 +65,7 @@ namespace EtransactProxy.Actions
                     {
                         description = "Account Query",
                         amount = 0m,
-                        bankCode = Request.DestinationBankCode,
+                        bankCode = Bank.OldCode,
                         destination = Request.AccountId,
                         endPoint = "A",
                         pin = Pin,
@@ -145,7 +142,7 @@ namespace EtransactProxy.Actions
         {
             string SessionId = string.Empty;
             try
-            {
+            {            
                 var JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("Etranzact.TranQuery", $"Request from Router: {JsonStr}");
 
@@ -228,6 +225,9 @@ namespace EtransactProxy.Actions
 
         public async Task<FundTransferPxResponse> Transfer(FundTransferPxRequest Request)
         {
+
+            var Bank = Transposer.GetBank(Request.DestinationBankCode);
+
             string SessionId = string.Empty;
             string SourceBank = string.Empty;
             try
@@ -246,7 +246,7 @@ namespace EtransactProxy.Actions
                     transaction = new Transaction
                     {
                         amount = Request.Amount,
-                        bankCode = Request.DestinationBankCode,
+                        bankCode = Bank.OldCode,
                         description = Request.Narration,
                         destination = Request.BenefAccountNumber,
                         senderName = Request.SourceAccountName,
@@ -257,7 +257,7 @@ namespace EtransactProxy.Actions
                 };
 
 
-                Log.Write("Etranzact.TranQuery", $"Request to Etransact: See request below |  SessionId: {SessionId}");
+                Log.Write("Etranzact.FundTransfer", $"Request to Etransact: See request below |  SessionId: {SessionId}");
                 var EtransactResp = await HttpService.Call(EtranzactRequest, Operation.Transfer);
 
                 EtranzactRequest.transaction.pin = "*****";

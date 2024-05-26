@@ -14,6 +14,7 @@ builder.Services.AddTransient<IEntranzactOutward, EtranzactOutward>();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ICommonUtilities, CommonUtilities>();
 builder.Services.AddTransient<ITransposer, Transposer>();
+//builder.Services.Configure<BankCodesOptions>(Configuration.GetSection("BankCodes"));
 
 var app = builder.Build();
 
@@ -30,4 +31,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run(); 

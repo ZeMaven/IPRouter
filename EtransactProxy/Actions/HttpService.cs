@@ -46,7 +46,7 @@ namespace EtransactProxy.Actions
 
                 var JsonString = JsonConvert.SerializeObject(Request);
                 //Log.Write("HttpService.Call", $"Request to Router: {JsonString}");
-                Log.Write("HttpService.Call", $"Request to Etransact: {JsonString}");
+                Log.Write("HttpService.Call", $"Request to Etransact: {JsonString}"); //block latter
                 HttpResponseMessage response = null;
 
                 response = await WireClient.PostAsync(Url, new StringContent(JsonString, Encoding.UTF8, "application/json"));
@@ -54,11 +54,11 @@ namespace EtransactProxy.Actions
 
                 Log.Write("HttpService.Call", $"HttpStatus: {response.StatusCode}");
                 Log.Write("HttpService.Call", $"HttpReasonPhrase: {response.ReasonPhrase}");
-                Log.Write("HttpService.Call", $"Router Response: {Result}");
+                Log.Write("HttpService.Call", $"Etransact Response: {Result}");
 
                 if (string.IsNullOrEmpty(Result))
                 {
-                    Log.Write("HttpService.Call", $"Router Url: {Url}");
+                    Log.Write("HttpService.Call", $"Etransact Url: {Url}");
                     return new HttpServiceResponse
                     {
                         ResponseHeader = new ResponseHeader
