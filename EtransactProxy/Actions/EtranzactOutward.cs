@@ -158,7 +158,7 @@ namespace EtransactProxy.Actions
                     {
                         description = "Status check",
                         pin = Pin,
-                        reference = Request.SessionId,
+                        reference = Request.TransactionId,
                         lineType = "OTHERS"
                     }
                 };
@@ -192,7 +192,7 @@ namespace EtransactProxy.Actions
                 TranQueryPxResponse Resp = new()
                 {
                     SessionId = Request.SessionId,
-                    TransactionId = null,
+                    TransactionId = Request.TransactionId,
                     ResponseCode = ResponseHeader.ResponseCode,
                     ResponseMessage = ResponseHeader.ResponseMessage,
                     SourceBankCode = SourceBank,
@@ -215,7 +215,7 @@ namespace EtransactProxy.Actions
                 return new TranQueryPxResponse
                 {
                     SessionId = SessionId,
-                    TransactionId = Request.SessionId,
+                    TransactionId = Request.TransactionId,                    
                     SourceBankCode = SourceBank,
                     ResponseCode = "97",
                 };

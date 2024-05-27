@@ -19,7 +19,7 @@ namespace MomoSwitch.Actions
     {
         Task<NameEnquiryResponse> NameEnquiry(NameEnquiryRequest Req);
 
-        Task<TranQueryResponse> GetTransaction(string SessionId);
+        Task<TranQueryResponse> GetTransaction(string TransactionId);
         Task<FundTransferResponse> Transfer(FundTransferRequest Req);
         AuthResponse Reset(AuthRequest Req);
         List<Perfomance> GetPerfomance();
@@ -159,7 +159,7 @@ namespace MomoSwitch.Actions
 
 
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
-                { 
+                {
                     EndPoint = RouterDetail.TransferUrl,
                     Method = Models.Internals.HttpService.Method.Post,
                     RequestObject = ProcessorRequest
@@ -264,7 +264,7 @@ namespace MomoSwitch.Actions
                     if (Tran.ResponseCode != "00")
                     {
                         //Get from processor
-                        var QueryTran = await TranQuery(new TranQueryRequest { transactionId = Tran.SessionId }, Tran.Processor);
+                        var QueryTran = await TranQuery(new Models.Internals.TranQueryRequest { SessionId = Tran.SessionId, TransactionId = Tran.TransactionId }, Tran.Processor);
 
                         //UpdateDb
                         Tran.ResponseCode = QueryTran.responseCode;
@@ -411,7 +411,7 @@ namespace MomoSwitch.Actions
                 Log.Write($"Outward.GetPerfomance", $"Request Performance");
 
                 var Db = new MomoSwitchDbContext();
-                var Data= Db.PerformanceTb.Select(x => new Perfomance
+                var Data = Db.PerformanceTb.Select(x => new Perfomance
                 {
                     BankCode = x.BankCode,
                     BankName = x.BankName,
@@ -424,7 +424,7 @@ namespace MomoSwitch.Actions
                 return Data;
 
             }
-            catch( Exception Ex)
+            catch (Exception Ex)
             {
                 Log.Write($"Outward.GetPerfomance", $"Error: {Ex.Message}");
                 return new List<Perfomance> { new Perfomance { } };
@@ -553,7 +553,7 @@ namespace MomoSwitch.Actions
                 };
             }
         }
-        private async Task<TranQueryResponse> TranQuery(TranQueryRequest Req, string Processor)
+        private async Task<TranQueryResponse> TranQuery(Models.Internals.TranQueryRequest Req, string Processor)
         {
             TranQueryResponse Resp;
             try
@@ -566,7 +566,7 @@ namespace MomoSwitch.Actions
                 {
                     Processor = Processor// Pass processor
                 });
-                var ProcessorRequest = Transposer.ToProxyTranQueryyRequest(Req);
+                var ProcessorRequest = Transposer.ToProxyTranQueryRequest(Req);
 
                 var ProcessorResp = await HttpService.Call(new Models.Internals.HttpService.HttpServiceRequest
                 {
@@ -591,7 +591,8 @@ namespace MomoSwitch.Actions
                         responseCode = "01",
                         responseMessage = "System challenge",
                         message = "System challenge",
-                        transactionId = Req.transactionId,
+                        transactionId = Req.TransactionId,
+                        sessionID = Req.SessionId
                     };
                     JsonStr = JsonSerializer.Serialize(Resp);
                     Log.Write("Outward.TranQuery", $"Response: {JsonStr}");
@@ -606,7 +607,8 @@ namespace MomoSwitch.Actions
                     responseCode = "01",
                     responseMessage = "System challenge",
                     message = "System challenge",
-                    transactionId = Req.transactionId,
+                    transactionId = Req.TransactionId,
+                    sessionID = Req.SessionId
                 };
             }
         }

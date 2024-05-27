@@ -14,7 +14,7 @@ namespace MomoSwitch.Actions
         TranQueryResponse ToMomoTranQueryResponse(TranQueryPxResponse proxyName);
         FundTransferPxRequest ToProxyFundTransferRequest(FundTransferRequest Request);
         NameEnquiryPxRequest ToProxyNameEnquiryRequest(NameEnquiryRequest Request);
-        TranQueryPxRequest ToProxyTranQueryyRequest(TranQueryRequest Request);
+        TranQueryPxRequest ToProxyTranQueryRequest(Models.Internals.TranQueryRequest Request);
     }
 
     public class Transposer : ITransposer
@@ -116,9 +116,10 @@ namespace MomoSwitch.Actions
             TransactionLocation = Request.transactionLocation
         };
 
-        public TranQueryPxRequest ToProxyTranQueryyRequest(TranQueryRequest Request) => new TranQueryPxRequest
+        public TranQueryPxRequest ToProxyTranQueryRequest(Models.Internals.TranQueryRequest Request) => new TranQueryPxRequest
         {
-            SessionId = Request.transactionId,
+            SessionId = Request.SessionId,
+            TransactionId = Request.TransactionId,
         };
 
         #endregion
