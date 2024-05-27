@@ -77,7 +77,7 @@ namespace EtransactProxy.Actions
              
               
                 Log.Write("Etranzact.NameEnquiry", $"Request to Etransact: See request below |  SessionId: {SessionId}");
-                var EtranzactResp = await HttpService.Call(EtranzactRequest, Operation.TranQuery);
+                var EtranzactResp = await HttpService.Call(EtranzactRequest, Operation.NameEnqury);
 
 
                 EtranzactRequest.transaction.pin = "*****";
@@ -97,7 +97,7 @@ namespace EtransactProxy.Actions
                     };
                 }
 
-                Log.Write("Etranzact.TranQuery", $"Response from Etranzact: {EtranzactResp.ResponseContent}");
+                Log.Write("Etranzact.NameEnquiry", $"Response from Etranzact: {EtranzactResp.ResponseContent}");
 
                 var EtranzactRespObj = JsonSerializer.Deserialize<Models.NameEnq.NameEnqResponse>(EtranzactResp.ResponseContent);
                 var ResponseHeader = Transposer.Response(EtranzactRespObj.error);
