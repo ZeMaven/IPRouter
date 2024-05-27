@@ -165,13 +165,13 @@ namespace EtransactProxy.Actions
 
                    
 
-                Log.Write("Etranzact.TranQuery", $"Request to Etransact: See request below |  SessionId: {SessionId}");
+                Log.Write("Etranzact.TranQuery", $"Request to Etransact: See request below |  TransactionId: {Request.TransactionId}");
                 var EtranzactResp = await HttpService.Call(EtranzactRequest, Operation.TranQuery);
 
                 EtranzactRequest.transaction.pin = "*****";
                 var JsonReq = JsonSerializer.Serialize(EtranzactRequest);
-                Log.Write("Etranzact.TranQuery", $"Request to Cip: {JsonReq}");
-                Log.Write("Etranzact.TranQuery", $"Response from Cip Enc: {EtranzactResp.ResponseContent}");
+                Log.Write("Etranzact.TranQuery", $"Request to Etranzact: {JsonReq}");
+                Log.Write("Etranzact.TranQuery", $"Response from Etranzact: {EtranzactResp.ResponseContent}");
                 if (EtranzactResp.ResponseHeader.ResponseCode != "00")
                 {
                     return new TranQueryPxResponse
