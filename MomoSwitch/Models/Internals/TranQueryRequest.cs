@@ -1,6 +1,6 @@
-﻿namespace Momo.Common.Models
+﻿namespace MomoSwitch.Models.Internals
 {
-    public class TranQueryPxRequest
+    public class TranQueryRequest
     {
         public string SessionId { get; set; }
         public string TransactionId { get; set; }
