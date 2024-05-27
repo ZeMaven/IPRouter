@@ -229,7 +229,7 @@ namespace EtransactProxy.Actions
             var Bank = Transposer.GetBank(Request.DestinationBankCode);
 
             string SessionId = string.Empty;
-            string SourceBank = string.Empty;
+           
             try
             {
                 var JsonStr = JsonSerializer.Serialize(Request);
