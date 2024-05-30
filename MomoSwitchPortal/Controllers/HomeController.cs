@@ -113,7 +113,7 @@ namespace MomoSwitchPortal.Controllers
 
                 var outgoingTransactions = allTransactions.Where(x => x.SourceBankCode == institutionCode && x.ResponseCode != "09").ToList();
 
-                var todayTransactions = allTransactions.Where(x => x.Date >= startDay && x.Date <= endDay && x.ResponseCode != "09").ToList();
+                var todayTransactions = allTransactions.Where(x => x.Date >= startDay && x.Date <= endDay).ToList();
 
                 var result = homeManager.GetDashboardData(incomingTransactions, outgoingTransactions);
 
@@ -126,7 +126,7 @@ namespace MomoSwitchPortal.Controllers
                 result.DashboardData.RecentTransactions = todayTransactions.OrderByDescending(x => x.Date).Take(15).ToList();
                 result.DashboardData.TotalUsers = db.PortalUserTb.Count();
                 result.DashboardData.TotalSwitches = db.SwitchTb.Count();
-                result.DashboardData.TotalTransactions = todayTransactions.Count();
+                result.DashboardData.TotalTransactions = todayTransactions.Where(x => x.ResponseCode != "09").ToList().Count();
                 result.DashboardData.TotalSuccessfulPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalSuccessfulCount / result.DashboardData.TotalOutGoingCount) * 100, 2);
                 result.DashboardData.TotalFailedPercentage = result.DashboardData.TotalTransactions == 0 ? 0 : Math.Round((result.DashboardData.TotalFailedCount / result.DashboardData.TotalOutGoingCount) * 100, 2);
 
