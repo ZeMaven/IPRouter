@@ -29,6 +29,8 @@ namespace MomoSwitch
             builder.Services.AddTransient<IOutward, Outward>();
             builder.Services.AddTransient<IHttpService, HttpService>();
             builder.Services.AddTransient<ILog, Log>();
+            //builder.Services.AddScoped<ActionRequestLogger<T>>();
+            builder.Services.AddScoped(typeof(ActionRequestLogger<>), typeof(ActionRequestLogger<>));
 
 
 

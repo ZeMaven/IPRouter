@@ -46,7 +46,10 @@ namespace Jobs.Actions
 
             var MsrTrans = GetMsrTransactions();
 
-            var EwpTran = GetExcelTransactions("EWP");
+            var EwpTran00 = GetExcelTransactions("EWP00");
+            var EwpTran09 = GetExcelTransactions("EWP09");
+            var EwpTran01 = GetExcelTransactions("EWP01");
+            var EwpTran = EwpTran00.Concat(EwpTran01).Concat(EwpTran09).ToList();
 
             var NIPTran = GetExcelTransactions("NIP");
 
@@ -202,6 +205,48 @@ namespace Jobs.Actions
 
                     switch (Processor)
                     {
+                        case "EWP00":
+
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Date = row[2].ToString(),
+                                PaymentRef = row[1].ToString(),
+                                Amount = Convert.ToDecimal(row[11]),
+                                Processor = Processor.Substring(0, 3),
+                                ResponseCode = "00",
+                                SessionId = row[0].ToString() //change later
+
+                            });
+
+                            break;
+                        case "EWP09":
+
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Date = row[2].ToString(),
+                                PaymentRef = row[1].ToString(),
+                                Amount = Convert.ToDecimal(row[36]),
+                                Processor = Processor.Substring(0,3),
+                                ResponseCode ="00",
+                                SessionId = row[0].ToString() //change later
+
+                            });
+
+                            break;
+                        case "EWP01":
+
+                            ProcessorTran.Add(new ProcessorReconData
+                            {
+                                Date = row[3].ToString(),
+                                PaymentRef = row[2].ToString(),
+                                Amount = Convert.ToDecimal(row[20]),
+                                Processor = Processor.Substring(0, 3),
+                                ResponseCode = "01",
+                                SessionId = row[0].ToString() //change later
+
+                            });
+
+                            break;
                         case "EWP":
 
                             ProcessorTran.Add(new ProcessorReconData
