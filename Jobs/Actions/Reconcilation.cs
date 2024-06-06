@@ -15,12 +15,19 @@ using System;
 using System.Reflection.Emit;
 using Momo.Common.Models;
 using Momo.Common.Models.Tables;
+using CsvHelper;
+using System.Globalization;
+using CsvHelper.Configuration.Attributes;
 
 //using static System.Net.WebRequestMethods;
 
 
 namespace Jobs.Actions
 {
+ 
+
+
+
     public interface IReconcilation
     {
         void Main();
@@ -46,9 +53,9 @@ namespace Jobs.Actions
 
             var MsrTrans = GetMsrTransactions();
 
-            var EwpTran00 = GetExcelTransactions("EWP00");
-            var EwpTran09 = GetExcelTransactions("EWP09");
-            var EwpTran01 = GetExcelTransactions("EWP01");
+            var EwpTran00 = GetCsvTransactions("EWP00");
+            var EwpTran09 = GetCsvTransactions("EWP09");
+            var EwpTran01 = GetCsvTransactions("EWP01");
             var EwpTran = EwpTran00.Concat(EwpTran01).Concat(EwpTran09).ToList();
 
             var NIPTran = GetExcelTransactions("NIP");
@@ -113,7 +120,7 @@ namespace Jobs.Actions
 
             UploadRecociledFile(reportStream);
 
-            // Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
+              Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
         }
 
 
@@ -127,13 +134,13 @@ namespace Jobs.Actions
             {
                 return Week.Weekend;
             }
-            else if(dayOfWeek == DayOfWeek.Monday)
+            else if (dayOfWeek == DayOfWeek.Monday)
             {
                 return Week.Monday;
             }
             else
             {
-                return  Week.Weekday;
+                return Week.Weekday;
             }
         }
 
@@ -162,7 +169,7 @@ namespace Jobs.Actions
                 yesterday = DateTime.Now.AddDays(-1).Date;
 
 
-            var MsrData = from tb in Db.TransactionTb where tb.Date.Date >= yesterday && tb.Date.Date!= DateTime.Today select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
+            var MsrData = from tb in Db.TransactionTb where tb.Date.Date >= yesterday && tb.Date.Date != DateTime.Today select new { tb.TransactionId, tb.Date, tb.ResponseCode, tb.SessionId, tb.PaymentReference, tb.Processor, tb.Amount };
 
             var MsrTran = MsrData.ToList();
             var Processors = MsrTran.Select(x => x.Processor).Distinct().ToList();
@@ -179,6 +186,92 @@ namespace Jobs.Actions
 
             return Tran;
         }
+
+        private List<ProcessorReconData> GetCsvTransactions(string Processor)
+        {
+            int i = 0;
+           
+            try
+            {
+                var stream = GetFileStream(Processor);
+                stream.Position = 0;
+                List<ProcessorReconData> ProcessorTran = new();
+                using (var reader = new StreamReader(stream))
+                {
+
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var records = csv.GetRecords<EwpTranDetails>();
+
+                        var rows = from tb in records select new { tb.SessionId, tb.SuccAmount, tb.ExternalId, tb.FailedAmount, tb.PendingAmount, tb.Date };
+
+                        foreach (var row in rows)
+                        {
+                            switch (Processor)
+                            {
+                                case "EWP09":
+
+                                    ProcessorTran.Add(new ProcessorReconData
+                                    {
+                                        Date = row.Date,
+                                        PaymentRef = row.ExternalId,
+                                        Amount = Convert.ToDecimal(row.PendingAmount),
+                                        Processor = Processor.Substring(0, 3),
+                                        ResponseCode = "09",
+                                        SessionId = row.SessionId //change later
+
+                                    });
+
+                                    break;
+                                case "EWP00":
+
+                                    ProcessorTran.Add(new ProcessorReconData
+                                    {
+                                        Date = row.Date,
+                                        PaymentRef = row.ExternalId,
+                                        Amount = Convert.ToDecimal(row.SuccAmount),
+                                        Processor = Processor.Substring(0, 3),
+                                        ResponseCode = "00",
+                                        SessionId = row.SessionId //change later
+
+                                    });
+
+                                    break;
+                                case "EWP01":
+                                    ProcessorTran.Add(new ProcessorReconData
+                                    {
+                                        Date = row.Date,
+                                        PaymentRef = row.ExternalId,
+                                        Amount = Convert.ToDecimal(row.FailedAmount),
+                                        Processor = Processor.Substring(0, 3),
+                                        ResponseCode = "01",
+                                        SessionId = row.SessionId //change later
+
+                                    });
+
+                                    break;
+
+
+                                default:
+                                    //log
+                                    ProcessorTran.Add(new ProcessorReconData
+                                    {
+                                    });
+                                    break;
+                            }
+                        }
+                    }
+                }
+                return ProcessorTran;
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("GetCsvTransactions", $"Err: {Ex.Message} {i}");
+                return new List<ProcessorReconData>();
+            }
+        }
+
+
 
         /// <summary>
         /// Get transaction from the excel file in a setup location
@@ -205,7 +298,7 @@ namespace Jobs.Actions
 
                     switch (Processor)
                     {
-                        case "EWP00":
+                        case "EWP09":
 
                             ProcessorTran.Add(new ProcessorReconData
                             {
@@ -213,21 +306,21 @@ namespace Jobs.Actions
                                 PaymentRef = row[1].ToString(),
                                 Amount = Convert.ToDecimal(row[11]),
                                 Processor = Processor.Substring(0, 3),
-                                ResponseCode = "00",
+                                ResponseCode = "09",
                                 SessionId = row[0].ToString() //change later
 
                             });
 
                             break;
-                        case "EWP09":
+                        case "EWP00":
 
                             ProcessorTran.Add(new ProcessorReconData
                             {
                                 Date = row[2].ToString(),
                                 PaymentRef = row[1].ToString(),
                                 Amount = Convert.ToDecimal(row[36]),
-                                Processor = Processor.Substring(0,3),
-                                ResponseCode ="00",
+                                Processor = Processor.Substring(0, 3),
+                                ResponseCode = "00",
                                 SessionId = row[0].ToString() //change later
 
                             });
@@ -359,6 +452,7 @@ namespace Jobs.Actions
                 MemoryStream memoryStream = new MemoryStream();
                 client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");
 
+
                 return memoryStream;
             }
         }
@@ -423,10 +517,10 @@ namespace Jobs.Actions
 
     }
 
-   public enum Week
+    public enum Week
     {
-        Monday=0,
-        Weekday=1,
-        Weekend=2
+        Monday = 0,
+        Weekday = 1,
+        Weekend = 2
     }
 }
