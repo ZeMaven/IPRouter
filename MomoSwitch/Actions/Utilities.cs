@@ -83,6 +83,7 @@ namespace MomoSwitch.Actions
                 }
                 else
                 {
+                    Log.Write("Utilities.GetSettings", $"Refreshing Router settings Cache");
                     var Db = new MomoSwitchDbContext();
                     var TimeRule = Db.TimeRuleTb.ToList();
                     if (TimeRule.Count == 0) Log.Write("Utilities.GettSettings", "TimeRule setting does not exist");
@@ -133,7 +134,7 @@ namespace MomoSwitch.Actions
                     };
 
                     var settingStr = JsonSerializer.Serialize(Setting);
-                    SettingsCache.Set($"SettingsCache", settingStr, TimeSpan.FromDays(7));
+                    SettingsCache.Set($"SettingsCache", settingStr, TimeSpan.FromMinutes(5));
                     return Setting;
                 }
             }
