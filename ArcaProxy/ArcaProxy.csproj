@@ -4,23 +4,22 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>f8c490b4-db10-4838-9b8a-ced27d50b081</UserSecretsId>
+    <UserSecretsId>734d96b3-8768-4386-87f0-68ee38e12b84</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoralPay" Version="1.9.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Momo.Common\Momo.Common.csproj" />
+    <Folder Include="Models\Internal\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Internal\" />
+    <ProjectReference Include="..\Momo.Common\Momo.Common.csproj" />
   </ItemGroup>
 
 </Project>

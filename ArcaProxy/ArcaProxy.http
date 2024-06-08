@@ -1,0 +1,6 @@
+@ArcaProxy_HostAddress = http://localhost:5263
+
+GET {{ArcaProxy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

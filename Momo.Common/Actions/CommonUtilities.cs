@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using Momo.Common.Models;
+using System;
+ 
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,13 +17,21 @@ namespace Momo.Common.Actions
 
     public class CommonUtilities : ICommonUtilities
     {
+
+       
+
+
+
+
+
+
         /// <summary>
         /// Returns 20 characters
         /// </summary>
         /// <returns></returns>
         public string CreateTransactionId()
         {
-         
+
             var Rnd4 = new Random().Next(1000, 9999).ToString();
             var Rnd3 = new Random().Next(100, 999).ToString();
             var Rnd2 = new Random().Next(10, 99).ToString();
@@ -57,7 +67,7 @@ namespace Momo.Common.Actions
             return null;
         }
 
-
+       
 
 
     }

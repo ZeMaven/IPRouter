@@ -65,7 +65,7 @@ namespace EtransactProxy.Actions
                     {
                         description = "Account Query",
                         amount = 0m,
-                        bankCode = Bank?.OldCode,
+                        bankCode = Bank?.CbnCode,
                         destination = Request.AccountId,
                         endPoint = "A",
                         pin = Pin,
@@ -74,8 +74,8 @@ namespace EtransactProxy.Actions
                 };
 
 
-             
-              
+
+
                 Log.Write("Etranzact.NameEnquiry", $"Request to Etransact: See request below |  SessionId: {SessionId}");
                 var EtranzactResp = await HttpService.Call(EtranzactRequest, Operation.NameEnqury);
 
@@ -142,7 +142,7 @@ namespace EtransactProxy.Actions
         {
             string SessionId = string.Empty;
             try
-            {            
+            {
                 var JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("Etranzact.TranQuery", $"Request from Router: {JsonStr}");
 
@@ -163,7 +163,7 @@ namespace EtransactProxy.Actions
                     }
                 };
 
-                   
+
 
                 Log.Write("Etranzact.TranQuery", $"Request to Etransact: See request below |  TransactionId: {Request.TransactionId}");
                 var EtranzactResp = await HttpService.Call(EtranzactRequest, Operation.TranQuery);
@@ -215,7 +215,7 @@ namespace EtransactProxy.Actions
                 return new TranQueryPxResponse
                 {
                     SessionId = SessionId,
-                    TransactionId = Request.TransactionId,                    
+                    TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
                     ResponseCode = "97",
                 };
@@ -229,7 +229,7 @@ namespace EtransactProxy.Actions
             var Bank = Transposer.GetBank(Request.DestinationBankCode);
 
             string SessionId = string.Empty;
-           
+
             try
             {
                 var JsonStr = JsonSerializer.Serialize(Request);
@@ -246,7 +246,7 @@ namespace EtransactProxy.Actions
                     transaction = new Transaction
                     {
                         amount = Request.Amount,
-                        bankCode = Bank?.OldCode,
+                        bankCode = Bank?.CbnCode,
                         description = Request.Narration,
                         destination = Request.BenefAccountNumber,
                         senderName = Request.SourceAccountName,
