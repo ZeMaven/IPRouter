@@ -24,8 +24,6 @@ namespace MomoSwitch.Controllers
 
             _Utilities.RefreshCache();
            //To be called when setting is changed on the portal. To reset the cache.
-
-
         }
     }
 }

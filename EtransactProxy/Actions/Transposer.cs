@@ -1,4 +1,4 @@
-﻿using EtransactProxy.Models.Internal;
+﻿
 using Momo.Common.Actions;
 using Momo.Common.Models;
 using System.ComponentModel.Design;
@@ -292,15 +292,13 @@ namespace EtransactProxy.Actions
         {
             var BankList = Config.GetSection("BankCodes").Get<List<BankDetails>>();
 
-            if (BankCode.Length == 3)
-                return BankList.Where(x => x.OldCode == BankCode).FirstOrDefault();
-            else if (BankCode.Length == 6)
-                return BankList.Where(x => x.NewCode == BankCode).FirstOrDefault();
+            var Bank = BankList.Where(x => x.CbnCode == BankCode || x.NibssCode == BankCode).FirstOrDefault();
+
+
+            if (Bank != null)
+                return Bank;
             else
-            {
-                Log.Write("Transposer.GetBank", $"BankCode not found: {BankCode}");
                 return new BankDetails();
-            }
 
         }
 

@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MomoSwitchPortal", "MomoSwi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchRequery", "SwitchRequery\SwitchRequery.csproj", "{16A15846-4F91-4856-AEE9-F01E73ED19F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobs", "Jobs\Jobs.csproj", "{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobs", "Jobs\Jobs.csproj", "{5210D8F1-A93D-49B3-AF9F-D3A62F2B3685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtransactProxy", "EtransactProxy\EtransactProxy.csproj", "{0F14DE67-C555-4192-923E-BBE86CE6A2DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EtransactProxy", "EtransactProxy\EtransactProxy.csproj", "{0F14DE67-C555-4192-923E-BBE86CE6A2DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcaProxy", "ArcaProxy\ArcaProxy.csproj", "{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F14DE67-C555-4192-923E-BBE86CE6A2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
