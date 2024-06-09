@@ -11,5 +11,6 @@
       
         public string message { get; set; }
         public string transactionId { get; set; }
+        public string processorTranId { get; internal set; }
     }
 }

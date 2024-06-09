@@ -32,5 +32,6 @@ namespace MomoSwitch.Models.Contracts.Momo
         public string originatorAccountNumber { get; set; }
  
         public string originatorBankVerificationNumber { get; set; }
+        public string processorTranId { get; internal set; }
     }
 }

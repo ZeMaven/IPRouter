@@ -108,7 +108,7 @@ namespace ArcaProxy.Actions
                     DestinationBankCode = Request.DestinationBankCode,
                     Bvn = string.Empty,
                     KycLevel = string.Empty,
-                    ProxySessionId = string.Empty
+                    ProxySessionId = string.Empty,
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -189,6 +189,7 @@ namespace ArcaProxy.Actions
                     BenfBankCode = null,
                     SourceAccountName = null,
                     SourceAccountNumber = null,
+                    ProcessorTranId = ArcaRespObj.accountTransferId
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -278,6 +279,7 @@ namespace ArcaProxy.Actions
                     SourceAccountName = Request.SourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
                     TransactionDate = DateTime.Now,
+                    ProcessorTranId = ArcaRespObj.accountTransferId
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

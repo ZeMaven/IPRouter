@@ -188,7 +188,7 @@ namespace EtransactProxy.Actions
 
                 var EtranzactRespObj = JsonSerializer.Deserialize<Models.TranQuery.TranQueryResponse>(EtranzactResp.ResponseContent);
                 var ResponseHeader = Transposer.Response(EtranzactRespObj.error);
-
+                
                 TranQueryPxResponse Resp = new()
                 {
                     SessionId = Request.SessionId,
@@ -202,7 +202,8 @@ namespace EtransactProxy.Actions
                     BenefAccountNumber = null,
                     BenfBankCode = null,
                     SourceAccountName = null,
-                    SourceAccountNumber = null,
+                    SourceAccountNumber = null,  
+                    ProcessorTranId = EtranzactRespObj.reference
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -298,6 +299,7 @@ namespace EtransactProxy.Actions
                     Narration = Request.Narration,
                     SourceAccountName = Request.SourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
+                    ProcessorTranId = EtransactRespObj.reference
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

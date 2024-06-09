@@ -269,6 +269,7 @@ namespace MomoSwitch.Actions
                         //UpdateDb
                         Tran.ResponseCode = QueryTran.responseCode;
                         Tran.ResponseMessage = QueryTran.responseMessage;
+                        Tran.ProcessorTranId = QueryTran.processorTranId;
 
                         Tran.ValidateDate = DateTime.Now;
                         Db.SaveChanges();
@@ -472,7 +473,7 @@ namespace MomoSwitch.Actions
                     SourceBvn = Request.initiatorBankVerificationNumber,
                     SourceKycLevel = Request.originatorKYCLevel?.ToString() ?? "0",
                     TransactionId = Request.transactionId,
-                    NameEnquiryRef = Request.nameEnquiryRef,
+                    NameEnquiryRef = Request.nameEnquiryRef,                  
                 });
 
                 Db.SaveChanges();
@@ -524,7 +525,8 @@ namespace MomoSwitch.Actions
                     Tran.SessionId = SessionId;
                     Tran.PaymentDate = DateTime.Now;
                     Tran.ResponseCode = Response.responseCode;
-                    Tran.ResponseMessage = "";
+                    Tran.ProcessorTranId= Response.processorTranId;
+                    //Tran.ResponseMessage = "";
                     Db.SaveChanges();
                     return new ResponseHeader
                     {

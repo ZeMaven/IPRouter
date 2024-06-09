@@ -67,6 +67,7 @@ namespace MomoSwitch.Actions
             originatorKYCLevel = 0,
             transactionFee = 0,
             transactionLocation = "0",
+            processorTranId = proxyName.ProcessorTranId
         };
 
         public TranQueryResponse ToMomoTranQueryResponse(TranQueryPxResponse proxyName) => new TranQueryResponse
@@ -77,6 +78,7 @@ namespace MomoSwitch.Actions
             sourceInstitutionCode = proxyName.SourceBankCode,
             responseCode = proxyName.ResponseCode,
             message = proxyName.ResponseMessage,
+            processorTranId= proxyName .ProcessorTranId
         };
 
         #endregion
