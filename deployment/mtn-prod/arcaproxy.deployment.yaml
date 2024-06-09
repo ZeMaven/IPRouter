@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arcaproxy-api-deployment
+  namespace: app-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arcaproxy-api
+  template:
+    metadata:
+      labels:
+        app: arcaproxy-api
+    spec:
+      containers:
+      - name: arcaproxy-api
+        image: dockub.coralpay.com/arcaproxy:#{image-tag}#
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: arcaproxy
+        - configMapRef:
+            name: arcaproxy
+        - configMapRef:
+            name: timezone
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcaproxy-api-service
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: arcaproxy-api
+  ports:
+  - port: 8080
+    targetPort: 8080
