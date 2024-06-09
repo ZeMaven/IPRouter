@@ -112,7 +112,7 @@ namespace CipProxy.Actions
                     TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
                     ResponseCode = "01",
-                    ProxySessionId= SessionId
+                    ProxySessionId = SessionId
                 };
             }
         }
@@ -133,7 +133,7 @@ namespace CipProxy.Actions
                 SessionId = $"{SourceBank}{TranId}";
 
                 var CipRequest = new TranQueryRequest
-                { 
+                {
                     sessionId = Request.SessionId,
                 };
 
@@ -177,7 +177,7 @@ namespace CipProxy.Actions
                     BenfBankCode = CipRespObj.destinationInstitutionId,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = CipRespObj.sourceAccountId,
-
+                    ProcessorTranId = CipRespObj.paymentRef
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -226,7 +226,7 @@ namespace CipProxy.Actions
                     narration = Request.Narration,
                     channel = "WEB",
                     group = "0",
-                    sector = "0", 
+                    sector = "0",
                 };
 
                 var JsonReq = JsonSerializer.Serialize(CipRequest);
@@ -262,7 +262,7 @@ namespace CipProxy.Actions
                     ResponseMessage = CipRespObj.responseMessage,
                     SourceBankCode = SourceBank,
                     BenefBvn = string.Empty,
-                    BenefKycLevel =Request.BenefKycLevel,
+                    BenefKycLevel = Request.BenefKycLevel,
                     BenefAccountName = CipRespObj.creditAccountName,
                     Amount = CipRespObj.amount,
                     BenefAccountNumber = Request.BenefAccountNumber,
@@ -272,8 +272,7 @@ namespace CipProxy.Actions
                     Narration = CipRespObj.narration,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
-                     
-                     
+                    ProcessorTranId = CipRespObj.paymentRef
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

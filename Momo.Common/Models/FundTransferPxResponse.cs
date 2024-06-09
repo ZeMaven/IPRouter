@@ -24,6 +24,6 @@ namespace Momo.Common.Models
         public string ResponseMessage { get; set; }
         public int ChannelCode { get;   set; }
         public DateTime TransactionDate { get; set; }
-      
+        public string ProcessorTranId { get; set; }
     }
 }

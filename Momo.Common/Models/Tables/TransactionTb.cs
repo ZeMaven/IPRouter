@@ -26,6 +26,8 @@ namespace Momo.Common.Models.Tables
         public string SessionId { get; set; }
         [StringLength(100)]
         public string PaymentReference { get; set; }
+        [StringLength(100)]
+        public string ProcessorTranId { get; set; }        
         [StringLength(50)]
         public string BenefBankCode { get; set; }
         [StringLength(200)]
