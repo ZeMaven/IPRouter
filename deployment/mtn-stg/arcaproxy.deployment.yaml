@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arcaproxy-api-deployment
+  namespace: app-stg
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arcaproxy-api
+  template:
+    metadata:
+      labels:
+        app: arcaproxy-api
+    spec:
+      containers:
+      - name: arcaproxy-api
+        image: dockub.coralpay.com/arcaproxy:#{image-tag}#
+        resources:
+          limits:
+            memory: "228Mi"
+            cpu: "200m"
+          requests:
+            memory: "200M"
+            cpu: "100m"  
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        env:
+          - name: BankCodes
+            value: '[{"BankName":"AccessBank","NewCode":"000014","OldCode":"044"},{"BankName":"DiamondBank","NewCode":"000005","OldCode":"063"},{"BankName":"Ecobank","NewCode":"000010","OldCode":"050"},{"BankName":"EnterpriseBank","NewCode":"000019","OldCode":"084"},{"BankName":"FidelityBank","NewCode":"000007","OldCode":"070"},{"BankName":"FirstBankofNigeria","NewCode":"000016","OldCode":"011"},{"BankName":"FirstCityMonumentBank","NewCode":"000003","OldCode":"214"},{"BankName":"GuarantyTrustBank","NewCode":"000013","OldCode":"058"},{"BankName":"HeritageBank","NewCode":"000020","OldCode":"030"},{"BankName":"JaizBank","NewCode":"000006","OldCode":"301"},{"BankName":"KeystoneBank","NewCode":"000002","OldCode":"082"},{"BankName":"PolarisBank","NewCode":"000008","OldCode":"076"},{"BankName":"StanbicIBTC","NewCode":"000012","OldCode":"039"},{"BankName":"SterlingBank","NewCode":"000001","OldCode":"232"},{"BankName":"UnionBank","NewCode":"000018","OldCode":"032"},{"BankName":"UnitedBankforAfrica","NewCode":"000004","OldCode":"033"},{"BankName":"UnityBank","NewCode":"000011","OldCode":"215"},{"BankName":"WEMABank","NewCode":"000017","OldCode":"035"},{"BankName":"ZenithBank","NewCode":"000015","OldCode":"057"}]'
+        envFrom:
+        - secretRef:
+            name: arcaproxy
+        - configMapRef:
+            name: arcaproxy
+        - configMapRef:
+            name: timezone
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcaproxy-api-service
+  namespace: app-stg
+spec:
+  type: ClusterIP
+  selector:
+    app: arcaproxy-api
+  ports:
+  - port: 8080
+    targetPort: 8080
