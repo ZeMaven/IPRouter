@@ -526,7 +526,7 @@ namespace MomoSwitch.Actions
                     Tran.PaymentDate = DateTime.Now;
                     Tran.ResponseCode = Response.responseCode;
                     Tran.ProcessorTranId= Response.processorTranId;
-                    //Tran.ResponseMessage = "";
+                    Tran.ResponseMessage = "";
                     Db.SaveChanges();
                     return new ResponseHeader
                     {
