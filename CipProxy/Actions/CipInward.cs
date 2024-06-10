@@ -3,6 +3,7 @@ using CipProxy.Models.Cip.TranQuery;
 using CipProxy.Models.Cip.Transfer;
 using Momo.Common.Actions;
 using Momo.Common.Models;
+using Momo.Common.Models.HttpService;
 using Newtonsoft.Json;
 
 namespace CipProxy.Actions

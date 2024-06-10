@@ -1,0 +1,6 @@
+@EtransactProxy_HostAddress = http://localhost:5183
+
+GET {{EtransactProxy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

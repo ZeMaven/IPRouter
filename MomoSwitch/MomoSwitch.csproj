@@ -28,6 +28,7 @@
     <Compile Remove="Models\Contracts\Specials\Router\NameEnquiryPxResponse.cs" />
     <Compile Remove="Models\Contracts\Specials\Router\TranQueryPxRequest.cs" />
     <Compile Remove="Models\Contracts\Specials\Router\TranQueryPxResponse.cs" />
+    <Compile Remove="Models\ResponseHeader.cs" />
   </ItemGroup>
 
   <ItemGroup>

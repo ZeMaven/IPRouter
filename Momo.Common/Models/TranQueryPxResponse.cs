@@ -23,6 +23,6 @@ namespace Momo.Common.Models
 
         public string Narration { get; set; }
         public DateTime Date { get; set; }
-     
+        public string ProcessorTranId { get; set; }
     }
 }

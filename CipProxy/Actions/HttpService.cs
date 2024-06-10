@@ -1,6 +1,8 @@
 ﻿using CipProxy.Models;
 using CoralPay.Cryptography.Pgp.Models;
 using Momo.Common.Actions;
+using Momo.Common.Models;
+using Momo.Common.Models.HttpService;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
@@ -9,11 +11,11 @@ namespace CipProxy.Actions
 {
     public interface IHttpService
     {/// <summary>
-    /// Calling CIP
-    /// </summary>
-    /// <param name="TextRequest"></param>
-    /// <param name="Op"></param>
-    /// <returns></returns>
+     /// Calling CIP
+     /// </summary>
+     /// <param name="TextRequest"></param>
+     /// <param name="Op"></param>
+     /// <returns></returns>
         Task<HttpServiceResponse> Call(string TextRequest, Operation Op);
         /// <summary>
         /// Calling the Router
@@ -72,7 +74,7 @@ namespace CipProxy.Actions
                     Log.Write("HttpService.Call", $"Cip Url: {Url}");
                     return new HttpServiceResponse
                     {
-                        ResponseHeader = new Models.ResponseHeader
+                        ResponseHeader = new()
                         {
                             ResponseCode = "01",
                             ResponseMessage = response.ReasonPhrase
@@ -84,7 +86,7 @@ namespace CipProxy.Actions
                 {
                     return new HttpServiceResponse
                     {
-                        ResponseHeader = new Models.ResponseHeader
+                        ResponseHeader = new()
                         {
                             ResponseCode = "00",
                             ResponseMessage = response.ReasonPhrase
@@ -93,13 +95,13 @@ namespace CipProxy.Actions
                     };
                 }
             }
-            catch  (TimeoutException tEx)
+            catch (TimeoutException tEx)
             {
                 Log.Write("HttpService.Call", $"Err: {tEx.Message}");
                 Log.Write("HttpService.Call", $"Cip Url: {Url}");
                 return new HttpServiceResponse
                 {
-                    ResponseHeader = new Models.ResponseHeader
+                    ResponseHeader = new()
                     {
                         ResponseCode = "97",
                         ResponseMessage = "System timeout"
@@ -113,7 +115,7 @@ namespace CipProxy.Actions
                 Log.Write("HttpService.Call", $"Cip Url: {Url}");
                 return new HttpServiceResponse
                 {
-                    ResponseHeader = new Models.ResponseHeader
+                    ResponseHeader = new()
                     {
                         ResponseCode = "01",
                         ResponseMessage = "System challenge"
@@ -163,7 +165,7 @@ namespace CipProxy.Actions
                     Log.Write("HttpService.Call", $"Router Url: {Url}");
                     return new HttpServiceResponse
                     {
-                        ResponseHeader = new Models.ResponseHeader
+                        ResponseHeader = new()
                         {
                             ResponseCode = "01",
                             ResponseMessage = response.ReasonPhrase
@@ -175,7 +177,7 @@ namespace CipProxy.Actions
                 {
                     return new HttpServiceResponse
                     {
-                        ResponseHeader = new Models.ResponseHeader
+                        ResponseHeader = new()
                         {
                             ResponseCode = "00",
                             ResponseMessage = response.ReasonPhrase
@@ -190,7 +192,7 @@ namespace CipProxy.Actions
                 Log.Write("HttpService.Call", $"Cip Url: {Url}");
                 return new HttpServiceResponse
                 {
-                    ResponseHeader = new Models.ResponseHeader
+                    ResponseHeader = new()
                     {
                         ResponseCode = "97",
                         ResponseMessage = "System timeout"
@@ -204,7 +206,7 @@ namespace CipProxy.Actions
                 Log.Write("HttpService.Call", $"Router Url: {Url}");
                 return new HttpServiceResponse
                 {
-                    ResponseHeader = new Models.ResponseHeader
+                    ResponseHeader = new()
                     {
                         ResponseCode = "01",
                         ResponseMessage = "System challenge"
@@ -228,5 +230,5 @@ namespace CipProxy.Actions
 
 
 
-    public enum Operation { NameEnqury, Transfer, TranQuery }
+   
 }

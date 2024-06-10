@@ -1,4 +1,5 @@
-﻿namespace MomoSwitch.Models
+﻿using Momo.Common.Models;
+namespace MomoSwitch.Models
 {
     public class RuleMatchResponse
     {
@@ -7,6 +8,5 @@
         public string NameEnquiryUrl { get; set; }
         public string TranQueryUrl { get; set; }
         public string Switch { get; set; }
-
     }
 }

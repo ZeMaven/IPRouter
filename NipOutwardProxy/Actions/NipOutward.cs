@@ -142,7 +142,8 @@ namespace NipOutwardProxy.Actions
                     ResponseMessage = ResponseObj.ResponseCode == "00" ? "Successful" : null,
                     SessionId = ResponseObj.SessionID,
                     TransactionId = Request.SessionId,
-                    SourceBankCode = SourceBank
+                    SourceBankCode = SourceBank,
+                    ProcessorTranId = ResponseObj.SessionID
                 };
 
                 Log.Write("NibssOutward.TranQuery", $"Response to Router: {JsonSerializer.Serialize(RouterResponse)}");
@@ -232,6 +233,7 @@ namespace NipOutwardProxy.Actions
                     SessionId = ResponseObj.SessionID,
                     TransactionId = Request.TransactionId,
                     SourceBankCode = Request.SourceBankCode,
+                    ProcessorTranId = ResponseObj.SessionID
                 };
 
                 Log.Write("NibssOutward.Transfer", $"Response to Router: {JsonSerializer.Serialize(RouterResponse)}");
