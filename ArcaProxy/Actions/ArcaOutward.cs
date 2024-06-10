@@ -77,7 +77,7 @@ namespace ArcaProxy.Actions
 
 
 
-                Log.Write("Arca.NameEnquiry", $"Response from Arca Enc: {ArcaResp.ResponseContent}");
+                Log.Write("Arca.NameEnquiry", $"Response from Arca: {ArcaResp.ResponseContent}");
                 if (ArcaResp.ResponseHeader.ResponseCode != "00")
                 {
                     return new NameEnquiryPxResponse
@@ -88,9 +88,7 @@ namespace ArcaProxy.Actions
                         ResponseCode = "09",
 
                     };
-                }
-
-                Log.Write("Arca.NameEnquiry", $"Response from Arca: {ArcaResp.ResponseContent}");
+                }               
 
                 var ArcaRespObj = JsonSerializer.Deserialize<Models.NameEnq.NameEnqResponse>(ArcaResp.ResponseContent);
 
