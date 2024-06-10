@@ -38,6 +38,18 @@ namespace ArcaProxy.Actions
                         ResponseCode = "96",
                         ResponseMessage = "Failed"
                     };
+                case "DECLINED":
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "96",
+                        ResponseMessage = "Failed"
+                    };
+                case "IN_PROGRESS":
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "09",
+                        ResponseMessage = "Pending"
+                    };
                 case " PENDING_RETRY":
                     return new ResponseHeader()
                     {
