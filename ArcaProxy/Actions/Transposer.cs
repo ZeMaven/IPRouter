@@ -42,7 +42,7 @@ namespace ArcaProxy.Actions
                     return new ResponseHeader()
                     {
                         ResponseCode = "09",
-                        ResponseMessage = "Failed"
+                        ResponseMessage = "Pending"
                     };
 
 
