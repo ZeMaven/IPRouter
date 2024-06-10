@@ -14,6 +14,8 @@ namespace MomoSwitchPortal.Models.ViewModels.Transaction
         public string SessionId { get; set; }
         [Display(Name = "Transaction Id")]
         public string TransactionId { get; set; }
+        [Display(Name = "Processor Tran Id")]
+        public string ProcessorTranId { get; set; }
         [Display(Name = "NameEnquiry Ref")]
         public string NameEnquiryRef { get; set; }
         [Display(Name = "Payment Reference")]

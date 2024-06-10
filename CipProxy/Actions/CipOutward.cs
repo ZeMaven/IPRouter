@@ -177,7 +177,7 @@ namespace CipProxy.Actions
                     BenfBankCode = CipRespObj.destinationInstitutionId,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = CipRespObj.sourceAccountId,
-                    ProcessorTranId = CipRespObj.paymentRef
+                    ProcessorTranId = CipRespObj.sessionId
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);
@@ -272,7 +272,7 @@ namespace CipProxy.Actions
                     Narration = CipRespObj.narration,
                     SourceAccountName = CipRespObj.sourceAccountName,
                     SourceAccountNumber = Request.SourceAccountNumber,
-                    ProcessorTranId = CipRespObj.paymentRef
+                    ProcessorTranId = CipRespObj.sessionId
                 };
 
                 JsonStr = JsonSerializer.Serialize(Resp);

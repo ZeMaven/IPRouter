@@ -74,7 +74,7 @@ namespace MomoSwitchPortal.Controllers
 
                     if (FilterRequest.FilterRequest.EndDate == null && FilterRequest.FilterRequest.StartDate == null
                         && string.IsNullOrEmpty(FilterRequest.FilterRequest.TranType) && string.IsNullOrEmpty(FilterRequest.FilterRequest.ResponseCode) && string.IsNullOrEmpty(FilterRequest.FilterRequest.Processor)
-                        && string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId)&& string.IsNullOrEmpty(FilterRequest.FilterRequest.BenefAccountNumber)&& string.IsNullOrEmpty(FilterRequest.FilterRequest.SourceAccountNumber))
+                        && string.IsNullOrEmpty(FilterRequest.FilterRequest.TransactionId) && string.IsNullOrEmpty(FilterRequest.FilterRequest.BenefAccountNumber) && string.IsNullOrEmpty(FilterRequest.FilterRequest.SourceAccountNumber))
                     {
                         Data = await db.TransactionTb.OrderByDescending(x => x.Date).Take(50).Select(x => new TransactionTableViewModel
                         {
@@ -357,6 +357,7 @@ namespace MomoSwitchPortal.Controllers
                     ChannelCode = transaction.ChannelCode,
                     Date = transaction.Date,
                     Fee = transaction.Fee,
+                    ProcessorTranId = transaction.ProcessorTranId,
                     ManadateRef = transaction.ManadateRef,
                     NameEnquiryRef = transaction.NameEnquiryRef,
                     Narration = transaction.Narration,
@@ -420,6 +421,7 @@ namespace MomoSwitchPortal.Controllers
                         Fee = x.Fee,
                         ManadateRef = x.ManadateRef,
                         NameEnquiryRef = x.NameEnquiryRef,
+                        ProcessorTranId = x.ProcessorTranId,
                         Narration = x.Narration,
                         PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
                         PaymentReference = x.PaymentReference,
@@ -467,6 +469,7 @@ namespace MomoSwitchPortal.Controllers
                                            ManadateRef = x.ManadateRef,
                                            NameEnquiryRef = x.NameEnquiryRef,
                                            Narration = x.Narration,
+                                           ProcessorTranId = x.ProcessorTranId,
                                            PaymentDate = Convert.ToDateTime(x.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"),
                                            PaymentReference = x.PaymentReference,
                                            ResponseMessage = x.ResponseMessage,
