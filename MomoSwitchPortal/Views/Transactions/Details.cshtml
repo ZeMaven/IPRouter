@@ -18,173 +18,178 @@
                 <label for="date" class="form-label font-weight-bold">Date</label>
                 <input type="text" readonly value="@(Convert.ToDateTime(Model.Date).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="date" placeholder="Date" required>
             </div>
-          
+
             <div class="col-6 mb-3">
-                <label for="sessionId" class="form-label font-weight-bold">SessionId</label>
-                <input type="text" readonly value="@Model.SessionId" class="form-control border px-3" id="sessionId" placeholder="sessionId" required>
+                <label for="sessionId" class="form-label font-weight-bold">Session Id</label>
+                <input type="text" readonly value="@Model.SessionId" class="form-control border px-3" id="sessionId" placeholder="session Id" required>
             </div>
         </div>
 
         <div class="row">
-           
+
             <div class="col-6 mb-3">
-                <label for="transactionId" class="form-label font-weight-bold">TransactionId</label>
-                <input type="text" readonly value="@Model.TransactionId" class="form-control border px-3" id="transactionId" placeholder="TransactionId" required>
+                <label for="transactionId" class="form-label font-weight-bold">Transaction Id</label>
+                <input type="text" readonly value="@Model.TransactionId" class="form-control border px-3" id="transactionId" placeholder="Transaction Id" required>
             </div>
-          
+
+            <div class="col-6 mb-3">
+                <label for="ProcessorTranId" class="form-label font-weight-bold">Processor Tran Id</label>
+                <input type="text" readonly value="@Model.ProcessorTranId" class="form-control border px-3" id="processorTranId" placeholder="processor Tran Id" required>
+            </div>
+
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="amount" class="form-label font-weight-bold">Amount</label>
                 <input type="text" readonly value="@Model.Amount.ToString("N", CultureInfo.InvariantCulture)" class="form-control border px-3" id="amount" placeholder="NGN" required>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="fee" class="form-label font-weight-bold">Fee</label>
                 <input type="number" readonly value="@Model.Fee" class="form-control border px-3" id="fee" placeholder="fee" required>
             </div>
 
-             <div class="col-6 mb-3">
-                <label for="Processor" class="form-label font-weight-bold">Processor</label>
-                <input type="text" readonly value="@Model.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
-            </div>
         </div>
 
         <div class="row">
+            <div class="col-6 mb-3">
+                <label for="Processor" class="form-label font-weight-bold">Processor</label>
+                <input type="text" readonly value="@Model.Processor" class="form-control border px-3" id="Processor" placeholder="Processor" required>
+            </div>
             <div class="col-6 mb-3">
                 <label for="responseCode" class="form-label font-weight-bold">Response Code</label>
                 <input type="text" readonly value="@Model.ResponseCode" class="form-control border px-3" id="responseCode" placeholder="responseCode" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="responseMessage" class="form-label font-weight-bold">Response Message</label>
                 <input type="text" readonly value="@Model.ResponseMessage" class="form-control border px-3" id="responseMessage" placeholder="responseMessage" required>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="PaymentRef" class="form-label font-weight-bold">Payment Reference</label>
                 <input type="text" readonly value="@Model.PaymentReference" class="form-control border px-3" id="PaymentRef" placeholder="PaymentRef" required>
             </div>
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="BenefBankCode" class="form-label font-weight-bold">Beneficiary BankCode</label>
                 <input type="text" readonly value="@Model.BenefBankCode" class="form-control border px-3" id="BenefBankCode" placeholder="BenefBankCode" required>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="BenefBankName" class="form-label font-weight-bold">Beneficiary Bank Name</label>
                 <input type="text" readonly value="@Model.BenefBankName" class="form-control border px-3" id="BenefBankName" placeholder="BenefBankName" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="BenefAccountNumber" class="form-label font-weight-bold">Beneficiary Account Number</label>
                 <input type="text" readonly value="@Model.BenefAccountNumber" class="form-control border px-3" id="BenefAccountNumber" placeholder="BenefAccountNumber" required>
             </div>
-          
-        </div>
 
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="BenefAccountName" class="form-label font-weight-bold">Beneficiary Account Name</label>
                 <input type="text" readonly value="@Model.BenefAccountName" class="form-control border px-3" id="BenefAccountName" placeholder="BenefAccountName" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="Benefbvn" class="form-label font-weight-bold">Beneficiary Bvn</label>
                 <input type="text" readonly value="@Model.BenefBvn" class="form-control border px-3" id="Benefbvn" placeholder="Benefbvn" required>
             </div>
-           
-        </div>
 
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="BenefKycLevel" class="form-label font-weight-bold">Beneficiary KycLevel</label>
                 <input type="text" readonly value="@Model.BenefKycLevel" class="form-control border px-3" id="BenefKycLevel" placeholder="BenefKycLevel" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="narration" class="form-label font-weight-bold">Narration</label>
                 <input type="text" readonly value="@Model.Narration" class="form-control border px-3" id="narration" placeholder="Narration" required>
             </div>
-           
-        </div>
 
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="SourceBankCode" class="form-label font-weight-bold">Source BankCode</label>
                 <input type="text" readonly value="@Model.SourceBankCode" class="form-control border px-3" id="SourceBankCode" placeholder="SourceBankCode" required>
             </div>
 
+
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="SourceBankName" class="form-label font-weight-bold">Source Bank Name</label>
                 <input type="text" readonly value="@Model.SourceBankName" class="form-control border px-3" id="SourceBankName" placeholder="SourceBankName" required>
             </div>
-          
-        </div>
-
-        <div class="row">
             <div class="col-6 mb-3">
                 <label for="sourceAccountNumber" class="form-label font-weight-bold">Source Account Number</label>
                 <input type="text" readonly value="@Model.SourceAccountNumber" class="form-control border px-3" id="sourceAccountNumber" placeholder="sourceAccountNumber" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="SourceAccountName" class="form-label font-weight-bold">Source Account Name</label>
                 <input type="text" readonly value="@Model.SourceAccountName" class="form-control border px-3" id="SourceAccountName" placeholder="SourceAccountName" required>
             </div>
+
+            <div class="col-6 mb-3">
+                <label for="Sourcebvn" class="form-label font-weight-bold">Source Bvn</label>
+                <input type="text" readonly value="@Model.SourceBvn" class="form-control border px-3" id="Sourcebvn" placeholder="Sourcebvn" required>
+            </div>
+
+
+
         </div>
 
         <div class="row">
-       
-                <div class="col-6 mb-3">
-                    <label for="Sourcebvn" class="form-label font-weight-bold">Source Bvn</label>
-                    <input type="text" readonly value="@Model.SourceBvn" class="form-control border px-3" id="Sourcebvn" placeholder="Sourcebvn" required>
-                </div>
             <div class="col-6 mb-3">
                 <label for="SourceKycLevel" class="form-label font-weight-bold">Source KycLevel</label>
                 <input type="text" readonly value="@Model.SourceKycLevel" class="form-control border px-3" id="SourceKycLevel" placeholder="SourceKycLevel" required>
             </div>
 
-          
-         
-        </div>
-
-        <div class="row">
-           
             <div class="col-6 mb-3">
                 <label for="ChannelCode" class="form-label font-weight-bold">Channel Code</label>
                 <input type="text" readonly value="@Model.ChannelCode" class="form-control border px-3" id="ChannelCode" placeholder="ChannelCode" required>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col-6 mb-3">
                 <label for="manadateRef" class="form-label font-weight-bold">Manadate Ref</label>
                 <input type="text" readonly value="@Model.ManadateRef" class="form-control border px-3" id="manadateRef" placeholder="manadateRef" required>
             </div>
+
+            <div class="col-6 mb-3">
+                <label for="nameEnquiryRef" class="form-label font-weight-bold">Name Enquiry Ref</label>
+                <input type="text" readonly value="@Model.NameEnquiryRef" class="form-control border px-3" id="nameEnquiryRef" placeholder="nameEnquiryRef" required>
+            </div>
         </div>
 
         <div class="row">
-           
-                <div class="col-6 mb-3">
-                    <label for="nameEnquiryRef" class="form-label font-weight-bold">Name Enquiry Ref</label>
-                    <input type="text" readonly value="@Model.NameEnquiryRef" class="form-control border px-3" id="nameEnquiryRef" placeholder="nameEnquiryRef" required>
-                </div>
             <div class="col-6 mb-3">
                 <label for="Validatedate" class="form-label font-weight-bold">Validate Date</label>
                 <input type="text" readonly value="@(Convert.ToDateTime(Model.ValidateDate).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="Validatedate" placeholder="Validatedate" required>
-            </div>       
-        </div>
-        
-        <div class="row">         
+            </div>
             <div class="col-6 mb-3">
                 <label for="paymentdate" class="form-label font-weight-bold">Payment Date</label>
                 <input type="text" readonly value="@(Convert.ToDateTime(Model.PaymentDate).ToString("dd/MM/yyyy HH:mm:ss.fff"))" class="form-control border px-3" id="paymentdate" placeholder="paymentdate" required>
-            </div>           
+            </div>
         </div>
 
-        
+
     </form>
 
 </div>
