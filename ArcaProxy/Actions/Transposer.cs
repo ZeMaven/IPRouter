@@ -55,23 +55,13 @@ namespace ArcaProxy.Actions
                     {
                         ResponseCode = "09",
                         ResponseMessage = "Pending"
-                    };
-
-
-
-
-
-                   
-
+                    };                
                 default:
                     return new ResponseHeader()
                     {
                         ResponseCode = "97",
                         ResponseMessage = "Unknown Response Code"
                     };
-
-
-
             }
 
         }

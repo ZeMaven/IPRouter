@@ -19,15 +19,8 @@ using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 
-//using static System.Net.WebRequestMethods;
-
-
 namespace Jobs.Actions
 {
- 
-
-
-
     public interface IReconcilation
     {
         void Main();
@@ -47,8 +40,7 @@ namespace Jobs.Actions
         }
 
         public void Main()
-        {
-
+        {           
             if (DetermineDayType(DateTime.Now) == Week.Weekend) return;
 
             var MsrTrans = GetMsrTransactions();
@@ -59,10 +51,7 @@ namespace Jobs.Actions
             var EwpTran = EwpTran00.Concat(EwpTran01).Concat(EwpTran09).ToList();
 
             var NIPTran = GetExcelTransactions("NIP");
-
             var CIPTran = GetExcelTransactions("CIP");
-
-
             var ProcessorTrans = NIPTran.Concat(CIPTran).ToList();
 
 
@@ -97,7 +86,7 @@ namespace Jobs.Actions
 
             FinalReconTb = FinalRecon.Select(x => new DailyReconciliationTb
             {
-                Date = x.Date,
+                Date = DateTime.Now,
                 Amount = x.Amount,
                 Processor = x.Processor,
                 EwpResponseCode = x.EwpResponseCode,
@@ -118,9 +107,9 @@ namespace Jobs.Actions
 
             MemoryStream reportStream = new MemoryStream(FileByte);
 
-            UploadRecociledFile(reportStream);
-
-              Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
+            UploadReconciledFile(reportStream);
+            DeleteUsedFiles();
+            //Excel.Write(FinalRecon, "ReconReport", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), "C:/reports");
         }
 
 
@@ -190,7 +179,7 @@ namespace Jobs.Actions
         private List<ProcessorReconData> GetCsvTransactions(string Processor)
         {
             int i = 0;
-           
+
             try
             {
                 var stream = GetFileStream(Processor);
@@ -423,6 +412,56 @@ namespace Jobs.Actions
 
         private MemoryStream GetFileStream(string processorName)
         {
+            try
+            {
+                string host = Config.GetSection("Host").Value;
+                int port = int.Parse(Config.GetSection("Port").Value);
+                string username = Config.GetSection("Username1").Value;
+                string password = Config.GetSection("Password").Value;
+                string directoryPath = Config.GetSection("TransationFilePath").Value;
+                string resultPath = Config.GetSection("ReconciliationPath").Value;
+
+
+                using (var client = new FtpClient(host, port)
+                {
+                    Config = {
+                    EncryptionMode = FtpEncryptionMode.Implicit,
+                    ValidateAnyCertificate = true,
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+                    DataConnectionType= FtpDataConnectionType.EPSV
+                    },
+                    Credentials = new NetworkCredential(username, password)
+                })
+                {
+                    client.Connect();
+                    client.SetWorkingDirectory(directoryPath);
+                    var files = client.GetListing(directoryPath);
+                    var selectedFile = files.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Name).StartsWith(processorName));
+                    if (selectedFile == null) throw new Exception("No file available for reconcilation");
+
+                    string excelFilePath = Path.Combine(directoryPath, $"{selectedFile.Name}");
+
+                    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                    MemoryStream memoryStream = new MemoryStream();
+                    client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");
+
+                    client.DeleteFile(excelFilePath);
+                    return memoryStream;
+                }
+            }
+            catch (Exception Ex)
+            {
+                Log.Write("GetFileStream", $"Err: {Ex.Message}");
+                return null;
+            }
+        }
+
+
+
+
+
+        private void DeleteUsedFiles()
+        {
             string host = Config.GetSection("Host").Value;
             int port = int.Parse(Config.GetSection("Port").Value);
             string username = Config.GetSection("Username1").Value;
@@ -445,19 +484,20 @@ namespace Jobs.Actions
                 client.Connect();
                 client.SetWorkingDirectory(directoryPath);
                 var files = client.GetListing(directoryPath);
-                var selectedFile = files.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Name).StartsWith(processorName));
-                string excelFilePath = Path.Combine(directoryPath, $"{selectedFile.Name}");
-
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                MemoryStream memoryStream = new MemoryStream();
-                client.DownloadStream(memoryStream, $"{directoryPath}/{selectedFile.Name}");
-
-
-                return memoryStream;
+                foreach (var file in files)
+                {
+                    string excelFilePath = Path.Combine(directoryPath, $"{file.Name}");
+                    client.DeleteFile(excelFilePath);
+                }
             }
         }
 
-        private void UploadRecociledFile(Stream fileStream)
+
+
+
+
+
+        private void UploadReconciledFile(Stream fileStream)
         {
             string host = Config.GetSection("Host").Value;
             int port = int.Parse(Config.GetSection("Port").Value);
