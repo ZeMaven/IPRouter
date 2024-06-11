@@ -40,8 +40,7 @@ namespace Jobs.Actions
         }
 
         public void Main()
-        {
-            DeleteUsedFiles();
+        {           
             if (DetermineDayType(DateTime.Now) == Week.Weekend) return;
 
             var MsrTrans = GetMsrTransactions();
