@@ -1,4 +1,7 @@
 using Jobs.Actions;
+using Jobs.Actions.Analysis;
+using Jobs.Actions.Reconciliation;
+using Jobs.Actions.Requery;
 using Momo.Common.Actions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +15,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHostedService<RequeryWorker>();
 builder.Services.AddHostedService<AnalysisWorker>();
 builder.Services.AddHostedService<ReconWorker>();
+builder.Services.AddTransient<IAnalysisService, AnalysisService>();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ITransaction, Transaction>();
-builder.Services.AddTransient<IReconcilation, Reconcilation>();
+builder.Services.AddTransient<IReconService, ReconService>();
+builder.Services.AddTransient<IReconHelpers, ReconHelpers>();
+
+
 builder.Services.AddTransient<IExcel, Excel>();
 
 

@@ -1,4 +1,4 @@
-using Jobs.Actions;
+using Jobs.Actions.Reconciliation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jobs.Controllers
@@ -13,9 +13,9 @@ namespace Jobs.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IReconcilation Recon;
+        private readonly IReconService Recon;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IReconcilation recon)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IReconService recon)
         {
             _logger = logger;
              Recon = recon;
