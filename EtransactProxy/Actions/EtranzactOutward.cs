@@ -250,7 +250,7 @@ namespace EtransactProxy.Actions
                         bankCode = Bank?.CbnCode,
                         description = Request.Narration,
                         destination = Request.BenefAccountNumber,
-                        senderName = $"{Request.SourceAccountName};{Request.BenefAccountNumber};{Request.BenefAccountName}",
+                        senderName = $"{Request.SourceAccountName};{Request.SourceAccountNumber};{Request.BenefAccountName}",
                         reference = Request.TransactionId,
                         endPoint = "A",
                         pin = Pin
