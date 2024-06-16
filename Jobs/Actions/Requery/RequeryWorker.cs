@@ -1,7 +1,7 @@
 ﻿using Cronos;
 using Momo.Common.Actions;
 
-namespace Jobs.Actions
+namespace Jobs.Actions.Requery
 {
     public class RequeryWorker : BackgroundService
     {

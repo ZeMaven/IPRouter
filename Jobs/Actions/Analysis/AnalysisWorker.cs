@@ -1,7 +1,8 @@
 ﻿using Cronos;
+using Jobs.Actions.Requery;
 using Momo.Common.Actions;
 
-namespace Jobs.Actions
+namespace Jobs.Actions.Analysis
 {
     public class AnalysisWorker : BackgroundService
     {
@@ -9,15 +10,15 @@ namespace Jobs.Actions
         private readonly ILog Log;
         private string Schedule;
         private readonly CronExpression Cron;
-        private readonly ITransaction Tran;
+        private readonly IAnalysisService Analyse;
         private readonly IConfiguration Config;
 
 
-        public AnalysisWorker(ILog log, ITransaction tran, IConfiguration config)
+        public AnalysisWorker(ILog log, IAnalysisService analyse, IConfiguration config)
         {
             Config = config;
             Log = log;
-            Tran = tran;
+            Analyse = analyse;
             Schedule = Config.GetSection("AnalysisSchedule").Value;
             Cron = CronExpression.Parse(Schedule);   //  "*/5 * * * *";
         }
@@ -45,7 +46,7 @@ namespace Jobs.Actions
                 await Task.Delay(nextUtc.Value - utcNow, stoppingToken);
 
                 Log.Write("AnalysisWorker Worker Cheking", $"{DateTimeOffset.Now}");
-                Tran.Analyse();
+                Analyse.Analyse();
             }
         }
 
