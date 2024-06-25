@@ -1,0 +1,6 @@
+@MomoSwitch.Analysis_HostAddress = http://localhost:5049
+
+GET {{MomoSwitch.Analysis_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
