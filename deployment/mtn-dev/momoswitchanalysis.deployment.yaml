@@ -24,7 +24,7 @@ spec:
             memory: "200M"
             cpu: "100m"  
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
         envFrom:
         - secretRef:
@@ -47,5 +47,5 @@ spec:
   selector:
     app: momoswitchanalysis-api
   ports:
-  - port: 9093
-    targetPort: 80
+  - port: 8080
+    targetPort: 8080
