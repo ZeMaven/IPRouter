@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: momoswitchanalysis-api-deployment
+  namespace: app-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: momoswitchanalysis-api
+  template:
+    metadata:
+      labels:
+        app: momoswitchanalysis-api
+    spec:
+      containers:
+      - name: momoswitchanalysis-api
+        image: dockub.coralpay.com/momoswitchanalysis:#{image-tag}#
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "200M"
+            cpu: "100m"   
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: momoswitchanalysis
+        - configMapRef:
+            name: momoswitchanalysis
+        - configMapRef:
+            name: timezone
+      imagePullSecrets:
+        - name: docker-cred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: momoswitchanalysis-api-service
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: momoswitchanalysis-api
+  ports:
+  - port: 8080
+    targetPort: 8080
