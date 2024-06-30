@@ -21,7 +21,7 @@
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
                         <p class="text-sm mb-0 text-capitalize">Today's Incoming</p>
-                        <h4 class="mb-0" id="totalInc">&#8358;@Model.TotalIncoming</h4>
+                        <h4 class="mb-0" id="totalInc">&#x20A6;@Model.TotalIncoming</h4>
                     </div>
                 </div>
                 <hr class="dark horizontal my-0">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
                         <p class="text-sm mb-0 text-capitalize">Today's Outgoing</p>
-                        <h4 class="mb-0" id="totalOut">&#8358;@Model.TotalOutGoing</h4>
+                        <h4 class="mb-0" id="totalOut">&#x20A6;@Model.TotalOutGoing</h4>
                     </div>
                 </div>
                 <hr class="dark horizontal my-0">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
                         <p class="text-sm mb-0 text-capitalize">Today's Successful</p>
-                        <h4 class="mb-0" id="totalSuccess">&#8358;@Model.TotalSuccessful</h4>
+                        <h4 class="mb-0" id="totalSuccess">&#x20A6;@Model.TotalSuccessful</h4>
                     </div>
                 </div>
                 <hr class="dark horizontal my-0">
@@ -81,7 +81,7 @@
                     </div>
                     <div class="text-end pt-1" style="padding-top: 1rem !important;">
                         <p class="text-sm mb-0 text-capitalize">Today's' Failed</p>
-                        <h4 class="mb-0" id="totalFail">&#8358;@Model.TotalFailed</h4>
+                        <h4 class="mb-0" id="totalFail">&#x20A6;@Model.TotalFailed</h4>
                     </div>
                 </div>
                 <hr class="dark horizontal my-0">
@@ -784,13 +784,13 @@
                     // This function is called if the request succeeds (status code 200-299)
                     console.log('Success:', response);
                     $('#totalIncCount').text(response.totalIncomingCount);
-                    $('#totalInc').text(response.totalIncoming);
-                    $('#totalOut').text(response.totalOutGoing);
-                    $('#totalOutCount').text(response.totalOutGoing);
-                    $('#totalSuccess').text(response.totalSuccessful);
+                    $('#totalInc').text('\u20A6' + response.totalIncoming);
+                    $('#totalOut').text('\u20A6' + response.totalOutGoing);
+                    $('#totalOutCount').text(response.totalOutGoingCount);
+                    $('#totalSuccess').text('\u20A6' + response.totalSuccessful);
                     $('#totalSuccessPerc').text(response.totalSuccessfulPercentage);
                     $('#totalSuccessCount').text(response.totalSuccessfulCount);
-                    $('#totalFail').text(response.totalFailed);
+                    $('#totalFail').text('\u20A6' + response.totalFailed);
                     $('#totalFailCount').text(response.totalFailedCount);
                     $('#totalFailPerc').text(response.totalFailedPercentage);
                     $('#totalTransactions').text(response.totalTransactions);

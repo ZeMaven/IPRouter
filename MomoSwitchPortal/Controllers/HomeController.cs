@@ -98,7 +98,7 @@ namespace MomoSwitchPortal.Controllers
 
                 var startDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
                 var endDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
-                var allTransactions = await db.TransactionTb.Where(x => x.Date >= firstDayOfMonth && x.Date <= lastDayOfMonth).Select(x => new HomeMiniTransaction
+                var allTransactions = await db.TransactionTb.Where(x => x.ResponseCode != "09" && x.Date >= firstDayOfMonth && x.Date <= lastDayOfMonth).Select(x => new HomeMiniTransaction
                 {
                     Amount = x.Amount,
                     TransactionId = x.TransactionId,
