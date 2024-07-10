@@ -11,5 +11,7 @@ namespace Momo.Common.Models.HttpService
         public ResponseHeader ResponseHeader { get; set; }
         public string ResponseContent { get; set; }
     }
-    public enum Operation { NameEnqury, Transfer, TranQuery }
+    public enum Operation { NameEnqury, Transfer, TranQuery,
+        Auth
+    }
 }

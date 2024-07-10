@@ -25,9 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobs", "Jobs\Jobs.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EtransactProxy", "EtransactProxy\EtransactProxy.csproj", "{0F14DE67-C555-4192-923E-BBE86CE6A2DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcaProxy", "ArcaProxy\ArcaProxy.csproj", "{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcaProxy", "ArcaProxy\ArcaProxy.csproj", "{BB337F81-6BF7-4788-90F3-5B8D5804E5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MomoSwitch.Analysis", "MomoSwitch.Analysis\MomoSwitch.Analysis.csproj", "{CE386499-B143-4ED7-A5F4-90D99666754A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MomoSwitch.Analysis", "MomoSwitch.Analysis\MomoSwitch.Analysis.csproj", "{CE386499-B143-4ED7-A5F4-90D99666754A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemitaProxy", "RemitaProxy\RemitaProxy.csproj", "{36BB41B0-A966-4211-AD38-5227562FB711}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{CE386499-B143-4ED7-A5F4-90D99666754A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE386499-B143-4ED7-A5F4-90D99666754A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE386499-B143-4ED7-A5F4-90D99666754A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BB41B0-A966-4211-AD38-5227562FB711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BB41B0-A966-4211-AD38-5227562FB711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BB41B0-A966-4211-AD38-5227562FB711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BB41B0-A966-4211-AD38-5227562FB711}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
