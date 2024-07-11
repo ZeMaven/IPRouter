@@ -26,20 +26,15 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-        volumeMounts:
-            - name: keys
-              mountPath: /app/keys
         envFrom:
         - configMapRef:
             name: remitaproxy
         - configMapRef:
             name: timezone
+        - secretRef:
+            name: remitaproxy
       imagePullSecrets:
         - name: docker-cred
-      volumes:
-        - name: keys
-          secret:
-            secretName: remitaproxy
 
 ---
 
