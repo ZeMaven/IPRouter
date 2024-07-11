@@ -33,8 +33,8 @@ namespace EtransactProxy.Actions
                 case "-1":
                     return new ResponseHeader()
                     {
-                        ResponseCode = "97",
-                        ResponseMessage = "Transaction timed out."
+                        ResponseCode = "01",
+                        ResponseMessage = "Wait for settlement report"
                     };
                 case "0":
                     return new ResponseHeader()
@@ -213,8 +213,20 @@ namespace EtransactProxy.Actions
                 case "31":
                     return new ResponseHeader()
                     {
-                        ResponseCode = "31",
+                        ResponseCode = "01",
+                        ResponseMessage = "Pending transaction, upon confirmation from bank."
+                    };
+                case "32":
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
                         ResponseMessage = "Transaction status unknown, contact eTranzact after T+1 for status."
+                    };
+                case "50":
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "01",
+                        ResponseMessage = "Transaction Processing. Perform TS after 60 secs."
                     };
                 case "92":
                     return new ResponseHeader()
@@ -225,8 +237,8 @@ namespace EtransactProxy.Actions
                 case "99":
                     return new ResponseHeader()
                     {
-                        ResponseCode = "99",
-                        ResponseMessage = "Transaction Failed"
+                        ResponseCode = "01",
+                        ResponseMessage = "Server Error Occurred"
                     };
                 case "1000":
                     return new ResponseHeader()
@@ -279,7 +291,7 @@ namespace EtransactProxy.Actions
                 default:
                     return new ResponseHeader()
                     {
-                        ResponseCode = "97",
+                        ResponseCode = "01",
                         ResponseMessage = "Unknown Response Code"
                     };
             }
