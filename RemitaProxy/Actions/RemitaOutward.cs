@@ -219,8 +219,8 @@ namespace RemitaProxy.Actions
                     destinationAccount = Request.BenefAccountNumber,
                     destinationAccountName = Request.SourceAccountName,
                     destinationBankCode = DestinationBankCode,
-                    originalAccountNumber = "",
-                    originalBankCode = ""
+                    originalAccountNumber = Request.SourceAccountNumber,
+                    originalBankCode = SourceBankCode
                 };
 
 
