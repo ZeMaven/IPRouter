@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 builder.Services.AddTransient<ILog, Log>();
 builder.Services.AddTransient<ICommonUtilities, CommonUtilities>();
 builder.Services.AddTransient<ITransposer, Transposer>();
