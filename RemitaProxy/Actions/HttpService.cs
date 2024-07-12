@@ -38,17 +38,14 @@ namespace RemitaProxy.Actions
                 {
                     case Operation.NameEnqury:
 
-                        Url = $"{Config.GetSection("RemitaUrl").Value}/account/lookup";
+                        Url = $"{Config.GetSection("RemitaNameEnqUrl").Value}";
                         break;
                     case Operation.Transfer:
-                        Url = $"{Config.GetSection("RemitaUrl").Value}/single/payment";
+                        Url = $"{Config.GetSection("RemitaPostUrl").Value}";
                         break;
                     case Operation.TranQuery:
                         TranQueryRequest tranQueryReq = (TranQueryRequest)Request;
-                        Url = $"{Config.GetSection("RemitaUrl").Value}/single/payment/status/{tranQueryReq.transactionRef}";
-                        break;
-                    case Operation.Auth:
-                        Url = $"{Config.GetSection("RemitaUrl").Value}/uaasvc/uaa/token";
+                        Url = $"{Config.GetSection("RemitaNameTxqUrl").Value}/{tranQueryReq.transactionRef}";
                         break;
                 }
                 var Token = GetToken();
@@ -63,10 +60,11 @@ namespace RemitaProxy.Actions
 
 
 
-                if (Op == Operation.Transfer)
-                    response = await WireClient.PostAsync(Url, new StringContent(JsonString, Encoding.UTF8, "application/json"));
-                else
+                if (Op == Operation.TranQuery)
                     response = await WireClient.GetAsync(Url);
+                else
+                    response = await WireClient.PostAsync(Url, new StringContent(JsonString, Encoding.UTF8, "application/json"));
+
 
 
                 string Result = await response.Content.ReadAsStringAsync();
@@ -144,8 +142,8 @@ namespace RemitaProxy.Actions
 
         private async Task<ResponseHeader> Auth()
         {
-            var Url = Config.GetSection("RemitaUrl").Value;
-            var Username = Config.GetSection("Username").Value;
+            var Url = $"{Config.GetSection("RemitaNameAuthUrl").Value}";
+            var Username = Config.GetSection("PassUser").Value;
             var Password = Config.GetSection("Password").Value;
 
             var AuthReq = new
@@ -154,23 +152,21 @@ namespace RemitaProxy.Actions
                 password = Password
             };
 
-
-            var RemitaResp = await Call(AuthReq, Operation.Auth);
-            var JsonReq = JsonConvert.SerializeObject(RemitaResp);
-
-            Log.Write("Remita.Auth", $"Request to Remita");
-            Log.Write("Remita.FundTransfer", $"Response from Remita: {RemitaResp.ResponseContent}");
-            if (RemitaResp.ResponseHeader.ResponseCode != "00")
+            var client = new HttpClient();
+            // client.BaseAddress = new Uri(Url);
+            var jsonReq = JsonConvert.SerializeObject(AuthReq);
+            var HttpResp = await client.PostAsync(Url, new StringContent(jsonReq, Encoding.UTF8, "application/json"));
+            var jsonResp = await HttpResp.Content.ReadAsStringAsync();
+            Log.Write("Remita.Auth", $"Response from Remita: {jsonResp}");
+            if (!HttpResp.IsSuccessStatusCode)
             {
                 return new ResponseHeader
                 {
                     ResponseCode = "01",
                     ResponseMessage = "Auth failed"
                 };
-
             }
-            var RemitaRespObj = JsonConvert.DeserializeObject<Models.Auth.AuthResponse>(RemitaResp.ResponseContent);
-
+            var RemitaRespObj = JsonConvert.DeserializeObject<Models.Auth.AuthResponse>(jsonResp);
             return new ResponseHeader
             {
                 ResponseCode = "00",
