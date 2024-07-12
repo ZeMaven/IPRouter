@@ -48,17 +48,15 @@ namespace RemitaProxy.Actions
             {
                 var JsonStr = JsonSerializer.Serialize(Request);
                 Log.Write("Remita.NameEnquiry", $"Request from Router: {JsonStr}");
-                var Bank = Transposer.GetBank(Request.DestinationBankCode);
-
+                 
                 var TranId = Utilities.CreateTransactionId();
                 SessionId = $"{SourceBank}{TranId}";
-
                 
-                var CbnSourceBankCode = Transposer.GetBank(SourceBank).CbnCode;
+                var DestinationBankCode = Transposer.GetBank(Request.SourceBankCode); //Remita abnormal converssion. Sourcebank  should be destinationBank
                 var RemitaRequest = new NameEnqRequest
                 {
                     sourceAccount = Request.AccountId,
-                    sourceBankCode = CbnSourceBankCode
+                    sourceBankCode = DestinationBankCode.CbnCode
                 };
 
                 Log.Write("Remita.NameEnquiry", $"Request to Remita: See request below |  SessionId: {SessionId}");
