@@ -52,11 +52,11 @@ namespace RemitaProxy.Actions
                 var TranId = Utilities.CreateTransactionId();
                 SessionId = $"{SourceBank}{TranId}";
                 
-                var DestinationBankCode = Transposer.GetBank(Request.SourceBankCode); //Remita abnormal converssion. Sourcebank  should be destinationBank
+                var DestinationBankCode = Transposer.GetBank(Request.DestinationBankCode); 
                 var RemitaRequest = new NameEnqRequest
                 {
                     sourceAccount = Request.AccountId,
-                    sourceBankCode = DestinationBankCode.CbnCode
+                    sourceBankCode = DestinationBankCode.CbnCode //Remita abnormal converssion. Sourcebank  should be destinationBank
                 };
 
                 Log.Write("Remita.NameEnquiry", $"Request to Remita: See request below |  SessionId: {SessionId}");
