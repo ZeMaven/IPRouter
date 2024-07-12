@@ -200,8 +200,8 @@ namespace RemitaProxy.Actions
                 Log.Write("Remita.FundTransfer", $"Request from Router: {JsonStr}");
 
                 var TranId = Utilities.CreateTransactionId();
-                SessionId = $"{SourceBank}{TranId}";
-
+                // SessionId = $"{SourceBank}{TranId}";
+                SessionId = Request.TransactionId;
                 var SourceBankCode = Transposer.GetBank(Request.SourceBankCode).CbnCode;
                 var DestinationBankCode = Transposer.GetBank(Request.DestinationBankCode).CbnCode;
                 var RemitaRequest = new TransferRequest
@@ -219,8 +219,8 @@ namespace RemitaProxy.Actions
                     destinationAccount = Request.BenefAccountNumber,
                     destinationAccountName = Request.SourceAccountName,
                     destinationBankCode = DestinationBankCode,
-                    originalAccountNumber = "",
-                    originalBankCode = ""
+                    originalAccountNumber = Request.SourceAccountNumber,
+                    originalBankCode = SourceBankCode
                 };
 
 
