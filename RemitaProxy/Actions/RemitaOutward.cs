@@ -53,7 +53,8 @@ namespace RemitaProxy.Actions
                 var TranId = Utilities.CreateTransactionId();
                 SessionId = $"{SourceBank}{TranId}";
 
-                var CbnSourceBankCode = Transposer.GetBank(Request.SourceBankCode).CbnCode;
+                
+                var CbnSourceBankCode = Transposer.GetBank(SourceBank).CbnCode;
                 var RemitaRequest = new NameEnqRequest
                 {
                     sourceAccount = Request.AccountId,
@@ -131,7 +132,8 @@ namespace RemitaProxy.Actions
 
                 var RemitaRequest = new TranQueryRequest
                 {
-                    transactionRef = Request.SessionId,
+                    transactionRef = Request.SessionId, 
+
                 };
                 var JsonReq = JsonSerializer.Serialize(RemitaRequest);
                 Log.Write("Remita.TranQuery", $"Request to Remita: {JsonReq}");
