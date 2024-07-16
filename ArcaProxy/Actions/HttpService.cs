@@ -46,10 +46,10 @@ namespace ArcaProxy.Actions
                         Url = $"{Config.GetSection("ArcaUrl").Value}/accountTransferStatus?requestId={tranQueryReq.requestId}&svaCode={tranQueryReq.svaCode}";
                         break;
                 }
-
+                var Key = Config.GetSection("ArcaKey").Value;
                 var WireClient = new HttpClient();
-                //WireClient.DefaultRequestHeaders.Accept.Clear();
-                //WireClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {NipToken}");
+                WireClient.DefaultRequestHeaders.Accept.Clear();
+                WireClient.DefaultRequestHeaders.Add("Key", Key);
 
                 var JsonString = JsonConvert.SerializeObject(Request);
                 //Log.Write("HttpService.Call", $"Request to Router: {JsonString}");
