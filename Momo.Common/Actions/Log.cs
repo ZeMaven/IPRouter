@@ -32,9 +32,7 @@ namespace Momo.Common.Actions
         public void Write(string Method, string Message)
         {
             try
-            {
-                Task.Run(() =>
-                {
+            {               
                     lock (WriteLock)
                     {
                         var LogPath = Configuration.GetSection("LogPath").Value;
@@ -44,8 +42,7 @@ namespace Momo.Common.Actions
                         Writer.Write($"~ {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss fff")} | Method: {Method} | Message: {Message}  {Environment.NewLine}");
                         Writer.Close();
                         logger.LogInformation($"~ {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss fff")} | Method: {Method} | Message: {Message}");
-                    }
-                });
+                    }            
             }
             catch
             {

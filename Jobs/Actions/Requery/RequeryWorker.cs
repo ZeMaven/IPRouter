@@ -42,7 +42,7 @@ namespace Jobs.Actions.Requery
                 await Task.Delay(nextUtc.Value - utcNow, stoppingToken);
 
                 Log.Write("RequeryWorker Worker Cheking", $"{DateTimeOffset.Now}");
-                Tran.Requery();
+                Tran.Requery(); 
             }
         }
     }
