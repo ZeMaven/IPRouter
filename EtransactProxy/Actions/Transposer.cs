@@ -234,6 +234,12 @@ namespace EtransactProxy.Actions
                         ResponseCode = "92",
                         ResponseMessage = "No Route to Issuer/Bank"
                     };
+                case "96":
+                    return new ResponseHeader()
+                    {
+                        ResponseCode = "96",
+                        ResponseMessage = "System malfunction"
+                    };
                 case "99":
                     return new ResponseHeader()
                     {
