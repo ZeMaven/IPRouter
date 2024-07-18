@@ -153,7 +153,7 @@ namespace CipProxy.Actions
                         SessionId = Request.SessionId,
                         //TransactionId = Request.SessionId,
                         SourceBankCode = SourceBank,
-                        ResponseCode = "07",
+                        ResponseCode = "01",
 
                     };
                 }
