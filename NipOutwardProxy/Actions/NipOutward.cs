@@ -244,7 +244,7 @@ namespace NipOutwardProxy.Actions
                 Log.Write("NibssOutward.Transfer", $"Err: {Ex.Message}");
                 return new FundTransferPxResponse
                 {
-                    ResponseCode = "97",
+                    ResponseCode = "01",
                     ResponseMessage = "Failed",
                     TransactionId = Request.TransactionId,
                     SourceBankCode = Request.SourceBankCode,

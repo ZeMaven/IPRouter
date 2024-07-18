@@ -15,7 +15,7 @@ namespace Jobs.Actions.Requery
 {
     public interface ITransaction
     {
-       
+
         void Requery();
     }
 
@@ -39,7 +39,7 @@ namespace Jobs.Actions.Requery
                 DateTime EndMin = DateTime.Now.AddMinutes(-int.Parse(Config.GetSection("QueryEndMin").Value));
                 var CurrentMinute = DateTime.Now.Minute;
 
-                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date > StartMin && x.Date < EndMin).ToList();
+                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date > StartMin && x.Date < EndMin).ToList();
                 Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
 
                 foreach (var Tran in Trans)
@@ -53,7 +53,7 @@ namespace Jobs.Actions.Requery
                 if (CurrentMinute == 2)
                 {
                     DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
-                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "96" || x.ResponseCode == "97") && x.Date < FiveHourAgo).ToList();
+                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date < FiveHourAgo).ToList();
                     Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
 
                     foreach (var Tran in Trans1)
