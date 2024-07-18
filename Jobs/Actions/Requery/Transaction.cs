@@ -53,7 +53,7 @@ namespace Jobs.Actions.Requery
                 if (CurrentMinute == 2)
                 {
                     DateTime _24HourAgo = DateTime.Now.AddHours(-24);
-                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date < _24HourAgo).ToList();
+                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date > EndMin && x.Date < _24HourAgo).ToList();
                     Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction Hourly requery");
 
                     foreach (var Tran in Trans1)
