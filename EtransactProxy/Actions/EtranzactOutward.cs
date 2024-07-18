@@ -273,7 +273,7 @@ namespace EtransactProxy.Actions
                         SessionId = SessionId,
                         TransactionId = Request.TransactionId,
                         SourceBankCode = SourceBank,
-                        ResponseCode = "09",
+                        ResponseCode = "01",
                     };
                 }
 
@@ -315,7 +315,7 @@ namespace EtransactProxy.Actions
                     SessionId = SessionId,
                     TransactionId = Request.TransactionId,
                     SourceBankCode = SourceBank,
-                    ResponseCode = "97",
+                    ResponseCode = "01",
                 };
             }
         }
