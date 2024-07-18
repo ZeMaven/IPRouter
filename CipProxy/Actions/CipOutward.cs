@@ -153,7 +153,7 @@ namespace CipProxy.Actions
                         SessionId = Request.SessionId,
                         //TransactionId = Request.SessionId,
                         SourceBankCode = SourceBank,
-                        ResponseCode = "09",
+                        ResponseCode = "07",
 
                     };
                 }
@@ -167,7 +167,7 @@ namespace CipProxy.Actions
                 {
                     SessionId = Request.SessionId,
                     TransactionId = Request.SessionId,
-                    ResponseCode = CipRespObj.responseCode,
+                    ResponseCode = CipRespObj.responseCode == "01" ? "96" : CipRespObj.responseCode,
                     ResponseMessage = CipRespObj.responseMessage,
                     SourceBankCode = SourceBank,
                     Amount = CipRespObj.amount,
@@ -258,7 +258,7 @@ namespace CipProxy.Actions
                 {
                     SessionId = SessionId,
                     TransactionId = Request.TransactionId,
-                    ResponseCode = CipRespObj.responseCode,
+                    ResponseCode = CipRespObj.responseCode == "01" ? "96" : CipRespObj.responseCode,
                     ResponseMessage = CipRespObj.responseMessage,
                     SourceBankCode = SourceBank,
                     BenefBvn = string.Empty,
