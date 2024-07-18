@@ -39,7 +39,7 @@ namespace Jobs.Actions.Requery
                 DateTime EndMin = DateTime.Now.AddMinutes(-int.Parse(Config.GetSection("QueryEndMin").Value));
                 var CurrentMinute = DateTime.Now.Minute;
 
-                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date > StartMin && x.Date < EndMin).ToList();
+                var Trans = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date > EndMin && x.Date < StartMin).ToList();
                 Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction frequent requery");
 
                 foreach (var Tran in Trans)
@@ -52,15 +52,15 @@ namespace Jobs.Actions.Requery
                 //If schedule is every2 min, then this is every hr eg 01:02
                 if (CurrentMinute == 2)
                 {
-                    DateTime FiveHourAgo = DateTime.Now.AddHours(-5);
-                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date < FiveHourAgo).ToList();
-                    Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction 3Hourly requery");
+                    DateTime _24HourAgo = DateTime.Now.AddHours(-24);
+                    var Trans1 = Db.TransactionTb.Where(x => (x.ResponseCode == "01") && x.Date < _24HourAgo).ToList();
+                    Log.Write("Transaction.Requery", $"Got {Trans.Count} Transaction Hourly requery");
 
                     foreach (var Tran in Trans1)
                     {
                         GetTransaction(Tran.TransactionId);
                     }
-                    Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction 3Hourly requery");
+                    Log.Write("Transaction.Requery", $"Finished {Trans.Count} Transaction Hourly requery");
                 }
             }
             catch (Exception Ex)
