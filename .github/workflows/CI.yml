@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: MomoIPRouter
+    runs-on: self-hosted
     if: github.ref == 'refs/heads/coralpayupdates_dev'  # Apply condition at the job level
     strategy:
       matrix:
