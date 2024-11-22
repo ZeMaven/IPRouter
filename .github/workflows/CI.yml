@@ -28,7 +28,7 @@ jobs:
         uses: docker/login-action@v2
         if: github.ref == 'refs/heads/coralpayupdates_dev'
         env:
-          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter
+          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-portal
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.HARBOR_UNAME }}
@@ -38,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v3
         if: github.ref == 'refs/heads/coralpayupdates_dev'
         env:
-          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter
+          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-portal
           IMAGE_TAG: ${{ env.SHA }}
         with:
           context: .
