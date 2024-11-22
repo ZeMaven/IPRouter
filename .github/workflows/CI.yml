@@ -5,15 +5,33 @@ on:
     branches:
       - coralpayupdates_dev
       - main
+
 jobs:
-  deployment:
+  build-and-push:
     runs-on: self-hosted
+    if: github.ref == 'refs/heads/coralpayupdates_dev'  # Apply condition at the job level
+    strategy:
+      matrix:
+        dockerfile: [
+          "arca.Dockerfile",
+          "cipproxy.dockerfile",
+          "etranzactproxy.dockerfile", 
+          "jobs.dockerfile",
+          "momo-switchrequery.dockerfile",
+          "momoswitch.dockerfile",
+          "momoswitchanalysis.Dockerfile",
+          "nipinwardproxy.dockerfile",
+          "nipoutward.dockerfile",
+          "portal2.dockerfile",
+          "remitaproxy.Dockerfile"
+        ]
+
     steps:
-      - name: Checkout
-        if: github.ref == 'refs/heads/coralpayupdates_dev'
+      - name: Checkout Code
         uses: actions/checkout@v2
 
-      - uses: benjlevesque/short-sha@v1.2
+      - name: Generate Short SHA
+        uses: benjlevesque/short-sha@v1.2
         id: short-sha
         with:
           length: 6
@@ -24,45 +42,36 @@ jobs:
         env:
           SHA: ${{ env.SHA }}
 
-      - name: Login to dev image repository
+      - name: Log in to Docker Registry
         uses: docker/login-action@v2
-        if: github.ref == 'refs/heads/coralpayupdates_dev'
-        env:
-          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-portal
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-nonportal
           username: ${{ secrets.HARBOR_UNAME }}
           password: ${{ secrets.HARBOR_PASSWD }}
 
-      - name: dev Build and push
+      - name: Build and Push Docker Images
         uses: docker/build-push-action@v3
-        if: github.ref == 'refs/heads/coralpayupdates_dev'
-        env:
-          REGISTRY: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-portal
-          IMAGE_TAG: ${{ env.SHA }}
         with:
           context: .
-          file: Dockerfile
+          file: ${{ matrix.dockerfile }}
           push: true
-          tags: ${{ env.REGISTRY }}:${{ env.IMAGE_TAG }}
+          tags: ojtkgsbharb01.mtn.com.ng/nextgen_momoiprouter/nextgen_momoiprouter-nonportal:${{ steps.short-sha.outputs.sha }}
 
-      # - name: Check out dev helm repo
-        ## if: github.ref == 'refs/heads/coralpayupdates_dev'
-      #   uses: actions/checkout@v2
-      #   with:
-      #     ref: dev
-      #     repository: MTNNigeria/Helm-Charts
-      #     token: ${{ secrets.my_pat }}
+    #   - name: Checkout Helm Repository
+    #     uses: actions/checkout@v2
+    #     with:
+    #       ref: dev
+    #       repository: MTNNigeria/Helm-Charts
+    #       token: ${{ secrets.my_pat }}
+    #     path: helm-repo  # Ensure it doesn't overwrite the main repo
 
-      # - name: Update dev helm
-      ##   if: github.ref == 'refs/heads/coralpayupdates_dev'
-      #   env:
-      #     IMAGE_TAG: ${{ env.SHA }}
-      #   run: |
-      #     yq e '.image.version = "'$IMAGE_TAG'"' -i /export/home/dmsb_girish/NextGen-UI/_work/NextGen-UI/NextGen-UI/nextgenui/frontend/charts/helm-example/values.yaml
-      #     git config --global user.name 'gkhhgcl'
-      #     git config --global user.email "girish.kumar@hhgcl.com"
-      #     git add .
-      #     git commit -m "updated values.yml file"
-      #     echo "Done.."
-      #     git push origin dev
+    #   - name: Update Helm Chart
+    #     run: |
+    #       IMAGE_TAG=${{ steps.short-sha.outputs.sha }}
+    #       yq e '.image.version = "'$IMAGE_TAG'"' -i helm-repo/nextgen_momoiprouter/frontend/charts/helm-example/values.yaml
+    #       cd helm-repo
+    #       git config --global user.name 'gkhhgcl'
+    #       git config --global user.email "girish.kumar@hhgcl.com"
+    #       git add .
+    #       git commit -m "Updated values.yaml file"
+    #       git push origin dev
