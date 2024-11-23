@@ -1,5 +1,7 @@
 # Use a Windows Server Core image with .NET Framework 4.8 as the base
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019 as builder
+# FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019 AS builder
+
 
 # Set the working directory inside the container
 WORKDIR /inetpub/wwwroot
@@ -26,4 +28,7 @@ EXPOSE 443
 
 # The ENTRYPOINT or CMD to run your application can be customized as needed.
 # For IIS-based applications, there is no need to define an ENTRYPOINT or CMD
+# as IIS is already configured to start and host your application.
+# as IIS is already configured to start and host your application.
+# as IIS is already configured to start and host your application.
 # as IIS is already configured to start and host your application.
