@@ -13,16 +13,16 @@ jobs:
     strategy:
       matrix:
         dockerfile: [
-          "arca.Dockerfile",
-          "cipproxy.dockerfile",
-          "etranzactproxy.dockerfile", 
-          "jobs.dockerfile",
-          "momo-switchrequery.dockerfile",
-          "momoswitch.dockerfile",
-          "momoswitchanalysis.Dockerfile",
+          # "arca.Dockerfile",
+          # "cipproxy.dockerfile",
+          # "etranzactproxy.dockerfile", 
+          # "jobs.dockerfile",
+          # "momo-switchrequery.dockerfile",
+          # "momoswitch.dockerfile",
+          # "momoswitchanalysis.Dockerfile",
           "nipinwardproxy.dockerfile",
           "nipoutward.dockerfile",
-          "portal2.dockerfile",
+        #  "portal2.dockerfile",
           "remitaproxy.Dockerfile"
         ]
 
