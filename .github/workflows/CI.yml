@@ -20,7 +20,7 @@ jobs:
           # "momo-switchrequery.dockerfile",
           # "momoswitch.dockerfile",
           # "momoswitchanalysis.Dockerfile",
-          "nipinwardproxy.dockerfile",
+          #"nipinwardproxy.dockerfile",
           "nipoutward.dockerfile",
         #  "portal2.dockerfile",
           "remitaproxy.Dockerfile"
